@@ -20,9 +20,14 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
-        Label label = new Label("Hello, FXGL!");
-        label.setFont(Font.font(20.0));
-        FXGL.addUINode(label, 350.0, 290.0);
+        Font nesFont = Font.loadFont(
+                getClass().getResourceAsStream("/org/arkanoid/fonts/nes.otf"),
+                20
+        );
+
+        Label label = new Label("HELLO, WORLD!");
+        label.setFont(nesFont);
+        FXGL.addUINode(label, 280.0, 290.0);
     }
 
     static void main(String[] args) {

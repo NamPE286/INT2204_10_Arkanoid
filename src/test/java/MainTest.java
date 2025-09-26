@@ -8,4 +8,10 @@ public class MainTest {
     public void add() {
         assertEquals(1 + 2, 3);
     }
+
+    @Test
+    @DisplayName("subtract test")
+    public void subtract() {
+        assertEquals(1 - 2, -1);
+    }
 }
