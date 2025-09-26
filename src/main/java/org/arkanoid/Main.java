@@ -21,11 +21,11 @@ public class Main extends GameApplication {
     @Override
     protected void initUI() {
         Font nesFont = Font.loadFont(
-                getClass().getResourceAsStream("/org/arkanoid/fonts/nes.otf"),
+                getClass().getResourceAsStream("/fonts/nes.otf"),
                 20
         );
-
         Label label = new Label("HELLO, WORLD!");
+
         label.setFont(nesFont);
         FXGL.addUINode(label, 280.0, 290.0);
     }
