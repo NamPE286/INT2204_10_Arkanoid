@@ -1,19 +1,31 @@
 package org.arkanoid;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.dsl.FXGL;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 
-import java.io.IOException;
+public class Main extends GameApplication {
+    private static final int HEIGHT = 600;
+    private static final int WIDTH = 800;
 
-public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+    protected void initSettings(GameSettings settings) {
+        settings.setWidth(WIDTH);
+        settings.setHeight(HEIGHT);
+        settings.setTitle("Arkanoid");
+        settings.setVersion("0.0.1");
+    }
+
+    @Override
+    protected void initUI() {
+        Label label = new Label("Hello, FXGL!");
+        label.setFont(Font.font(20.0));
+        FXGL.addUINode(label, 350.0, 290.0);
+    }
+
+    static void main(String[] args) {
+        launch(args);
     }
 }
