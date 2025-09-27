@@ -29,36 +29,45 @@ public class Paddle extends MovableObject {
     }
 
     @Override
-    public void initInput() {
+    protected void initInput() {
         FXGL.getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                setVelocity(-200, 0);
+                setLinearVelocity(-200, 0);
             }
 
             @Override
             protected void onActionEnd() {
-                setVelocity(0, 0); // stop moving when key released
+                setLinearVelocity(0, 0);
             }
         }, KeyCode.A);
 
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                setVelocity(200, 0);
+                setLinearVelocity(200, 0);
             }
 
             @Override
             protected void onActionEnd() {
-                setVelocity(0, 0); // stop moving when key released
+                setLinearVelocity(0, 0);
             }
         }, KeyCode.D);
     }
 
+    /**
+     * Constructs a new paddle at the default position (0, 0).
+     */
     public Paddle() {
         super();
     }
 
+    /**
+     * Constructs a new paddle at the specified coordinates.
+     *
+     * @param x the x-coordinate for the paddle's initial position
+     * @param y the y-coordinate for the paddle's initial position
+     */
     public Paddle(int x, int y) {
         super(x, y);
     }

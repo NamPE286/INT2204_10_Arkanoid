@@ -39,7 +39,7 @@ public class Main extends GameApplication {
     @Override
     protected void onUpdate(double deltaTime) {
         for(var i : gameObjects) {
-            i.update();
+            i.update(deltaTime);
         }
     }
 
