@@ -6,7 +6,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 abstract class GameObject {
-    protected Entity entity;
+    protected Entity entity = null;
 
     public Entity getEntity() {
         return entity;

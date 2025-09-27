@@ -11,6 +11,7 @@ module org.arkanoid {
     requires com.almasb.fxgl.all;
     requires com.almasb.fxgl.core;
     requires javafx.graphics;
+    requires java.desktop;
 
     opens org.arkanoid to javafx.fxml;
     exports org.arkanoid;
