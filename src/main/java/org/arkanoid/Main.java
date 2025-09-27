@@ -10,7 +10,7 @@ import org.arkanoid.entity.Paddle;
 public class Main extends GameApplication {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
-    private Paddle paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
+    private final Paddle paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
 
     @Override
     protected void initSettings(GameSettings settings) {
