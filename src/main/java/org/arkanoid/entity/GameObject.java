@@ -5,7 +5,7 @@ import com.almasb.fxgl.entity.SpawnData;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
-abstract class GameObject {
+abstract public class GameObject {
     protected Entity entity = null;
 
     public Entity getEntity() {
@@ -19,6 +19,9 @@ abstract class GameObject {
     protected abstract Entity createEntity(SpawnData spawnData);
 
     public void initInput() {
+    }
+
+    public void update() {
     }
 
     public GameObject() {

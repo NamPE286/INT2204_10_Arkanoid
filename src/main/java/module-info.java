@@ -13,6 +13,7 @@ open module org.arkanoid {
     requires javafx.graphics;
     requires java.desktop;
     requires javafx.swing;
+    requires com.almasb.fxgl.entity;
 
     exports org.arkanoid;
 }

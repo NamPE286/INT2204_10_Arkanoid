@@ -5,12 +5,10 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
-public class Paddle extends GameObject {
+public class Paddle extends MovableObject {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 20;
 
@@ -27,14 +25,14 @@ public class Paddle extends GameObject {
         FXGL.getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                entity.translateX(-5);
+                move(-5, 0);
             }
         }, KeyCode.A);
 
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                entity.translateX(5);
+                move(5, 0);
             }
         }, KeyCode.D);
     }
