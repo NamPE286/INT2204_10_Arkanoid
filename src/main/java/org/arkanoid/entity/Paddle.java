@@ -4,6 +4,8 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.input.KeyCode;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -13,11 +15,16 @@ public class Paddle extends MovableObject {
     public static final int HEIGHT = 20;
 
     protected Entity createEntity(SpawnData spawnData) {
-        return entityBuilder(spawnData)
+        var e = entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
                 .viewWithBBox(FXGL.texture("ship.png"))
-                .collidable()
+                .with(new PhysicsComponent())
                 .build();
+        physics = e.getComponent(PhysicsComponent.class);
+
+        physics.setBodyType(BodyType.DYNAMIC);
+
+        return e;
     }
 
     @Override
@@ -25,14 +32,24 @@ public class Paddle extends MovableObject {
         FXGL.getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                move(-5, 0);
+                setVelocity(-200, 0);
+            }
+
+            @Override
+            protected void onActionEnd() {
+                setVelocity(0, 0); // stop moving when key released
             }
         }, KeyCode.A);
 
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                move(5, 0);
+                setVelocity(200, 0);
+            }
+
+            @Override
+            protected void onActionEnd() {
+                setVelocity(0, 0); // stop moving when key released
             }
         }, KeyCode.D);
     }
