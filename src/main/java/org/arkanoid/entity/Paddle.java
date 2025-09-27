@@ -17,7 +17,7 @@ public class Paddle extends GameObject {
     protected Entity createEntity(SpawnData spawnData) {
         return entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
-                .viewWithBBox(new Rectangle(WIDTH, HEIGHT, Color.BLUE))
+                .viewWithBBox(FXGL.texture("ship.png"))
                 .collidable()
                 .build();
     }

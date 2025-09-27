@@ -23,9 +23,13 @@ abstract class GameObject {
 
     public GameObject() {
         entity = createEntity(new SpawnData());
+        spawn();
+        initInput();
     }
 
     public GameObject(int x, int y) {
         entity = createEntity(new SpawnData(x, y));
+        spawn();
+        initInput();
     }
 }

@@ -1,4 +1,4 @@
-module org.arkanoid {
+open module org.arkanoid {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -14,6 +14,5 @@ module org.arkanoid {
     requires java.desktop;
     requires javafx.swing;
 
-    opens org.arkanoid to javafx.fxml;
     exports org.arkanoid;
 }

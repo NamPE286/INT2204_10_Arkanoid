@@ -11,7 +11,7 @@ public class Main extends GameApplication {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
-    private final Paddle paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
+    private Paddle paddle;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -22,19 +22,14 @@ public class Main extends GameApplication {
     }
 
     @Override
-    protected void initInput() {
-        paddle.initInput();
+    protected void initGame() {
+        paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
     }
 
     @Override
     protected void initUI() {
         Label label = labelFactory.createLabel("HELLO, WORLD!");
         FXGL.addUINode(label, 280.0, 20.0);
-    }
-
-    @Override
-    protected void initGame() {
-        paddle.spawn();
     }
 
     static void main(String[] args) {
