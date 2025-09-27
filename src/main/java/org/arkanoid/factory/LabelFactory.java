@@ -14,6 +14,13 @@ public class LabelFactory {
         this.font = font;
     }
 
+    public void setGlobalFont(String fontPath, int size) {
+        this.font = Font.loadFont(
+                getClass().getResourceAsStream(fontPath),
+                size
+        );
+    }
+
     public Label createLabel(String content) {
         Label label = new Label(content);
         label.setFont(font);
@@ -32,7 +39,7 @@ public class LabelFactory {
     }
 
     public LabelFactory(String fontPath, int size) {
-        font = javafx.scene.text.Font.loadFont(
+        font = Font.loadFont(
                 getClass().getResourceAsStream(fontPath),
                 size
         );

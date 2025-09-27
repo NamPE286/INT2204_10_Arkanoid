@@ -1,7 +1,7 @@
 package org.arkanoid;
 
-import org.arkanoid.entity.Paddle;
 import org.junit.jupiter.api.*;
+import org.arkanoid.entity.Paddle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
