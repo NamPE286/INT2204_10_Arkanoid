@@ -27,7 +27,7 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
         FXGL.getPhysicsWorld().setGravity(0 ,0);
-        gameObjects.add(new Paddle(WIDTH / 2, 0));
+        gameObjects.add(new Paddle(WIDTH / 2, HEIGHT - 50));
     }
 
     @Override

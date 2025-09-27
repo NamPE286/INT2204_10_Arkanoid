@@ -7,6 +7,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.input.KeyCode;
+import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -17,7 +18,7 @@ public class Paddle extends MovableObject {
     protected Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
-                .viewWithBBox(FXGL.texture("ship.png"))
+                .viewWithBBox(TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32))
                 .with(new PhysicsComponent())
                 .build();
         physics = e.getComponent(PhysicsComponent.class);
