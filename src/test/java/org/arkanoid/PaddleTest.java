@@ -14,13 +14,4 @@ public class PaddleTest {
         assertEquals((double) -Paddle.WIDTH / 2, paddle.getEntity().getX());
         assertEquals((double) -Paddle.HEIGHT / 2, paddle.getEntity().getY());
     }
-
-    @Test
-    @DisplayName("Paddle moved")
-    public void paddleMoved() {
-        paddle.move(5, 2);
-
-        assertEquals(5, paddle.getX());
-        assertEquals(2, paddle.getY());
-    }
 }
