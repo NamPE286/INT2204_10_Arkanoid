@@ -15,8 +15,7 @@ public class Paddle extends GameObject {
     public static final int HEIGHT = 20;
 
     protected Entity createEntity(SpawnData spawnData) {
-        return entityBuilder()
-                .from(spawnData)
+        return entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
                 .viewWithBBox(new Rectangle(WIDTH, HEIGHT, Color.BLUE))
                 .collidable()
