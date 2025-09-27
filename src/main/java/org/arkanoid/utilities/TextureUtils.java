@@ -11,4 +11,13 @@ public class TextureUtils {
 
         return new Texture(croppedImage);
     }
+
+    public static Texture scale(Texture tex, double factor) {
+        Texture newTex = tex.copy();
+
+        newTex.setScaleX(factor);
+        newTex.setScaleY(factor);
+
+        return newTex;
+    }
 }

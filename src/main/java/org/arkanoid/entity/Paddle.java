@@ -12,13 +12,13 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 20;
-
     protected Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
-                .viewWithBBox(TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32))
+                .viewWithBBox(TextureUtils.scale(
+                        TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32),
+                        2.0
+                ))
                 .with(new PhysicsComponent())
                 .build();
         physics = e.getComponent(PhysicsComponent.class);
@@ -60,6 +60,6 @@ public class Paddle extends MovableObject {
     }
 
     public Paddle(int x, int y) {
-        super(x - WIDTH / 2, y - HEIGHT / 2);
+        super(x, y);
     }
 }
