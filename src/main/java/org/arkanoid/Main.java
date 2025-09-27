@@ -5,10 +5,12 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import org.arkanoid.entity.Paddle;
 
 public class Main extends GameApplication {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
+    private Paddle paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -16,6 +18,11 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
+    }
+
+    @Override
+    protected void initInput() {
+        paddle.initInput();
     }
 
     @Override
@@ -27,7 +34,12 @@ public class Main extends GameApplication {
         Label label = new Label("HELLO, WORLD!");
 
         label.setFont(nesFont);
-        FXGL.addUINode(label, 280.0, 290.0);
+        FXGL.addUINode(label, 280.0, 20.0);
+    }
+
+    @Override
+    protected void initGame() {
+        paddle.spawn();
     }
 
     static void main(String[] args) {

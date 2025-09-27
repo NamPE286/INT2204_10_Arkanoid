@@ -1,7 +1,31 @@
 package org.arkanoid.entity;
 
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
+
 abstract class GameObject {
-    public abstract void update();
-    public void fixed_update() {}
-    public abstract void render();
+    protected Entity entity;
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public void spawn() {
+        getGameWorld().addEntity(entity);
+    }
+
+    protected abstract Entity createEntity(SpawnData spawnData);
+
+    public void initInput() {
+    }
+
+    public GameObject() {
+        entity = createEntity(new SpawnData());
+    }
+
+    public GameObject(int x, int y) {
+        entity = createEntity(new SpawnData(x, y));
+    }
 }

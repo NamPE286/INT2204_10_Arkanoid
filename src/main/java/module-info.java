@@ -9,6 +9,8 @@ module org.arkanoid {
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires com.almasb.fxgl.core;
+    requires javafx.graphics;
 
     opens org.arkanoid to javafx.fxml;
     exports org.arkanoid;
