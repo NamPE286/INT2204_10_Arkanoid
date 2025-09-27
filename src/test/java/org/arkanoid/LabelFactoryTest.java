@@ -50,4 +50,20 @@ public class LabelFactoryTest {
 
         labelFactory.setGlobalFont(null);
     }
+
+    @Test
+    @DisplayName("Label created with custom font")
+    public void labelCreatedWithCustomFont() {
+        JFXPanel fxPanel = new JFXPanel();
+        var font = Font.loadFont(
+                getClass().getResourceAsStream("/fonts/nes.otf"),
+                20
+        );
+        var label = labelFactory.createLabel("ABC", font);
+
+        assertEquals("ABC", label.getText());
+        assertEquals("Nintendo NES Font Regular", label.getFont().getName());
+
+        labelFactory.setGlobalFont(null);
+    }
 }
