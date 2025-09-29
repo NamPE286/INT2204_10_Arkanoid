@@ -30,4 +30,22 @@ public class Ball extends MovableObject {
 
         return e;
     }
+
+    /**
+     * Constructs a new ball at the default position (0, 0).
+     */
+    public Ball() {
+        super();
+    }
+
+    /**
+     * Constructs a new ball at the specified coordinates.
+     *
+     * @param x the x-coordinate for the ball's initial position
+     * @param y the y-coordinate for the ball's initial position
+     */
+    public Ball(int x, int y) {
+        super(x, y);
+    }
+
 }
