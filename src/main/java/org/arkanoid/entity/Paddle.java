@@ -15,6 +15,8 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {
+
+    @Override
     protected Entity createEntity(SpawnData spawnData) {
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32),
@@ -24,10 +26,11 @@ public class Paddle extends MovableObject {
         var e = entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
                 .view(texture)
-                .bbox(new HitBox("Ball", BoundingShape.box(texture.getWidth(), texture.getHeight())))
+                .bbox(new HitBox("Paddle", BoundingShape.box(texture.getWidth(), texture.getHeight())))
                 .with(new PhysicsComponent())
                 .build();
         e.setProperty("gameObject", this);
+
         physics = e.getComponent(PhysicsComponent.class);
         physics.setBodyType(BodyType.STATIC);
 

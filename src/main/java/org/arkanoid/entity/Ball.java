@@ -12,6 +12,8 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
+
+    @Override
     protected Entity createEntity(SpawnData spawnData) {
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5),
@@ -53,6 +55,11 @@ public class Ball extends MovableObject {
         physics.setLinearVelocity(vx, vy);
     }
 
+    /**
+     * Handle ball velocity when collide paddle.
+     *
+     * @param paddle is Paddle
+     */
     public void CollisionWith(Paddle paddle) {
         double vx = physics.getVelocityX();
         double vy = physics.getVelocityY();
@@ -86,5 +93,47 @@ public class Ball extends MovableObject {
         }
 
         this.physics.setLinearVelocity(vx, vy);
+    }
+
+    /**
+     * Handle ball velocity when ball collide brick and delete this brick.
+     *
+     * @param brick is Brick
+     */
+    public void CollisionWith(Brick brick) {
+        double vx = physics.getVelocityX();
+        double vy = physics.getVelocityY();
+
+        double brickX = brick.entity.getX();
+        double brickY = brick.entity.getY();
+        double brickW = brick.entity.getWidth();
+        double brickH = brick.entity.getHeight();
+
+        double ballX = entity.getX();
+        double ballY = entity.getY();
+        double ballW = entity.getWidth();
+        double ballH = entity.getHeight();
+
+        double overlapLeft   = (ballX + ballW) - brickX;
+        double overlapRight  = (brickX + brickW) - ballX;
+        double overlapTop    = (ballY + ballH) - brickY;
+        double overlapBottom = (brickY + brickH) - ballY;
+
+        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
+                Math.min(overlapTop, overlapBottom));
+
+        if (minOverlap == overlapLeft) {
+            vx = -(Math.abs(vx) + 5);
+        } else if (minOverlap  == overlapRight) {
+            vx = Math.abs(vx) + 5;
+        } else if (minOverlap  == overlapTop) {
+            vy = -Math.abs(vy);
+        } else if (minOverlap  == overlapBottom) {
+            vy = Math.abs(vy);
+        }
+
+        this.physics.setLinearVelocity(vx, vy);
+
+        brick.destroy();
     }
 }

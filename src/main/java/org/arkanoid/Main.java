@@ -7,10 +7,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.control.Label;
-import org.arkanoid.entity.Ball;
-import org.arkanoid.entity.EntityType;
-import org.arkanoid.entity.GameObject;
-import org.arkanoid.entity.Paddle;
+import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 
 import java.util.ArrayList;
@@ -34,10 +31,12 @@ public class Main extends GameApplication {
         Paddle paddle = new Paddle(WIDTH/2, HEIGHT - 50);
         gameObjects.add(paddle);
 
-        Ball ball = new Ball(WIDTH / 2 + 13, HEIGHT - 50 - 20);
+        Ball ball = new Ball(WIDTH / 2, HEIGHT - 50 - 20);
         ball.setVelocity(0, 10);
         gameObjects.add(ball);
 
+        Brick brick = new Brick(300, HEIGHT/2, 0, 0);
+        gameObjects.add(brick);
     }
 
     @Override
