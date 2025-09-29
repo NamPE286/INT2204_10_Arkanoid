@@ -3,8 +3,12 @@ package org.arkanoid;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.control.Label;
 import org.arkanoid.entity.Ball;
+import org.arkanoid.entity.EntityType;
 import org.arkanoid.entity.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.factory.LabelFactory;
@@ -30,8 +34,8 @@ public class Main extends GameApplication {
         Paddle paddle = new Paddle(WIDTH/2, HEIGHT - 50);
         gameObjects.add(paddle);
 
-        Ball ball = new Ball(WIDTH / 2, HEIGHT - 50);
-        ball.setVelocity(50, -50);
+        Ball ball = new Ball(WIDTH / 2 + 13, HEIGHT - 50 - 20);
+        ball.setVelocity(0, 10);
         gameObjects.add(ball);
 
     }
