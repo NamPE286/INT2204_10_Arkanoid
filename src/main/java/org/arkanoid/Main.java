@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
+import org.arkanoid.entity.Ball;
 import org.arkanoid.entity.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.factory.LabelFactory;

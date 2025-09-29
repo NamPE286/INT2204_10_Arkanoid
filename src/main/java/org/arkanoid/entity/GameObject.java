@@ -13,14 +13,14 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 abstract public class GameObject {
 
     /** The FXGL entity associated with this game object. */
-    protected Entity entity = null;
+    protected static Entity entity = null;
 
     /**
      * Returns the FXGL entity associated with this game object.
      *
      * @return the entity instance
      */
-    public Entity getEntity() {
+    public static Entity getEntity() {
         return entity;
     }
 
