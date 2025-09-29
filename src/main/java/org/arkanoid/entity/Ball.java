@@ -48,4 +48,7 @@ public class Ball extends MovableObject {
         super(x, y);
     }
 
+    public void setVelocity(double vx, double vy) {
+        setLinearVelocity(vx, vy);
+    }
 }

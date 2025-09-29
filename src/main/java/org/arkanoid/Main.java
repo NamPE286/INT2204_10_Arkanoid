@@ -27,9 +27,18 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
+        Paddle paddle = new Paddle(WIDTH/2, HEIGHT - 50);
+        gameObjects.add(paddle);
+
+        Ball ball = new Ball(WIDTH / 2, HEIGHT - 50);
+        ball.setVelocity(50, -50);
+        gameObjects.add(ball);
+
+    }
+
+    @Override
+    protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0 ,0);
-        gameObjects.add(new Paddle(WIDTH / 2, HEIGHT - 50));
-        gameObjects.add(new Ball(WIDTH / 2, HEIGHT - 50));
     }
 
     @Override
