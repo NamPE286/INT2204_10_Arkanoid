@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import org.arkanoid.entity.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.factory.LabelFactory;
+import org.arkanoid.entity.Level;
 
 import java.util.ArrayList;
 
