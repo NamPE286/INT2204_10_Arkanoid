@@ -51,10 +51,6 @@ public class Ball extends MovableObject {
         super(x, y);
     }
 
-    public void setVelocity(double vx, double vy) {
-        physics.setLinearVelocity(vx, vy);
-    }
-
     /**
      * Handle ball velocity when collide paddle.
      *
