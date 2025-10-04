@@ -37,6 +37,8 @@ abstract public class MovableObject extends GameObject {
 
     @Override
     public void onUpdate(double deltaTime) {
+        super.onUpdate(deltaTime);
+
         setX(getX() + getVelocityX() * deltaTime);
         setY(getY() + getVelocityY() * deltaTime);
     }

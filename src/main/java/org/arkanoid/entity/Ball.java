@@ -31,6 +31,11 @@ public class Ball extends MovableObject {
         super();
     }
 
+    @Override
+    public void onUpdate(double deltaTime) {
+        super.onUpdate(deltaTime);
+    }
+
     /**
      * Constructs a new ball at the specified coordinates.
      *

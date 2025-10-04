@@ -3,6 +3,9 @@ package org.arkanoid.entity;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 /**
@@ -11,9 +14,8 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  * Handles entity creation, spawning, input initialization, and per-frame updates.
  */
 abstract public class GameObject {
-
-    /** The FXGL entity associated with this game object. */
     protected Entity entity = null;
+    List<Entity> collisionSubscribers = new ArrayList<>();
 
     /**
      * Returns the FXGL entity associated with this game object.
@@ -61,7 +63,20 @@ abstract public class GameObject {
      * @param deltaTime the time elapsed (in seconds) since the last frame
      */
     public void onUpdate(double deltaTime) {
-        // Default implementation does nothing
+        for (var e : collisionSubscribers) {
+            if (entity.getBoundingBoxComponent().isCollidingWith(e.getBoundingBoxComponent())) {
+                onCollisionWith(e);
+            }
+        }
+    }
+
+    public GameObject addCollisionSubscriber(GameObject o) {
+        collisionSubscribers.add(o.getEntity());
+        return this;
+    }
+
+    public void onCollisionWith(Entity e) {
+
     }
 
     public double getX() {

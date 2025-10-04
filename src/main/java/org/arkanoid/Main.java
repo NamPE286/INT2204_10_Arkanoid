@@ -26,9 +26,15 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        gameObjects.add(new Paddle(WIDTH / 2, HEIGHT - 50));
-        gameObjects.add(new Ball(WIDTH / 2, HEIGHT - 50 - 100).setLinearVelocity(0f, 50f));
-        gameObjects.add(new Brick(300, HEIGHT / 2, 0, 0));
+        var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
+        var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
+                .setLinearVelocity(0f, 50f)
+                .addCollisionSubscriber(paddle);
+        var brick = new Brick(300, HEIGHT / 2, 0, 0);
+
+        gameObjects.add(paddle);
+        gameObjects.add(ball);
+        gameObjects.add(brick);
     }
 
     @Override
