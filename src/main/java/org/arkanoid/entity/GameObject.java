@@ -60,7 +60,7 @@ abstract public class GameObject {
      *
      * @param deltaTime the time elapsed (in seconds) since the last frame
      */
-    public void update(double deltaTime) {
+    public void onUpdate(double deltaTime) {
         // Default implementation does nothing
     }
 
