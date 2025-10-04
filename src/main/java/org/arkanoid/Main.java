@@ -1,5 +1,6 @@
 package org.arkanoid;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
@@ -21,7 +22,9 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
-        settings.setTicksPerSecond(144);
+        settings.setProfilingEnabled(true);
+        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setTicksPerSecond(60);
     }
 
     @Override

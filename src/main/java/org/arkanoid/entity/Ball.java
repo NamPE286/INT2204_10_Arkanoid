@@ -12,15 +12,18 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Ball extends MovableObject {
     @Override
     protected Entity createEntity(SpawnData spawnData) {
+        double factor = 3.0;
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5),
-                2.0
+                factor
         );
 
         return entityBuilder(spawnData)
                 .type(EntityType.BALL)
                 .view(texture)
-                .bbox(new HitBox(BoundingShape.box(texture.getWidth() * 2, texture.getHeight() * 2)))
+                .bbox(new HitBox(BoundingShape.box(
+                        texture.getWidth() * factor,
+                        texture.getHeight() * factor)))
                 .build();
     }
 
@@ -28,6 +31,7 @@ public class Ball extends MovableObject {
     public void onCollisionWith(GameObject e) {
         System.out.println("Collide");
         setLinearVelocity(0f, -50f);
+        // TODO
     }
 
     /**

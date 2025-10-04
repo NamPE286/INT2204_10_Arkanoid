@@ -15,15 +15,18 @@ public class Paddle extends MovableObject {
 
     @Override
     protected Entity createEntity(SpawnData spawnData) {
+        double factor = 3.0;
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32),
-                2.0
+                factor
         );
 
         return entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
                 .view(texture)
-                .bbox(new HitBox(BoundingShape.box(texture.getWidth() * 2, texture.getHeight() * 2)))
+                .bbox(new HitBox(BoundingShape.box(
+                        texture.getWidth() * factor,
+                        texture.getHeight() * factor)))
                 .build();
     }
 
