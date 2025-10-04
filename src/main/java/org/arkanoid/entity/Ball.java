@@ -24,18 +24,6 @@ public class Ball extends MovableObject {
                 .build();
     }
 
-    @Override
-    public void onUpdate(double deltaTime) {
-        setX(getX() + getVelocityX() * deltaTime);
-        setY(getY() + getVelocityY() * deltaTime);
-
-        System.out.printf(
-                "Pos: (%.2f, %.2f) | Vel: (%.2f, %.2f)%n",
-                getX(), getY(),
-                getVelocityX(), getVelocityY()
-        );
-    }
-
     /**
      * Constructs a new ball at the default position (0, 0).
      */

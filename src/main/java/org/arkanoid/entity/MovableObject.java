@@ -8,7 +8,9 @@ import com.almasb.fxgl.core.math.Vec2;
  * Extends {@link GameObject} and adds physics-based movement capabilities.
  */
 abstract public class MovableObject extends GameObject {
-    /** The physics component used to control velocity and collisions. */
+    /**
+     * The physics component used to control velocity and collisions.
+     */
     Vec2 velocity = new Vec2(0, 0);
 
     public MovableObject setLinearVelocity(float x, float y) {
@@ -31,6 +33,12 @@ abstract public class MovableObject extends GameObject {
      */
     public MovableObject() {
         super();
+    }
+
+    @Override
+    public void onUpdate(double deltaTime) {
+        setX(getX() + getVelocityX() * deltaTime);
+        setY(getY() + getVelocityY() * deltaTime);
     }
 
     /**
