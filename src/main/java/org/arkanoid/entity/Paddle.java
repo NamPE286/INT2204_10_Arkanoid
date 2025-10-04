@@ -23,18 +23,11 @@ public class Paddle extends MovableObject {
                 2.0
         );
 
-        var e = entityBuilder(spawnData)
+        return entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
                 .view(texture)
-                .bbox(new HitBox("Paddle", BoundingShape.box(texture.getWidth(), texture.getHeight())))
-                .with(new PhysicsComponent())
+                .bbox(new HitBox(BoundingShape.box(texture.getWidth() * 2, texture.getHeight() * 2)))
                 .build();
-        e.setProperty("gameObject", this);
-
-        physics = e.getComponent(PhysicsComponent.class);
-        physics.setBodyType(BodyType.STATIC);
-
-        return e;
     }
 
     @Override

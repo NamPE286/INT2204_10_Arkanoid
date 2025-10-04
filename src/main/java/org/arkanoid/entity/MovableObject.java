@@ -1,5 +1,6 @@
 package org.arkanoid.entity;
 
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.physics.PhysicsComponent;
 
 /**
@@ -9,18 +10,18 @@ import com.almasb.fxgl.physics.PhysicsComponent;
  */
 abstract public class MovableObject extends GameObject {
     /** The physics component used to control velocity and collisions. */
-    protected PhysicsComponent physics;
+    Vec2 velocity = new Vec2(0, 0);
 
-    public void setLinearVelocity(double x, double y) {
-        physics.setLinearVelocity(x, y);
+    public void setLinearVelocity(float x, float y) {
+        velocity.set(x, y);
     }
 
-    public double getVelocityX() {
-        return physics.getVelocityX();
+    public float getVelocityX() {
+        return velocity.x;
     }
 
-    public double getVelocityY() {
-        return physics.getVelocityY();
+    public float getVelocityY() {
+        return velocity.y;
     }
 
     public double getX() {
@@ -38,7 +39,6 @@ abstract public class MovableObject extends GameObject {
      */
     public MovableObject() {
         super();
-        physics = entity.getComponent(PhysicsComponent.class);
     }
 
     /**
@@ -51,6 +51,5 @@ abstract public class MovableObject extends GameObject {
      */
     public MovableObject(int x, int y) {
         super(x, y);
-        physics = entity.getComponent(PhysicsComponent.class);
     }
 }
