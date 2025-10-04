@@ -25,9 +25,9 @@ public class Ball extends MovableObject {
     }
 
     @Override
-    public void onCollisionWith(Entity e) {
+    public void onCollisionWith(GameObject e) {
         System.out.println("Collide");
-        // TODO
+        setLinearVelocity(0f, -50f);
     }
 
     /**

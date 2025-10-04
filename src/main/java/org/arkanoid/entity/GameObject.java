@@ -15,7 +15,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  */
 abstract public class GameObject {
     protected Entity entity = null;
-    List<Entity> collisionListeners = new ArrayList<>();
+    List<GameObject> collisionListeners = new ArrayList<>();
 
     /**
      * Returns the FXGL entity associated with this game object.
@@ -64,7 +64,8 @@ abstract public class GameObject {
      */
     public void onUpdate(double deltaTime) {
         for (var e : collisionListeners) {
-            if (entity.getBoundingBoxComponent().isCollidingWith(e.getBoundingBoxComponent())) {
+            if (entity.getBoundingBoxComponent()
+                    .isCollidingWith(e.getEntity().getBoundingBoxComponent())) {
                 onCollisionWith(e);
             }
         }
@@ -78,7 +79,7 @@ abstract public class GameObject {
      * @return this GameObject (for method chaining)
      */
     public GameObject listenToCollisionWith(GameObject o) {
-        collisionListeners.add(o.getEntity());
+        collisionListeners.add(o);
         return this;
     }
 
@@ -89,7 +90,7 @@ abstract public class GameObject {
      *
      * @param e the Entity that this object has collided with
      */
-    public void onCollisionWith(Entity e) {
+    public void onCollisionWith(GameObject e) {
         // Default implementation does nothing
     }
 
