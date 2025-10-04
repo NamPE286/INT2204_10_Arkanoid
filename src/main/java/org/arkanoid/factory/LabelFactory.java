@@ -8,7 +8,7 @@ import javafx.scene.text.Font;
  * configurable global font.
  * <p>
  * Allows setting a global font to be applied to all labels created
- * without specifying a font, or creating labels with a custom font.
+ * without specifying a font or creating labels with a custom font.
  */
 public class LabelFactory {
     private Font globalFont;

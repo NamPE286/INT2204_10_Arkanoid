@@ -1,7 +1,5 @@
 package org.arkanoid.entity;
 
 public enum EntityType {
-    PADDLE, BALL
+    PADDLE, BALL, BRICK
 }
-
-

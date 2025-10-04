@@ -3,6 +3,9 @@ package org.arkanoid.entity;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
 /**
@@ -11,9 +14,8 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  * Handles entity creation, spawning, input initialization, and per-frame updates.
  */
 abstract public class GameObject {
-
-    /** The FXGL entity associated with this game object. */
     protected Entity entity = null;
+    List<GameObject> collisionListeners = new ArrayList<>();
 
     /**
      * Returns the FXGL entity associated with this game object.
@@ -60,9 +62,74 @@ abstract public class GameObject {
      *
      * @param deltaTime the time elapsed (in seconds) since the last frame
      */
-    public void update(double deltaTime) {
+    public void onUpdate(double deltaTime) {
+        for (var e : collisionListeners) {
+            if (entity.getBoundingBoxComponent()
+                    .isCollidingWith(e.getEntity().getBoundingBoxComponent())) {
+                onCollisionWith(e);
+            }
+        }
+    }
+
+    /**
+     * Adds a GameObject as a collision subscriber.
+     * When this object collides with another, all subscribers can be notified or react accordingly.
+     *
+     * @param o the GameObject to subscribe for collision events
+     * @return this GameObject (for method chaining)
+     */
+    public GameObject listenToCollisionWith(GameObject o) {
+        collisionListeners.add(o);
+        return this;
+    }
+
+    /**
+     * Called when this GameObject collides with another entity.
+     * <p>
+     * The default implementation does nothing. Override this method in subclasses to define custom collision behavior.
+     *
+     * @param e the Entity that this object has collided with
+     */
+    public void onCollisionWith(GameObject e) {
         // Default implementation does nothing
     }
+
+    /**
+     * Gets the current X position of this GameObject.
+     *
+     * @return the X coordinate
+     */
+    public double getX() {
+        return entity.getX();
+    }
+
+    /**
+     * Gets the current Y position of this GameObject.
+     *
+     * @return the Y coordinate
+     */
+    public double getY() {
+        return entity.getY();
+    }
+
+    /**
+     * Sets the X position of this GameObject.
+     *
+     * @param x the new X coordinate
+     */
+    public void setX(double x) {
+        entity.setX(x);
+    }
+
+    /**
+     * Sets the Y position of this GameObject.
+     *
+     * @param y the new Y coordinate
+     */
+    public void setY(double y) {
+        entity.setY(y);
+    }
+
 
     /**
      * Constructs a new game object at the default location (0, 0).

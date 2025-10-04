@@ -4,28 +4,30 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {
+
+    @Override
     protected Entity createEntity(SpawnData spawnData) {
-        var e = entityBuilder(spawnData)
+        double factor = 3.0;
+        var texture = TextureUtils.scale(
+                TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32),
+                factor
+        );
+
+        return entityBuilder(spawnData)
                 .type(EntityType.PADDLE)
-                .viewWithBBox(TextureUtils.scale(
-                        TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32),
-                        2.0
-                ))
-                .with(new PhysicsComponent())
+                .view(texture)
+                .bbox(new HitBox(BoundingShape.box(
+                        texture.getWidth() * factor,
+                        texture.getHeight() * factor)))
                 .build();
-        physics = e.getComponent(PhysicsComponent.class);
-
-        physics.setBodyType(BodyType.DYNAMIC);
-
-        return e;
     }
 
     @Override

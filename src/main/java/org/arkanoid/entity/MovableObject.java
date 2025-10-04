@@ -1,6 +1,6 @@
 package org.arkanoid.entity;
 
-import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.core.math.Vec2;
 
 /**
  * Abstract base class for all movable game objects.
@@ -8,27 +8,22 @@ import com.almasb.fxgl.physics.PhysicsComponent;
  * Extends {@link GameObject} and adds physics-based movement capabilities.
  */
 abstract public class MovableObject extends GameObject {
-    /** The physics component used to control velocity and collisions. */
-    protected PhysicsComponent physics;
+    /**
+     * The physics component used to control velocity and collisions.
+     */
+    private Vec2 velocity = new Vec2(0, 0);
 
-    public void setLinearVelocity(int x, int y) {
-        physics.setLinearVelocity(x, y);
+    public MovableObject setLinearVelocity(float x, float y) {
+        velocity.set(x, y);
+        return this;
     }
 
-    public double getVelocityX() {
-        return physics.getVelocityX();
+    public float getVelocityX() {
+        return velocity.x;
     }
 
-    public double getVelocityY() {
-        return physics.getVelocityY();
-    }
-
-    public double getX() {
-        return entity.getX();
-    }
-
-    public double getY() {
-        return entity.getY();
+    public float getVelocityY() {
+        return velocity.y;
     }
 
     /**
@@ -38,7 +33,14 @@ abstract public class MovableObject extends GameObject {
      */
     public MovableObject() {
         super();
-        physics = entity.getComponent(PhysicsComponent.class);
+    }
+
+    @Override
+    public void onUpdate(double deltaTime) {
+        super.onUpdate(deltaTime);
+
+        setX(getX() + getVelocityX() * deltaTime);
+        setY(getY() + getVelocityY() * deltaTime);
     }
 
     /**
@@ -51,6 +53,5 @@ abstract public class MovableObject extends GameObject {
      */
     public MovableObject(int x, int y) {
         super(x, y);
-        physics = entity.getComponent(PhysicsComponent.class);
     }
 }

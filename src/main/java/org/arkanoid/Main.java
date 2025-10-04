@@ -1,11 +1,11 @@
 package org.arkanoid;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
-import org.arkanoid.entity.GameObject;
-import org.arkanoid.entity.Paddle;
+import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.entity.Level;
 
@@ -23,12 +23,22 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
+        settings.setProfilingEnabled(true);
+        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setTicksPerSecond(60);
     }
 
     @Override
     protected void initGame() {
-        FXGL.getPhysicsWorld().setGravity(0 ,0);
-        gameObjects.add(new Paddle(WIDTH / 2, HEIGHT - 50));
+        var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
+        var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
+                .setLinearVelocity(0f, 50f)
+                .listenToCollisionWith(paddle);
+        var brick = new Brick(300, HEIGHT / 2, 0, 0);
+
+        gameObjects.add(paddle);
+        gameObjects.add(ball);
+        gameObjects.add(brick);
     }
 
     @Override
@@ -39,8 +49,8 @@ public class Main extends GameApplication {
 
     @Override
     protected void onUpdate(double deltaTime) {
-        for(var i : gameObjects) {
-            i.update(deltaTime);
+        for (var i : gameObjects) {
+            i.onUpdate(deltaTime);
         }
     }
 
