@@ -14,6 +14,7 @@ open module org.arkanoid {
     requires java.desktop;
     requires javafx.swing;
     requires com.almasb.fxgl.entity;
+    //requires org.arkanoid;
 
     exports org.arkanoid;
 }

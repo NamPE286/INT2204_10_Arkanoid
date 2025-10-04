@@ -11,7 +11,7 @@ abstract public class MovableObject extends GameObject {
     /** The physics component used to control velocity and collisions. */
     protected PhysicsComponent physics;
 
-    public void setLinearVelocity(int x, int y) {
+    public void setLinearVelocity(double x, double y) {
         physics.setLinearVelocity(x, y);
     }
 
