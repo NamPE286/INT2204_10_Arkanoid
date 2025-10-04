@@ -11,8 +11,9 @@ abstract public class MovableObject extends GameObject {
     /** The physics component used to control velocity and collisions. */
     Vec2 velocity = new Vec2(0, 0);
 
-    public void setLinearVelocity(float x, float y) {
+    public MovableObject setLinearVelocity(float x, float y) {
         velocity.set(x, y);
+        return this;
     }
 
     public float getVelocityX() {
