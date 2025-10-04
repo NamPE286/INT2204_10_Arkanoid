@@ -15,7 +15,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  */
 abstract public class GameObject {
     protected Entity entity = null;
-    List<Entity> collisionSubscribers = new ArrayList<>();
+    List<Entity> collisionListeners = new ArrayList<>();
 
     /**
      * Returns the FXGL entity associated with this game object.
@@ -63,7 +63,7 @@ abstract public class GameObject {
      * @param deltaTime the time elapsed (in seconds) since the last frame
      */
     public void onUpdate(double deltaTime) {
-        for (var e : collisionSubscribers) {
+        for (var e : collisionListeners) {
             if (entity.getBoundingBoxComponent().isCollidingWith(e.getBoundingBoxComponent())) {
                 onCollisionWith(e);
             }
@@ -77,8 +77,8 @@ abstract public class GameObject {
      * @param o the GameObject to subscribe for collision events
      * @return this GameObject (for method chaining)
      */
-    public GameObject addCollisionSubscriber(GameObject o) {
-        collisionSubscribers.add(o.getEntity());
+    public GameObject listenToCollisionWith(GameObject o) {
+        collisionListeners.add(o.getEntity());
         return this;
     }
 

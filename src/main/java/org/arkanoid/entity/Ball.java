@@ -24,6 +24,12 @@ public class Ball extends MovableObject {
                 .build();
     }
 
+    @Override
+    public void onCollisionWith(Entity e) {
+        System.out.println("Collide");
+        // TODO
+    }
+
     /**
      * Constructs a new ball at the default position (0, 0).
      */
