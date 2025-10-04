@@ -64,6 +64,22 @@ abstract public class GameObject {
         // Default implementation does nothing
     }
 
+    public double getX() {
+        return entity.getX();
+    }
+
+    public double getY() {
+        return entity.getY();
+    }
+
+    public void setX(double x) {
+        entity.setX(x);
+    }
+
+    public void setY(double y) {
+        entity.setY(y);
+    }
+
     /**
      * Constructs a new game object at the default location (0, 0).
      * <p>

@@ -24,14 +24,6 @@ abstract public class MovableObject extends GameObject {
         return velocity.y;
     }
 
-    public double getX() {
-        return entity.getX();
-    }
-
-    public double getY() {
-        return entity.getY();
-    }
-
     /**
      * Constructs a new movable object at the default location (0, 0).
      * <p>

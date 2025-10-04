@@ -21,13 +21,14 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
+        settings.setTicksPerSecond(144);
     }
 
     @Override
     protected void initGame() {
-        gameObjects.add(new Paddle(WIDTH/2, HEIGHT - 50));
-        gameObjects.add(new Ball(WIDTH / 2, HEIGHT - 50 - 100).setLinearVelocity(0f, 5f));
-        gameObjects.add(new Brick(300, HEIGHT/2, 0, 0));
+        gameObjects.add(new Paddle(WIDTH / 2, HEIGHT - 50));
+        gameObjects.add(new Ball(WIDTH / 2, HEIGHT - 50 - 100).setLinearVelocity(0f, 50f));
+        gameObjects.add(new Brick(300, HEIGHT / 2, 0, 0));
     }
 
     @Override
@@ -38,7 +39,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void onUpdate(double deltaTime) {
-        for(var i : gameObjects) {
+        for (var i : gameObjects) {
             i.onUpdate(deltaTime);
         }
     }
