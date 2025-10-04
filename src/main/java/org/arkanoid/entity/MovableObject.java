@@ -1,7 +1,6 @@
 package org.arkanoid.entity;
 
 import com.almasb.fxgl.core.math.Vec2;
-import com.almasb.fxgl.physics.PhysicsComponent;
 
 /**
  * Abstract base class for all movable game objects.

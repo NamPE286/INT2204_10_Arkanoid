@@ -3,17 +3,11 @@ package org.arkanoid;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.PhysicsWorld;
 import javafx.scene.control.Label;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 
 import java.util.ArrayList;
-
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getPhysicsWorld;
 
 public class Main extends GameApplication {
     private static final int HEIGHT = 600;
