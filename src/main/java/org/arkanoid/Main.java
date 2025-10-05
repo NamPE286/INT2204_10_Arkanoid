@@ -22,7 +22,8 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
-        settings.setProfilingEnabled(true);
+        settings.setProfilingEnabled(false);
+        settings.setMainMenuEnabled(true);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setTicksPerSecond(60);
     }
@@ -45,6 +46,7 @@ public class Main extends GameApplication {
         Label label = labelFactory.createLabel("HELLO, WORLD!");
         FXGL.addUINode(label, 280.0, 20.0);
     }
+
 
     @Override
     protected void onUpdate(double deltaTime) {
