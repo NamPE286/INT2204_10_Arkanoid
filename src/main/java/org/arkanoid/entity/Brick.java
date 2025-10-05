@@ -54,21 +54,21 @@ public class Brick extends GameObject {
     protected Entity createEntity(SpawnData spawnData) {
         int brickWidth = 16;
         int brickHeight = 8;
+        double factor = 3.0;
 
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("bricks.png"),
-                tileX * brickWidth, tileY * brickHeight, brickHeight, brickWidth),
-                2.0
+                        tileX * brickWidth, tileY * brickHeight, brickHeight, brickWidth),
+                factor
         );
 
-        var e = entityBuilder(spawnData)
+        return entityBuilder(spawnData)
                 .type(EntityType.BRICK)
                 .view(texture)
-                .bbox(new HitBox("Brick", BoundingShape.box(texture.getWidth(), texture.getHeight())))
+                .bbox(new HitBox(BoundingShape.box(
+                        texture.getWidth() * factor,
+                        texture.getHeight() * factor)))
                 .build();
-        e.setProperty("gameObject", this);
-
-        return e;
     }
 
     public void destroy() {

@@ -29,9 +29,39 @@ public class Ball extends MovableObject {
 
     @Override
     public void onCollisionWith(GameObject e) {
+        float vx = this.getVelocityX();
+        float vy = this.getVelocityY();
+
+        double paddleX = e.getX();
+        double paddleY = e.getY();
+        double paddleW = e.getEntity().getWidth();
+        double paddleH = e.getEntity().getHeight();
+
+        double ballX = entity.getX();
+        double ballY = entity.getY();
+        double ballW = entity.getWidth();
+        double ballH = entity.getHeight();
+
+        double overlapLeft   = (ballX + ballW) - paddleX;
+        double overlapRight  = (paddleX + paddleW) - ballX;
+        double overlapTop    = (ballY + ballH) - paddleY;
+        double overlapBottom = (paddleY + paddleH) - ballY;
+
+        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
+                Math.min(overlapTop, overlapBottom));
+
+        if (minOverlap == overlapLeft) {
+            vx = -(Math.abs(vx) + 5);
+        } else if (minOverlap  == overlapRight) {
+            vx = Math.abs(vx) + 5;
+        } else if (minOverlap  == overlapTop) {
+            vy = -Math.abs(vy);
+        } else if (minOverlap  == overlapBottom) {
+            vy = Math.abs(vy);
+        }
+
+        setLinearVelocity(vx, vy);
         System.out.println("Collide");
-        setLinearVelocity(0f, -50f);
-        // TODO
     }
 
     /**

@@ -30,10 +30,11 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
+        var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
-                .setLinearVelocity(0f, 50f)
-                .listenToCollisionWith(paddle);
-        var brick = new Brick(300, HEIGHT / 2, 0, 0);
+                .setLinearVelocity(40f, 70f)
+                .listenToCollisionWith(paddle)
+                .listenToCollisionWith(brick);
 
         gameObjects.add(paddle);
         gameObjects.add(ball);
