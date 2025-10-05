@@ -7,6 +7,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
+import org.arkanoid.factory.SceneFactory;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class Main extends GameApplication {
         settings.setMainMenuEnabled(true);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setTicksPerSecond(60);
+        settings.setSceneFactory(new SceneFactory());
     }
 
     @Override

@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 public class MainMenu extends FXGLMenu {
-    public MainMenu() {
+    public MainMenu(MenuType type) {
         super(MenuType.MAIN_MENU);
 
         var title = FXGL.getUIFactoryService().newText("My Game", 48);
