@@ -7,6 +7,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
+import org.arkanoid.factory.SceneFactory;
 import org.arkanoid.entity.Level;
 
 import java.util.ArrayList;
@@ -23,9 +24,11 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
-        settings.setProfilingEnabled(true);
+        settings.setProfilingEnabled(false);
+        settings.setMainMenuEnabled(true);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setTicksPerSecond(60);
+        settings.setSceneFactory(new SceneFactory());
     }
 
     @Override
@@ -46,6 +49,7 @@ public class Main extends GameApplication {
         Label label = labelFactory.createLabel("HELLO, WORLD!");
         FXGL.addUINode(label, 280.0, 20.0);
     }
+
 
     @Override
     protected void onUpdate(double deltaTime) {
