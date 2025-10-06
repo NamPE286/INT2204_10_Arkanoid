@@ -76,6 +76,7 @@ public class Ball extends MovableObject {
 
             setLinearVelocity(vx, vy);
             System.out.println("Collide with brick");
+            ((Brick) e).destroy();
         }
     }
 
