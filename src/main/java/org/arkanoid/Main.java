@@ -22,7 +22,7 @@ public class Main extends GameApplication {
         settings.setHeight(HEIGHT);
         settings.setTitle("Arkanoid");
         settings.setVersion("0.0.1");
-        settings.setProfilingEnabled(true);
+        settings.setProfilingEnabled(false);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setTicksPerSecond(60);
     }
@@ -30,9 +30,9 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
-        var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
+        var brick = new Brick(WIDTH / 2, HEIGHT / 2, 1, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
-                .setLinearVelocity(40f, 70f)
+                .setLinearVelocity(0f, 70f)
                 .listenToCollisionWith(paddle)
                 .listenToCollisionWith(brick);
 

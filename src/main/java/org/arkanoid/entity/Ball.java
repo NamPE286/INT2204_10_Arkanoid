@@ -12,9 +12,9 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Ball extends MovableObject {
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        double factor = 3.0;
+        double factor = 1.0;
         var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5),
+                TextureUtils.crop(FXGL.texture("vaus(1).png"), 0, 40*2, 4*2, 5*2),
                 factor
         );
 
@@ -32,36 +32,51 @@ public class Ball extends MovableObject {
         float vx = this.getVelocityX();
         float vy = this.getVelocityY();
 
-        double paddleX = e.getX();
-        double paddleY = e.getY();
-        double paddleW = e.getEntity().getWidth();
-        double paddleH = e.getEntity().getHeight();
-
         double ballX = entity.getX();
         double ballY = entity.getY();
         double ballW = entity.getWidth();
         double ballH = entity.getHeight();
 
-        double overlapLeft   = (ballX + ballW) - paddleX;
-        double overlapRight  = (paddleX + paddleW) - ballX;
-        double overlapTop    = (ballY + ballH) - paddleY;
-        double overlapBottom = (paddleY + paddleH) - ballY;
+        double eX = e.getX();
+        double eY = e.getY();
+        double eW = e.getEntity().getWidth();
+        double eH = e.getEntity().getHeight();
+
+        double overlapLeft   = (ballX + ballW) - eX;
+        double overlapRight  = (eX + eW) - ballX;
+        double overlapTop    = (ballY + ballH) - eY;
+        double overlapBottom = (eY + eH) - ballY;
 
         double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
                 Math.min(overlapTop, overlapBottom));
 
-        if (minOverlap == overlapLeft) {
-            vx = -(Math.abs(vx) + 5);
-        } else if (minOverlap  == overlapRight) {
-            vx = Math.abs(vx) + 5;
-        } else if (minOverlap  == overlapTop) {
-            vy = -Math.abs(vy);
-        } else if (minOverlap  == overlapBottom) {
-            vy = Math.abs(vy);
-        }
+        if (e instanceof Paddle) {
+            if (minOverlap == overlapLeft) {
+                vx = -(Math.abs(vx) + 5);
+            } else if (minOverlap  == overlapRight) {
+                vx = Math.abs(vx) + 5;
+            } else if (minOverlap  == overlapTop) {
+                vy = -Math.abs(vy);
+            } else if (minOverlap  == overlapBottom) {
+                vy = Math.abs(vy);
+            }
 
-        setLinearVelocity(vx, vy);
-        System.out.println("Collide");
+            setLinearVelocity(vx, vy);
+            System.out.println("Collide with Paddle");
+        } else if (e instanceof Brick) {
+            if (minOverlap == overlapLeft) {
+                vx = -Math.abs(vx);
+            } else if (minOverlap  == overlapRight) {
+                vx = Math.abs(vx);
+            } else if (minOverlap  == overlapTop) {
+                vy = -Math.abs(vy);
+            } else if (minOverlap  == overlapBottom) {
+                vy = Math.abs(vy);
+            }
+
+            setLinearVelocity(vx, vy);
+            System.out.println("Collide with brick");
+        }
     }
 
     /**
@@ -74,6 +89,14 @@ public class Ball extends MovableObject {
     @Override
     public void onUpdate(double deltaTime) {
         super.onUpdate(deltaTime);
+        // Xử lí khi va chạm tường
+        if (entity.getX() < 0 || entity.getX() + entity.getWidth()/2 > 800) {
+            setLinearVelocity(this.getVelocityX() * -1, this.getVelocityY());
+        }
+
+        if (entity.getY() < 0 || entity.getY() + entity.getHeight()/2 > 600) {
+            setLinearVelocity(this.getVelocityX(), this.getVelocityY() * -1);
+        }
     }
 
     /**
