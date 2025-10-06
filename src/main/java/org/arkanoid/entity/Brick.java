@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import javafx.util.Duration;
 import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -12,6 +13,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Brick extends GameObject {
     private int tileX;
     private int tileY;
+    private boolean isDestroyed = false;
 
     /**
      * Constructs a new brick at the default position (0, 0).
@@ -71,7 +73,24 @@ public class Brick extends GameObject {
                 .build();
     }
 
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
     public void destroy() {
-        entity.removeFromWorld();
+        if (isDestroyed) {
+            return;
+        }
+        isDestroyed = true;
+
+        if (entity != null && entity.isActive()) {
+            // Xóa hitBox (tránh bị lỗi crash: BoundingBoxComponent.getEntity() is null)
+            if (entity.getBoundingBoxComponent() != null) {
+                entity.getBoundingBoxComponent().clearHitBoxes();
+            }
+
+            // Xóa khỏi world
+            entity.removeFromWorld();
+        }
     }
 }
