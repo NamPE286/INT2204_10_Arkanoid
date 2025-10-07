@@ -14,7 +14,7 @@ public class Ball extends MovableObject {
     protected Entity createEntity(SpawnData spawnData) {
         double factor = 1.0;
         var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus(1).png"), 0, 40*2, 4*2, 5*2),
+                TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5),
                 factor
         );
 
@@ -27,6 +27,22 @@ public class Ball extends MovableObject {
                 .build();
     }
 
+    /**
+     * Handles collision logic between the ball and another game object.
+     * <p>
+     * When colliding with a {@link Paddle}, the bounce angle depends on how far
+     * the ball hits from the paddle's center, producing a dynamic reflection.
+     * The bounce angle is constrained between 35° and 55°, and the total
+     * velocity (speed) of the ball remains constant.
+     * </p>
+     *
+     * <p>
+     * When colliding with a {@link Brick}, the ball simply reverses its velocity
+     * along the axis of collision and triggers the brick’s destruction.
+     * </p>
+     *
+     * @param e the {@link GameObject} that the ball collided with
+     */
     @Override
     public void onCollisionWith(GameObject e) {
         float vx = this.getVelocityX();
@@ -72,11 +88,15 @@ public class Ball extends MovableObject {
 
                 if (vx < 0) {
                     vx = -tempVx;
-                } else {
+                    vy = -Math.abs(tempVy);
+                } else if (vx > 0) {
                     vx = tempVx;
+                    vy = -Math.abs(tempVy);
+                } else {
+                    vx = 0;
+                    vy = -Math.abs(vy);
                 }
 
-                vy = -Math.abs(tempVy);
                 System.out.println(String.format("(%.3f, %.3f)", vx, vy));
             } else if (minOverlap  == overlapBottom) {
                 vy = Math.abs(vy);
@@ -111,14 +131,6 @@ public class Ball extends MovableObject {
     @Override
     public void onUpdate(double deltaTime) {
         super.onUpdate(deltaTime);
-        // Xử lí khi va chạm tường
-        if (entity.getX() < 0 || entity.getX() + entity.getWidth()/2 > 800) {
-            setLinearVelocity(this.getVelocityX() * -1, this.getVelocityY());
-        }
-
-        if (entity.getY() < 0 || entity.getY() + entity.getHeight()/2 > 600) {
-            setLinearVelocity(this.getVelocityX(), this.getVelocityY() * -1);
-        }
     }
 
     /**

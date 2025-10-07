@@ -55,7 +55,7 @@ public class Brick extends GameObject {
     protected Entity createEntity(SpawnData spawnData) {
         int brickWidth = 16;
         int brickHeight = 8;
-        double factor = 3.0;
+        double factor = 1.0;
 
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("bricks.png"),
@@ -76,6 +76,13 @@ public class Brick extends GameObject {
         return isDestroyed;
     }
 
+    /**
+     * Destroys the brick and removes it from the game world.
+     * <p>
+     * This method ensures that the brick’s hitbox is cleared before removal
+     * to prevent potential null-pointer errors when accessing the bounding box component.
+     * If the brick is already destroyed, this method has no effect.
+     */
     public void destroy() {
         if (isDestroyed) {
             return;
