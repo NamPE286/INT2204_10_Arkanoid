@@ -31,6 +31,7 @@ public class Ball extends MovableObject {
     public void onCollisionWith(GameObject e) {
         float vx = this.getVelocityX();
         float vy = this.getVelocityY();
+        double ballSpeed = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
 
         double ballX = entity.getX();
         double ballY = entity.getY();
@@ -63,15 +64,18 @@ public class Ball extends MovableObject {
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
-                double angularConstant = Math.sqrt(3) - 1; // Hằng số để đảm bảo góc tối đa của bóng với paddle là 60 độ
-                float tempVx = vy * (float)distanceRatio * (float)angularConstant + vy;
+                double angularConstant = (Math.sqrt(3) - Math.sqrt(2)) / 2; // Hằng số để đảm bảo góc tối đa của bóng với paddle là 60 độ và giữ nguyên tốc độ bóng
+                float tempVx = (float)ballSpeed * (
+                        (float)distanceRatio * (float)angularConstant + (float)Math.sqrt(2) / 2
+                );
+                float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
                 if (vx < 0) {
                     vx = -tempVx;
                 } else {
                     vx = tempVx;
                 }
 
-                vy = -Math.abs(vy);
+                vy = -Math.abs(tempVy);
             } else if (minOverlap  == overlapBottom) {
                 vy = Math.abs(vy);
             }
