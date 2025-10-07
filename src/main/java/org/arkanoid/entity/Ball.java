@@ -64,11 +64,12 @@ public class Ball extends MovableObject {
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
-                double angularConstant = (Math.sqrt(3) - Math.sqrt(2)) / 2; // Hằng số để đảm bảo góc tối đa của bóng với paddle là 60 độ và giữ nguyên tốc độ bóng
+                double angularConstant = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(35)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
                 float tempVx = (float)ballSpeed * (
-                        (float)distanceRatio * (float)angularConstant + (float)Math.sqrt(2) / 2
+                        (float)distanceRatio * (float)angularConstant + (float)Math.sin(Math.toRadians(35))
                 );
                 float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
+
                 if (vx < 0) {
                     vx = -tempVx;
                 } else {
@@ -76,6 +77,7 @@ public class Ball extends MovableObject {
                 }
 
                 vy = -Math.abs(tempVy);
+                System.out.println(String.format("(%.3f, %.3f)", vx, vy));
             } else if (minOverlap  == overlapBottom) {
                 vy = Math.abs(vy);
             }
