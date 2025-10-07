@@ -51,11 +51,26 @@ public class Ball extends MovableObject {
                 Math.min(overlapTop, overlapBottom));
 
         if (e instanceof Paddle) {
+            double ballCenter = ballX + ballW / 2;
+            double paddleCenter = eX + eW / 2;
+            double haftPaddleWidth = eW / 2;
+
+            double distanceBallToPaddleCenter = Math.abs(paddleCenter - ballCenter);
+            double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
+
             if (minOverlap == overlapLeft) {
                 vx = -(Math.abs(vx) + 5);
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
+                double angularConstant = Math.sqrt(3) - 1; // Hằng số để đảm bảo góc tối đa của bóng với paddle là 60 độ
+                float tempVx = vy * (float)distanceRatio * (float)angularConstant + vy;
+                if (vx < 0) {
+                    vx = -tempVx;
+                } else {
+                    vx = tempVx;
+                }
+
                 vy = -Math.abs(vy);
             } else if (minOverlap  == overlapBottom) {
                 vy = Math.abs(vy);
