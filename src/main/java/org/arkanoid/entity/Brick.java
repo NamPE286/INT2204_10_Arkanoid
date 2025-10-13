@@ -12,6 +12,8 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Brick extends GameObject {
     private int tileX;
     private int tileY;
+    private final int width = 16;
+    private final int height = 8;
     private boolean isDestroyed = false;
 
     /**
@@ -51,15 +53,20 @@ public class Brick extends GameObject {
         this.tileY = tileY;
     }
 
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        int brickWidth = 16;
-        int brickHeight = 8;
         double factor = 1.0;
 
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("bricks.png"),
-                        tileX * brickWidth, tileY * brickHeight, brickHeight, brickWidth),
+                        tileX * width, tileY * height, height, width),
                 factor
         );
 

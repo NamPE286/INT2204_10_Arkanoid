@@ -73,7 +73,7 @@ public class Ball extends MovableObject {
             double haftPaddleWidth = eW / 2;
 
 
-            double distanceBallToPaddleCenter = Math.abs(paddleCenter - ballCenter);
+            double distanceBallToPaddleCenter = ballCenter - paddleCenter;
             double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
 
             if (minOverlap == overlapLeft) {
@@ -81,17 +81,17 @@ public class Ball extends MovableObject {
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
-                double ANGLE = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(0)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double ANGLE = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(40)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
                 float tempVx = (float)ballSpeed * (
-                        (float)distanceRatio * (float)ANGLE + (float)Math.sin(Math.toRadians(0))
+                        (float)Math.abs(distanceRatio) * (float)ANGLE + (float)Math.sin(Math.toRadians(40))
                 );
                 float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
 
-                if (vx < 0) {
-                    vx = -tempVx;
-                    vy = -Math.abs(tempVy);
-                } else if (vx > 0) {
+                if (distanceRatio > 0) {
                     vx = tempVx;
+                    vy = -Math.abs(tempVy);
+                } else if (distanceRatio < 0) {
+                    vx = -tempVx;
                     vy = -Math.abs(tempVy);
                 } else {
                     vx = 0;
