@@ -12,6 +12,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Brick extends GameObject {
     private int tileX;
     private int tileY;
+    private boolean isDestroyed = false;
 
     /**
      * Constructs a new brick at the default position (0, 0).
@@ -54,24 +55,48 @@ public class Brick extends GameObject {
     protected Entity createEntity(SpawnData spawnData) {
         int brickWidth = 16;
         int brickHeight = 8;
+        double factor = 1.0;
 
         var texture = TextureUtils.scale(
                 TextureUtils.crop(FXGL.texture("bricks.png"),
-                tileX * brickWidth, tileY * brickHeight, brickHeight, brickWidth),
-                2.0
+                        tileX * brickWidth, tileY * brickHeight, brickHeight, brickWidth),
+                factor
         );
 
-        var e = entityBuilder(spawnData)
+        return entityBuilder(spawnData)
                 .type(EntityType.BRICK)
                 .view(texture)
-                .bbox(new HitBox("Brick", BoundingShape.box(texture.getWidth(), texture.getHeight())))
+                .bbox(new HitBox(BoundingShape.box(
+                        texture.getWidth() * factor,
+                        texture.getHeight() * factor)))
                 .build();
-        e.setProperty("gameObject", this);
-
-        return e;
     }
 
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    /**
+     * Destroys the brick and removes it from the game world.
+     * <p>
+     * This method ensures that the brick’s hitbox is cleared before removal
+     * to prevent potential null-pointer errors when accessing the bounding box component.
+     * If the brick is already destroyed, this method has no effect.
+     */
     public void destroy() {
-        entity.removeFromWorld();
+        if (isDestroyed) {
+            return;
+        }
+        isDestroyed = true;
+
+        if (entity != null && entity.isActive()) {
+            // Xóa hitBox (tránh bị lỗi crash: BoundingBoxComponent.getEntity() is null)
+            if (entity.getBoundingBoxComponent() != null) {
+                entity.getBoundingBoxComponent().clearHitBoxes();
+            }
+
+            // Xóa khỏi world
+            entity.removeFromWorld();
+        }
     }
 }
