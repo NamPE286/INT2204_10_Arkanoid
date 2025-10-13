@@ -14,7 +14,7 @@ public class Ball extends MovableObject {
     protected Entity createEntity(SpawnData spawnData) {
         double factor = 1.0;
         var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5),
+                TextureUtils.crop(FXGL.texture("vaus(1).png"), 0, 40*2, 4*2, 5*2),
                 factor
         );
 
@@ -72,6 +72,7 @@ public class Ball extends MovableObject {
             double paddleCenter = eX + eW / 2;
             double haftPaddleWidth = eW / 2;
 
+
             double distanceBallToPaddleCenter = Math.abs(paddleCenter - ballCenter);
             double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
 
@@ -80,9 +81,9 @@ public class Ball extends MovableObject {
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
-                double angularConstant = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(35)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double ANGLE = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(0)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
                 float tempVx = (float)ballSpeed * (
-                        (float)distanceRatio * (float)angularConstant + (float)Math.sin(Math.toRadians(35))
+                        (float)distanceRatio * (float)ANGLE + (float)Math.sin(Math.toRadians(0))
                 );
                 float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
 

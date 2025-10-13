@@ -36,7 +36,7 @@ public class Main extends GameApplication {
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
         var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
-                .setLinearVelocity(30f, 50f)
+                .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
                 .listenToCollisionWith(brick);
 

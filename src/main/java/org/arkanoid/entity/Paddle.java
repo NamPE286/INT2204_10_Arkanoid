@@ -17,7 +17,7 @@ public class Paddle extends MovableObject {
     protected Entity createEntity(SpawnData spawnData) {
         double factor = 1.0;
         var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus.png"), 32, 0, 8, 32),
+                TextureUtils.crop(FXGL.texture("vaus(1).png"), 32*2, 0, 8*2, 32*2),
                 factor
         );
 
