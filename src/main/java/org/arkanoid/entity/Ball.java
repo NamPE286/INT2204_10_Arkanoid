@@ -82,7 +82,7 @@ public class Ball extends MovableObject {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
                 double minAngle = 5;
-                double maxAngle = 55; // Hằng số để đảm bảo 55 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
                 double ANGLE = Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
 
                 double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio), 0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
