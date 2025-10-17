@@ -81,9 +81,15 @@ public class Ball extends MovableObject {
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
-                double ANGLE = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(40)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double minAngle = 5;
+                double maxAngle = 55; // Hằng số để đảm bảo 55 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double ANGLE = Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
+
+                double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio), 0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+                if (nonLinearDistanceRatio > 1) nonLinearDistanceRatio = 1;
+
                 float tempVx = (float)ballSpeed * (
-                        (float)Math.abs(distanceRatio) * (float)ANGLE + (float)Math.sin(Math.toRadians(40))
+                        (float)Math.abs(nonLinearDistanceRatio) * (float)ANGLE + (float)Math.sin(Math.toRadians(minAngle))
                 );
                 float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
 
@@ -95,7 +101,7 @@ public class Ball extends MovableObject {
                     vy = -Math.abs(tempVy);
                 } else {
                     vx = 0;
-                    vy = -Math.abs(vy);
+                    vy = -Math.abs(tempVy);
                 }
 
                 System.out.println(String.format("(%.3f, %.3f)", vx, vy));
