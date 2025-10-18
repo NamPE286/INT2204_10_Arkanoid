@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.entity.Level;
+import org.arkanoid.ui.BackGround;
 
 import java.util.ArrayList;
 
@@ -18,6 +18,8 @@ public class Main extends GameApplication {
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
+    //khai bao background
+    private BackGround backGroundmanager;
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(WIDTH);

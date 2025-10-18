@@ -4,7 +4,6 @@ package org.arkanoid.ui;
 import com.almasb.fxgl.app.scene.GameScene;
 import com.almasb.fxgl.texture.Texture;
 import org.arkanoid.utilities.TextureUtils;
-import com.almasb.fxgl.scene.Scene;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
@@ -16,8 +15,10 @@ public class BackGround {
     private static final int DISTANCE = 8;
     private static final int NUM_BACKGROUND = 5;
 
-    private Texture[] textures;
+    // array to saving all textures cropped.
+    private final Texture[] textures;
 
+    // setting the current background.
     private Texture currentBackground = null;
 
     //constructor lam nhiem vu tai va cat anh 1 lan
@@ -27,7 +28,7 @@ public class BackGround {
     }
 
     private void loadAndCrop() {
-        Texture tiles = getAssetLoader().loadTexture("field.png");
+        Texture tiles = getAssetLoader().loadTexture("fields.png");
         int posX = 0;
 
         for (int i = 0; i < NUM_BACKGROUND; i++) {
