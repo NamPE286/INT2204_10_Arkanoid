@@ -17,6 +17,17 @@ public class SoundManager {
     }
 
     public void play(String path) {
+        Sound sound = soundHashMap.get(path);
 
+        if (sound == null) {
+            loadSound(path);
+            sound = soundHashMap.get(path);
+        }
+
+        if (sound != null) {
+            FXGL.getAudioPlayer().playSound(sound);
+        } else {
+            System.out.println("Cannot play sound: " + path);
+        }
     }
 }
