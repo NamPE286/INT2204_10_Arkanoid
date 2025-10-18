@@ -9,6 +9,7 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.utilities.TextureUtils;
 
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {

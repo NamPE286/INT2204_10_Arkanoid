@@ -19,7 +19,7 @@ public class Main extends GameApplication {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     //khai bao background
-    private BackGround backGroundmanager;
+
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(WIDTH);
@@ -31,10 +31,13 @@ public class Main extends GameApplication {
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setTicksPerSecond(60);
         settings.setSceneFactory(new SceneFactory());
+
     }
 
     @Override
     protected void initGame() {
+        BackGround backGroundmanager = new BackGround();
+        backGroundmanager.displayBackgroundeachLevel(4);
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
         var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
@@ -45,6 +48,7 @@ public class Main extends GameApplication {
         gameObjects.add(paddle);
         gameObjects.add(ball);
         gameObjects.add(brick);
+
     }
 
     @Override
