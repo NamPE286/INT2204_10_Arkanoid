@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.utilities.TextureUtils;
+import org.arkanoid.managers.SoundManager;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -104,6 +105,7 @@ public class Ball extends MovableObject {
 
             setLinearVelocity(vx, vy);
             System.out.println("Collide with Paddle");
+            SoundManager.play("Paddle hit.wav");
         } else if (e instanceof Brick) {
             if (minOverlap == overlapLeft) {
                 vx = -Math.abs(vx);
