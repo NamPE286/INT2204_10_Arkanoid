@@ -27,16 +27,6 @@ public class BackGround {
         loadAndCrop();
     }
 
-    private void loadAndCrop() {
-        Texture tiles = getAssetLoader().loadTexture("fields.png");
-        int posX = 0;
-
-        for (int i = 0; i < NUM_BACKGROUND; i++) {
-            textures[i] = TextureUtils.crop(tiles, posX, 0, BG_HEIGHT, BG_WIDTH);
-            posX += BG_WIDTH + DISTANCE;
-        }
-    }
-
     public void displayBackgroundeachLevel(int level) {
         GameScene gameScene = getGameScene();
 
