@@ -37,7 +37,7 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
         BackGround backGroundmanager = new BackGround();
-        backGroundmanager.displayBackgroundeachLevel(4);
+        backGroundmanager.displayBackgroundeachLevel(1);
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
         var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
