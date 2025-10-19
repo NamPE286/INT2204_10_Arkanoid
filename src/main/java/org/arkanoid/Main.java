@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Main extends GameApplication {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 672;
-    private static final int WALLTHICK = WIDTH / 28;
+    private static final int WALLTHICK = 24;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     //khai bao background
