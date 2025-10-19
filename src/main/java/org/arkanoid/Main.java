@@ -13,11 +13,11 @@ import org.arkanoid.ui.BackGround;
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
-    private static final int HEIGHT = 600;
-    private static final int WIDTH = 800;
+    private static final int HEIGHT = 256*3;
+    private static final int WIDTH = 224*3;
+    private static final int WALLTHICK = WIDTH / 28;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
-
     //khai bao background
 
     @Override
@@ -36,8 +36,15 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        BackGround backGroundmanager = new BackGround();
-        backGroundmanager.displayBackgroundeachLevel(1);
+        // Init background.
+        BackGround backGround = new BackGround();
+        backGround.displayBackgroundeachLevel(1);
+
+        // Init wall.
+        var leftwall = new Wall(0, 0, HEIGHT, WALLTHICK);
+        var topwall = new Wall(0, 0 , WALLTHICK, WIDTH);
+        var rightwall = new Wall(WIDTH - WALLTHICK, 0, HEIGHT, WALLTHICK);
+
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
         var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)

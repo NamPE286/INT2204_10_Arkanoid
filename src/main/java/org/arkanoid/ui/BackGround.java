@@ -61,7 +61,7 @@ public class BackGround {
            bulid and attach into game world.
          */
         currentBackground = FXGL.entityBuilder()
-                .at(0, 0)
+                .at(0, 48)
                 .view(newbackground)
                 .zIndex(-100)
                 .buildAndAttach();
