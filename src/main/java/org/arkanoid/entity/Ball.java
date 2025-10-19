@@ -11,35 +11,33 @@ import org.arkanoid.managers.SoundManager;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        double factor = 1.0;
-        var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus(1).png"), 0, 40*2, 4*2, 5*2),
-                factor
-        );
+        var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5);
 
-        return entityBuilder(spawnData)
-                .type(EntityType.BALL)
-                .view(texture)
-                .bbox(new HitBox(BoundingShape.box(
-                        texture.getWidth() * factor,
-                        texture.getHeight() * factor)))
-                .build();
+        var e = entityBuilder(spawnData)
+            .type(EntityType.PADDLE)
+            .viewWithBBox(texture)
+            .build();
+
+        e.setScaleX(2.0);
+        e.setScaleY(2.0);
+
+        return e;
     }
 
     /**
      * Handles collision logic between the ball and another game object.
      * <p>
-     * When colliding with a {@link Paddle}, the bounce angle depends on how far
-     * the ball hits from the paddle's center, producing a dynamic reflection.
-     * The bounce angle is constrained between 35° and 55°, and the total
-     * velocity (speed) of the ball remains constant.
+     * When colliding with a {@link Paddle}, the bounce angle depends on how far the ball hits from
+     * the paddle's center, producing a dynamic reflection. The bounce angle is constrained between
+     * 35° and 55°, and the total velocity (speed) of the ball remains constant.
      * </p>
      *
      * <p>
-     * When colliding with a {@link Brick}, the ball simply reverses its velocity
-     * along the axis of collision and triggers the brick’s destruction.
+     * When colliding with a {@link Brick}, the ball simply reverses its velocity along the axis of
+     * collision and triggers the brick’s destruction.
      * </p>
      *
      * @param e the {@link GameObject} that the ball collided with
@@ -60,39 +58,43 @@ public class Ball extends MovableObject {
         double eW = e.getEntity().getWidth();
         double eH = e.getEntity().getHeight();
 
-        double overlapLeft   = (ballX + ballW) - eX;
-        double overlapRight  = (eX + eW) - ballX;
-        double overlapTop    = (ballY + ballH) - eY;
+        double overlapLeft = (ballX + ballW) - eX;
+        double overlapRight = (eX + eW) - ballX;
+        double overlapTop = (ballY + ballH) - eY;
         double overlapBottom = (eY + eH) - ballY;
 
         double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
-                Math.min(overlapTop, overlapBottom));
+            Math.min(overlapTop, overlapBottom));
 
         if (e instanceof Paddle) {
             double ballCenter = ballX + ballW / 2;
             double paddleCenter = eX + eW / 2;
             double haftPaddleWidth = eW / 2;
 
-
             double distanceBallToPaddleCenter = ballCenter - paddleCenter;
             double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
 
             if (minOverlap == overlapLeft) {
                 vx = -(Math.abs(vx) + 5);
-            } else if (minOverlap  == overlapRight) {
+            } else if (minOverlap == overlapRight) {
                 vx = Math.abs(vx) + 5;
-            } else if (minOverlap  == overlapTop) {
+            } else if (minOverlap == overlapTop) {
                 double minAngle = 5;
                 double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
-                double ANGLE = Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
+                double ANGLE =
+                    Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
 
-                double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio), 0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
-                if (nonLinearDistanceRatio > 1) nonLinearDistanceRatio = 1;
+                double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
+                    0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+                if (nonLinearDistanceRatio > 1) {
+                    nonLinearDistanceRatio = 1;
+                }
 
-                float tempVx = (float)ballSpeed * (
-                        (float)Math.abs(nonLinearDistanceRatio) * (float)ANGLE + (float)Math.sin(Math.toRadians(minAngle))
+                float tempVx = (float) ballSpeed * (
+                    (float) Math.abs(nonLinearDistanceRatio) * (float) ANGLE + (float) Math.sin(
+                        Math.toRadians(minAngle))
                 );
-                float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
+                float tempVy = (float) Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
 
                 if (distanceRatio > 0) {
                     vx = tempVx;
@@ -106,7 +108,7 @@ public class Ball extends MovableObject {
                 }
 
                 System.out.println(String.format("(%.3f, %.3f)", vx, vy));
-            } else if (minOverlap  == overlapBottom) {
+            } else if (minOverlap == overlapBottom) {
                 vy = Math.abs(vy);
             }
 
@@ -116,11 +118,11 @@ public class Ball extends MovableObject {
         } else if (e instanceof Brick) {
             if (minOverlap == overlapLeft) {
                 vx = -Math.abs(vx);
-            } else if (minOverlap  == overlapRight) {
+            } else if (minOverlap == overlapRight) {
                 vx = Math.abs(vx);
-            } else if (minOverlap  == overlapTop) {
+            } else if (minOverlap == overlapTop) {
                 vy = -Math.abs(vy);
-            } else if (minOverlap  == overlapBottom) {
+            } else if (minOverlap == overlapBottom) {
                 vy = Math.abs(vy);
             }
 
@@ -142,11 +144,11 @@ public class Ball extends MovableObject {
         super.onUpdate(deltaTime);
 
         // Va chạm tường
-        if (entity.getX() + entity.getWidth()/2 >= 800 ||
+        if (entity.getX() + entity.getWidth() / 2 >= 800 ||
             entity.getX() <= 0) {
             setLinearVelocity(this.getVelocityX() * -1, this.getVelocityY());
         }
-        if (entity.getY() + entity.getHeight()/2 >= 600 ||
+        if (entity.getY() + entity.getHeight() / 2 >= 600 ||
             entity.getY() <= 0) {
             setLinearVelocity(this.getVelocityX(), this.getVelocityY() * -1);
         }

@@ -10,6 +10,7 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Brick extends GameObject {
+
     private int tileX;
     private int tileY;
     private final int width = 16;
@@ -26,8 +27,8 @@ public class Brick extends GameObject {
     /**
      * Constructs a new brick at the specified coordinates.
      *
-     * @param x the x-coordinate for the paddle's initial position
-     * @param y the y-coordinate for the paddle's initial position
+     * @param x     the x-coordinate for the paddle's initial position
+     * @param y     the y-coordinate for the paddle's initial position
      * @param tileX to position color
      * @param tileY to position color
      */
@@ -56,27 +57,25 @@ public class Brick extends GameObject {
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
 
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        double factor = 1.0;
+        var texture = TextureUtils.crop(FXGL.texture("bricks.png"),
+            tileX * width, tileY * height, height, width);
 
-        var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("bricks.png"),
-                        tileX * width, tileY * height, height, width),
-                factor
-        );
+        var e = entityBuilder(spawnData)
+            .type(EntityType.PADDLE)
+            .viewWithBBox(texture)
+            .build();
 
-        return entityBuilder(spawnData)
-                .type(EntityType.BRICK)
-                .view(texture)
-                .bbox(new HitBox(BoundingShape.box(
-                        texture.getWidth() * factor,
-                        texture.getHeight() * factor)))
-                .build();
+        e.setScaleX(2.0);
+        e.setScaleY(2.0);
+
+        return e;
     }
 
     public boolean isDestroyed() {
@@ -86,9 +85,9 @@ public class Brick extends GameObject {
     /**
      * Destroys the brick and removes it from the game world.
      * <p>
-     * This method ensures that the brick’s hitbox is cleared before removal
-     * to prevent potential null-pointer errors when accessing the bounding box component.
-     * If the brick is already destroyed, this method has no effect.
+     * This method ensures that the brick’s hitbox is cleared before removal to prevent potential
+     * null-pointer errors when accessing the bounding box component. If the brick is already
+     * destroyed, this method has no effect.
      */
     public void destroy() {
         if (isDestroyed) {
