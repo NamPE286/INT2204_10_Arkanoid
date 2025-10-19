@@ -112,7 +112,7 @@ public class Ball extends MovableObject {
 
             setLinearVelocity(vx, vy);
             System.out.println("Collide with Paddle");
-            SoundManager.play("Paddle hit.wav");
+            SoundManager.play("ball_hit_1.wav");
         } else if (e instanceof Brick) {
             if (minOverlap == overlapLeft) {
                 vx = -Math.abs(vx);
