@@ -46,16 +46,15 @@ public class Main extends GameApplication {
         var rightwall = new Wall(WIDTH - WALLTHICK, 0, HEIGHT, WALLTHICK);
 
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
-        var brick = new Brick(WIDTH / 2, HEIGHT / 2, 0, 0);
+        var brick1 = new Brick(300, 100, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
-                .setLinearVelocity(30f, 50f)
+                .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
-                .listenToCollisionWith(brick);
+                .listenToCollisionWith(brick1);
 
         gameObjects.add(paddle);
         gameObjects.add(ball);
-        gameObjects.add(brick);
-
+        gameObjects.add(brick1);
     }
 
     @Override

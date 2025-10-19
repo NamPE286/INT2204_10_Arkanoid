@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.utilities.TextureUtils;
+import org.arkanoid.managers.SoundManager;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -14,7 +15,7 @@ public class Ball extends MovableObject {
     protected Entity createEntity(SpawnData spawnData) {
         double factor = 1.0;
         var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5),
+                TextureUtils.crop(FXGL.texture("vaus(1).png"), 0, 40*2, 4*2, 5*2),
                 factor
         );
 
@@ -72,7 +73,8 @@ public class Ball extends MovableObject {
             double paddleCenter = eX + eW / 2;
             double haftPaddleWidth = eW / 2;
 
-            double distanceBallToPaddleCenter = Math.abs(paddleCenter - ballCenter);
+
+            double distanceBallToPaddleCenter = ballCenter - paddleCenter;
             double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
 
             if (minOverlap == overlapLeft) {
@@ -80,21 +82,27 @@ public class Ball extends MovableObject {
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx) + 5;
             } else if (minOverlap  == overlapTop) {
-                double angularConstant = Math.sin(Math.toRadians(55)) - Math.sin(Math.toRadians(35)); // Hằng số để đảm bảo 35 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double minAngle = 5;
+                double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+                double ANGLE = Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
+
+                double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio), 0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+                if (nonLinearDistanceRatio > 1) nonLinearDistanceRatio = 1;
+
                 float tempVx = (float)ballSpeed * (
-                        (float)distanceRatio * (float)angularConstant + (float)Math.sin(Math.toRadians(35))
+                        (float)Math.abs(nonLinearDistanceRatio) * (float)ANGLE + (float)Math.sin(Math.toRadians(minAngle))
                 );
                 float tempVy = (float)Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
 
-                if (vx < 0) {
-                    vx = -tempVx;
-                    vy = -Math.abs(tempVy);
-                } else if (vx > 0) {
+                if (distanceRatio > 0) {
                     vx = tempVx;
+                    vy = -Math.abs(tempVy);
+                } else if (distanceRatio < 0) {
+                    vx = -tempVx;
                     vy = -Math.abs(tempVy);
                 } else {
                     vx = 0;
-                    vy = -Math.abs(vy);
+                    vy = -Math.abs(tempVy);
                 }
 
                 System.out.println(String.format("(%.3f, %.3f)", vx, vy));
@@ -104,6 +112,7 @@ public class Ball extends MovableObject {
 
             setLinearVelocity(vx, vy);
             System.out.println("Collide with Paddle");
+            SoundManager.play("ball_hit_1.wav");
         } else if (e instanceof Brick) {
             if (minOverlap == overlapLeft) {
                 vx = -Math.abs(vx);
