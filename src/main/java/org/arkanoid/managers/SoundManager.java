@@ -52,5 +52,12 @@ public class SoundManager {
         } else {
             System.out.println("Cannot play sound: " + path);
         }
+public class SoundManager {
+    public void load(String path) {
+
+    }
+
+    public void play(String path) {
+
     }
 }
