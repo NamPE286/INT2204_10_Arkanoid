@@ -13,8 +13,8 @@ import org.arkanoid.ui.BackGround;
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
-    private static final int HEIGHT = 256*3;
-    private static final int WIDTH = 224*3;
+    private static final int HEIGHT = 768;
+    private static final int WIDTH = 672;
     private static final int WALLTHICK = WIDTH / 28;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();

@@ -12,9 +12,16 @@ public class Wall extends GameObject{
 
     // Initilize wall.
     public Wall(int x, int y, double wallHeight, double wallThick) {
-        super(x, y);
         this.wallHeight = wallHeight;
         this.wallThick = wallThick;
+
+        SpawnData spawnData = new SpawnData(x, y);
+        spawnData.put("width", wallThick);
+        spawnData.put("height", wallHeight);
+
+        this.entity = createEntity(spawnData);
+        spawn();
+        initInput();
     }
 
 
