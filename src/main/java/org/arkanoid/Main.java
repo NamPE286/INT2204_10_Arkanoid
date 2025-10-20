@@ -37,9 +37,6 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        // Init background.
-        BackGround backGround = new BackGround();
-        backGround.displayBackgroundeachLevel(1);
 
         // Init wall.
         var leftwall = new Wall(0, 0, HEIGHT, WALLTHICK);
