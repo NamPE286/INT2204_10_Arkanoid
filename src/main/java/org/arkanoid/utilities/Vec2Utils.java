@@ -42,4 +42,10 @@ public class Vec2Utils {
 
         return new Vec2(vx, vy);
     }
+
+    public static double getAngle(Vec2 v) {
+        double radianAngle = Math.atan2(v.y, v.x);
+
+        return Math.toDegrees(radianAngle);
+    }
 }
