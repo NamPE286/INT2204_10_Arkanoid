@@ -16,6 +16,7 @@ public abstract class Brick extends GameObject {
     protected final int width = 16;
     protected final int height = 8;
     protected boolean canDestroy;
+    protected int health;
 
     /**
      * Constructs a new brick at the default position (0, 0).
@@ -71,8 +72,10 @@ public abstract class Brick extends GameObject {
      * destroyed, this method has no effect.
      */
     public void destroy() {
-        if (!canDestroy) {
-            return;
+        this.health--;
+
+        if (!canDestroy || this.health > 0) {
+            return; // Nếu gạch là loại không thể bị phá hoặc có máu > 0 thì không destroy
         }
         canDestroy = false;
 
