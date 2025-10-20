@@ -140,7 +140,6 @@ public class Ball extends MovableObject {
     public void onCollisionWith(Brick brick) {
         float vx = this.getVelocityX();
         float vy = this.getVelocityY();
-        double ballSpeed = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
 
         double ballX = entity.getX();
         double ballY = entity.getY();
@@ -188,7 +187,6 @@ public class Ball extends MovableObject {
     public void onCollisionWith(Wall wall) {
         float vx = this.getVelocityX();
         float vy = this.getVelocityY();
-        double ballSpeed = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
 
         double ballX = entity.getX();
         double ballY = entity.getY();

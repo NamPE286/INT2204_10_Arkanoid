@@ -18,6 +18,10 @@ abstract public class MovableObject extends GameObject {
         return this;
     }
 
+    public Vec2 getLinearVelocity() {
+        return velocity;
+    }
+
     public float getVelocityX() {
         return velocity.x;
     }
