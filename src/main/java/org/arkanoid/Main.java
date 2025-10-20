@@ -29,6 +29,7 @@ public class Main extends GameApplication {
         settings.setProfilingEnabled(false);
         settings.setMainMenuEnabled(true);
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setDeveloperMenuEnabled(true);
         settings.setTicksPerSecond(60);
         settings.setSceneFactory(new SceneFactory());
 

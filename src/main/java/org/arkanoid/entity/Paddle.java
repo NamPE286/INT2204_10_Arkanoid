@@ -4,8 +4,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.utilities.TextureUtils;
 
@@ -16,19 +14,17 @@ public class Paddle extends MovableObject {
 
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        double factor = 1.0;
-        var texture = TextureUtils.scale(
-                TextureUtils.crop(FXGL.texture("vaus(1).png"), 32*2, 0, 8*2, 32*2),
-                factor
-        );
+        var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 16 * 2, 0, 4 * 2, 16 * 2);
 
-        return entityBuilder(spawnData)
-                .type(EntityType.PADDLE)
-                .view(texture)
-                .bbox(new HitBox(BoundingShape.box(
-                        texture.getWidth() * factor,
-                        texture.getHeight() * factor)))
-                .build();
+        var e = entityBuilder(spawnData)
+            .type(EntityType.PADDLE)
+            .viewWithBBox(texture)
+            .build();
+
+        e.setScaleX(2.0);
+        e.setScaleY(2.0);
+
+        return e;
     }
 
     @Override
