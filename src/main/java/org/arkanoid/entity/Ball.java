@@ -65,37 +65,21 @@ public class Ball extends MovableObject {
 
         double distanceBallToPaddleCenter = ballCenter - paddleCenter;
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
-
-        double minAngle = 5;
-        double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
-        double ANGLE =
-                Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
-
+        distanceRatio = Math.max(-1, Math.min(1, distanceRatio));
         double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
                 0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
-        if (nonLinearDistanceRatio > 1) {
-            nonLinearDistanceRatio = 1;
+
+        if (distanceRatio < 0) {
+            nonLinearDistanceRatio *= -1;
         }
 
-        float tempVx = (float) ballSpeed * (
-                (float) Math.abs(nonLinearDistanceRatio) * (float) ANGLE + (float) Math.sin(
-                        Math.toRadians(minAngle))
-        );
-        float tempVy = (float) Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
+        double ANGLE = 90 - (55 * nonLinearDistanceRatio); // Hằng số để đảm bảo góc xiên <= 55 độ và giữ nguyên tốc độ bóng
 
-        if (distanceRatio > 0) {
-            tempVy = -Math.abs(tempVy);
-        } else if (distanceRatio < 0) {
-            tempVx = -tempVx;
-            tempVy = -Math.abs(tempVy);
-        } else {
-            tempVx = 0;
-            tempVy = -Math.abs(tempVy);
-        }
+        double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
+        double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
+        setLinearVelocity((float)vx, (float)-vy);
 
-        System.out.println(String.format("(%.3f, %.3f)", tempVx, tempVy));
-
-        setLinearVelocity(tempVx, tempVy);
+        System.out.println(String.format("(%.3f, %.3f)", vx, vy));
         System.out.println("Collide with Paddle");
         SoundManager.play("ball_hit_1.wav");
     }
