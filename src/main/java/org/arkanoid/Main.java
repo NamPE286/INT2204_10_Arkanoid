@@ -43,7 +43,7 @@ public class Main extends GameApplication {
         var rightwall = new Wall(WIDTH - WALLTHICK, 0, HEIGHT, WALLTHICK);
 
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
-        var brick1 = new Brick(300, 100, 0, 0);
+        var brick1 = new NormalBrick(300, 300, 1, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
