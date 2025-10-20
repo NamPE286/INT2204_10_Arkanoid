@@ -1,5 +1,6 @@
 package org.arkanoid.entity;
 
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -7,6 +8,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.managers.SoundManager;
+import org.arkanoid.utilities.Vec2Utils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -55,74 +57,45 @@ public class Ball extends MovableObject {
      * @param paddle the {@link Paddle} that the ball collided with
      */
     public void onCollisionWith(Paddle paddle) {
-        float vx = this.getVelocityX();
-        float vy = this.getVelocityY();
-        double ballSpeed = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
+        double ballSpeed = this.getLinearVelocity().length();
 
-        double ballX = entity.getX();
-        double ballY = entity.getY();
-        double ballW = entity.getWidth();
-        double ballH = entity.getHeight();
-
-        double eX = paddle.getX();
-        double eY = paddle.getY();
-        double eW = paddle.getEntity().getWidth();
-        double eH = paddle.getEntity().getHeight();
-
-        double overlapLeft = (ballX + ballW) - eX;
-        double overlapRight = (eX + eW) - ballX;
-        double overlapTop = (ballY + ballH) - eY;
-        double overlapBottom = (eY + eH) - ballY;
-
-        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
-                Math.min(overlapTop, overlapBottom));
-
-        double ballCenter = ballX + ballW / 2;
-        double paddleCenter = eX + eW / 2;
-        double haftPaddleWidth = eW / 2;
+        double ballCenter = entity.getX() + entity.getWidth() / 2;
+        double paddleCenter = paddle.getX() + paddle.getEntity().getWidth() / 2;
+        double haftPaddleWidth = paddle.getEntity().getWidth() / 2;
 
         double distanceBallToPaddleCenter = ballCenter - paddleCenter;
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
 
-        if (minOverlap == overlapLeft) {
-            vx = -(Math.abs(vx) + 5);
-        } else if (minOverlap == overlapRight) {
-            vx = Math.abs(vx) + 5;
-        } else if (minOverlap == overlapTop) {
-            double minAngle = 5;
-            double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
-            double ANGLE =
-                    Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
+        double minAngle = 5;
+        double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
+        double ANGLE =
+                Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
 
-            double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-                    0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
-            if (nonLinearDistanceRatio > 1) {
-                nonLinearDistanceRatio = 1;
-            }
-
-            float tempVx = (float) ballSpeed * (
-                    (float) Math.abs(nonLinearDistanceRatio) * (float) ANGLE + (float) Math.sin(
-                            Math.toRadians(minAngle))
-            );
-            float tempVy = (float) Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
-
-            if (distanceRatio > 0) {
-                vx = tempVx;
-                vy = -Math.abs(tempVy);
-            } else if (distanceRatio < 0) {
-                vx = -tempVx;
-                vy = -Math.abs(tempVy);
-            } else {
-                vx = 0;
-                vy = -Math.abs(tempVy);
-            }
-
-            System.out.println(String.format("(%.3f, %.3f)", vx, vy));
-        } else if (minOverlap == overlapBottom) {
-            vy = Math.abs(vy);
+        double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
+                0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+        if (nonLinearDistanceRatio > 1) {
+            nonLinearDistanceRatio = 1;
         }
 
-        setLinearVelocity(vx, vy);
+        float tempVx = (float) ballSpeed * (
+                (float) Math.abs(nonLinearDistanceRatio) * (float) ANGLE + (float) Math.sin(
+                        Math.toRadians(minAngle))
+        );
+        float tempVy = (float) Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
+
+        if (distanceRatio > 0) {
+            tempVy = -Math.abs(tempVy);
+        } else if (distanceRatio < 0) {
+            tempVx = -tempVx;
+            tempVy = -Math.abs(tempVy);
+        } else {
+            tempVx = 0;
+            tempVy = -Math.abs(tempVy);
+        }
+
+        System.out.println(String.format("(%.3f, %.3f)", tempVx, tempVy));
+
+        setLinearVelocity(tempVx, tempVy);
         System.out.println("Collide with Paddle");
         SoundManager.play("ball_hit_1.wav");
     }
@@ -138,40 +111,11 @@ public class Ball extends MovableObject {
      * @param brick the {@link Brick} that the ball collided with
      */
     public void onCollisionWith(Brick brick) {
-        float vx = this.getVelocityX();
-        float vy = this.getVelocityY();
+        Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, brick);
+        setLinearVelocity(newVelocity.x, newVelocity.y);
 
-        double ballX = entity.getX();
-        double ballY = entity.getY();
-        double ballW = entity.getWidth();
-        double ballH = entity.getHeight();
-
-        double eX = brick.getX();
-        double eY = brick.getY();
-        double eW = brick.getEntity().getWidth();
-        double eH = brick.getEntity().getHeight();
-
-        double overlapLeft = (ballX + ballW) - eX;
-        double overlapRight = (eX + eW) - ballX;
-        double overlapTop = (ballY + ballH) - eY;
-        double overlapBottom = (eY + eH) - ballY;
-
-        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
-                Math.min(overlapTop, overlapBottom));
-
-        if (minOverlap == overlapLeft) {
-            vx = -Math.abs(vx);
-        } else if (minOverlap == overlapRight) {
-            vx = Math.abs(vx);
-        } else if (minOverlap == overlapTop) {
-            vy = -Math.abs(vy);
-        } else if (minOverlap == overlapBottom) {
-            vy = Math.abs(vy);
-        }
-
-        setLinearVelocity(vx, vy);
         System.out.println("Collide with brick");
-        (brick).destroy();
+        brick.destroy();
     }
 
     /**
@@ -185,38 +129,9 @@ public class Ball extends MovableObject {
      * @param wall the {@link Wall} that the ball collided with
      */
     public void onCollisionWith(Wall wall) {
-        float vx = this.getVelocityX();
-        float vy = this.getVelocityY();
+        Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, wall);
+        setLinearVelocity(newVelocity.x, newVelocity.y);
 
-        double ballX = entity.getX();
-        double ballY = entity.getY();
-        double ballW = entity.getWidth();
-        double ballH = entity.getHeight();
-
-        double eX = wall.getX();
-        double eY = wall.getY();
-        double eW = wall.getEntity().getWidth();
-        double eH = wall.getEntity().getHeight();
-
-        double overlapLeft = (ballX + ballW) - eX;
-        double overlapRight = (eX + eW) - ballX;
-        double overlapTop = (ballY + ballH) - eY;
-        double overlapBottom = (eY + eH) - ballY;
-
-        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
-                Math.min(overlapTop, overlapBottom));
-
-        if (minOverlap == overlapLeft) {
-            vx = -Math.abs(vx);
-        } else if (minOverlap == overlapRight) {
-            vx = Math.abs(vx);
-        } else if (minOverlap == overlapTop) {
-            vy = -Math.abs(vy);
-        } else if (minOverlap == overlapBottom) {
-            vy = Math.abs(vy);
-        }
-
-        setLinearVelocity(vx, vy);
         System.out.println("Collide with wall");
     }
 
