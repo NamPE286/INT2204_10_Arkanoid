@@ -82,10 +82,10 @@ public class Paddle extends MovableObject {
         if (e instanceof Wall) {
             float curVx = this.getVelocityX();
 
-            if(curVx < 0 && this.getX() < e.getX()) {
+            if(curVx < 0 && this.getX() > e.getX()) {
                 System.out.println("Paddle collision with Left wall");
                 setLinearVelocity(0, vy);
-            } else if(curVx > 0 && this.getX() > e.getX()) {
+            } else if(curVx > 0 && this.getX() < e.getX()) {
                 System.out.println("Paddle collision with Right wall");
                 setLinearVelocity(0, vy);
             }
