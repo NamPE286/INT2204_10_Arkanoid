@@ -8,14 +8,13 @@ import javafx.scene.control.Label;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.ui.BackGround;
+import org.arkanoid.ui.Background;
 
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 672;
-    private static final int WALLTHICK = 24;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     //khai bao background
@@ -37,14 +36,6 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        // Init background.
-        BackGround backGround = new BackGround();
-        backGround.displayBackgroundeachLevel(1);
-
-        // Init wall.
-        var leftwall = new Wall(0, 0, HEIGHT, WALLTHICK);
-        var topwall = new Wall(0, 0 , WALLTHICK, WIDTH);
-        var rightwall = new Wall(WIDTH - WALLTHICK, 0, HEIGHT, WALLTHICK);
 
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
         var brick1 = new Brick(300, 100, 0, 0);
@@ -60,8 +51,9 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
-        Label label = labelFactory.createLabel("HELLO, WORLD!");
-        FXGL.addUINode(label, 280.0, 20.0);
+        // Init background.
+        Background backGround = new Background();
+        backGround.displayLevel(1);
     }
 
 
