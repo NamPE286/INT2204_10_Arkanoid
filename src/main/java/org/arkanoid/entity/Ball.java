@@ -129,6 +129,19 @@ public class Ball extends MovableObject {
             setLinearVelocity(vx, vy);
             System.out.println("Collide with brick");
             ((Brick) e).destroy();
+        } else if (e instanceof Wall) {
+            if (minOverlap == overlapLeft) {
+                vx = -Math.abs(vx);
+            } else if (minOverlap == overlapRight) {
+                vx = Math.abs(vx);
+            } else if (minOverlap == overlapTop) {
+                vy = -Math.abs(vy);
+            } else if (minOverlap == overlapBottom) {
+                vy = Math.abs(vy);
+            }
+
+            setLinearVelocity(vx, vy);
+            System.out.println("Collide with wall");
         }
     }
 
@@ -144,11 +157,11 @@ public class Ball extends MovableObject {
         super.onUpdate(deltaTime);
 
         // Va chạm tường
-        if (entity.getX() + entity.getWidth() / 2 >= 800 ||
+        if (entity.getX() + entity.getWidth() / 2 >= 672 ||
             entity.getX() <= 0) {
             setLinearVelocity(this.getVelocityX() * -1, this.getVelocityY());
         }
-        if (entity.getY() + entity.getHeight() / 2 >= 600 ||
+        if (entity.getY() + entity.getHeight() / 2 >= 768 ||
             entity.getY() <= 0) {
             setLinearVelocity(this.getVelocityX(), this.getVelocityY() * -1);
         }

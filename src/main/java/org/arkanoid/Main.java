@@ -8,14 +8,14 @@ import javafx.scene.control.Label;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.ui.BackGround;
+import org.arkanoid.ui.Background;
 
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
     private static final int HEIGHT = 768;
     private static final int WIDTH = 672;
-    private static final int WALLTHICK = 24;
+    private static final int THICK = WIDTH / 28;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     //khai bao background
@@ -38,27 +38,35 @@ public class Main extends GameApplication {
     @Override
     protected void initGame() {
 
-        // Init wall.
-        var leftwall = new Wall(0, 0, HEIGHT, WALLTHICK);
-        var topwall = new Wall(0, 0 , WALLTHICK, WIDTH);
-        var rightwall = new Wall(WIDTH - WALLTHICK, 0, HEIGHT, WALLTHICK);
+        var leftwall = new Wall(0, 0, HEIGHT, THICK);
+        var topwall = new Wall(0, 48, THICK, WIDTH);
+        var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
 
-        var paddle = new Paddle(WIDTH / 2, HEIGHT - 50);
+        var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
+                .listenToCollisionWith(leftwall)
+                .listenToCollisionWith(rightwall);
         var brick1 = new Brick(300, 100, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
-                .listenToCollisionWith(brick1);
+                .listenToCollisionWith(brick1)
+                .listenToCollisionWith(leftwall)
+                .listenToCollisionWith(topwall)
+                .listenToCollisionWith(rightwall);
 
         gameObjects.add(paddle);
         gameObjects.add(ball);
         gameObjects.add(brick1);
+        gameObjects.add(leftwall);
+        gameObjects.add(topwall);
+        gameObjects.add(rightwall);
     }
 
     @Override
     protected void initUI() {
-        Label label = labelFactory.createLabel("HELLO, WORLD!");
-        FXGL.addUINode(label, 280.0, 20.0);
+        // Init background.
+        Background backGround = new Background();
+        backGround.displayLevel(1);
     }
 
 
