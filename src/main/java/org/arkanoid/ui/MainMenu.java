@@ -35,7 +35,6 @@ public class MainMenu extends FXGLMenu {
         ImageView logoView = new ImageView(cropped.getImage());
         logoView.setFitWidth(400);
         logoView.setPreserveRatio(true);
-        logoView.setSmooth(false);
 
         // Tạo HBox chứa logo và căn giữa.
         HBox logoBox = new HBox(logoView);
@@ -49,8 +48,14 @@ public class MainMenu extends FXGLMenu {
         VBox menuOptions = new VBox(20, startLabel, exitLabel);
         menuOptions.setAlignment(Pos.CENTER);
 
+        // Thêm bản quyền nhỏ ở cuối
+        Label copyright = new Label("HANOI36PP");
+        copyright.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 16));
+        copyright.setTextFill(Color.GRAY);
+        copyright.setAlignment(Pos.CENTER);
+
         // Gom toàn bộ phần logo, menu và bản quyền vào VBox
-        VBox menuBox = new VBox(30, logoBox, menuOptions);
+        VBox menuBox = new VBox(30, logoBox, menuOptions, copyright);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
 
@@ -61,13 +66,22 @@ public class MainMenu extends FXGLMenu {
         getContentRoot().getChildren().add(menuBox);
     }
 
-    // Tạo một Label có font NES và hành động khi click.
+    /**
+     * Tạo một Label có font NES, hiệu ứng hover xanh lá, và hành động khi click.
+     */
     private Label createMenuLabel(String text, Runnable action) {
         Label label = new Label(text);
         label.setFont(nesFont);
         label.setTextFill(Color.WHITE);
         label.setStyle("-fx-cursor: hand;");
+
+        // Khi di chuột vào → đổi sang màu xanh lá
+        label.setOnMouseEntered(e -> label.setTextFill(Color.LIMEGREEN));
+        // Khi rời chuột ra → về trắng
+        label.setOnMouseExited(e -> label.setTextFill(Color.WHITE));
+        // Khi nhấn chuột → chạy hành động
         label.setOnMouseClicked(e -> action.run());
+
         return label;
     }
 }
