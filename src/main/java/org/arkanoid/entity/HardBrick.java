@@ -15,6 +15,7 @@ public class HardBrick extends Brick {
     public HardBrick(int x, int y, int tileX, int tileY) {
         super(tileX, tileY);
         this.canDestroy = false; // Viên gạch không thể bị phá hủy
+        this.health = 0;
 
         SpawnData spawnData = new SpawnData(x, y);
         spawnData.put("tileX", tileX);

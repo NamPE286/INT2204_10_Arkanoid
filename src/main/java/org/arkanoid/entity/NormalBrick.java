@@ -15,7 +15,7 @@ public class NormalBrick extends Brick {
     public NormalBrick(int x, int y, int tileX, int tileY) {
         super(tileX, tileY);
         this.canDestroy = true; // Viên gạch có thể bị phá hủy
-        this.health = 2;
+        this.health = 1;
 
         SpawnData spawnData = new SpawnData(x, y);
         spawnData.put("tileX", tileX);
