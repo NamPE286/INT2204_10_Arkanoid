@@ -42,6 +42,9 @@ public class Background {
             currentBackground.removeFromWorld();
         }
 
+        // set background black.
+        FXGL.getGameScene().getRoot().setStyle("-fx-background-color: black;");
+
         // create a index for background.
         int indexBG = (level - 1) % NUM_BACKGROUND;
 
