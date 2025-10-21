@@ -9,13 +9,14 @@ import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
-public class Brick extends GameObject {
+public abstract class Brick extends GameObject {
 
-    private int tileX;
-    private int tileY;
-    private final int width = 16;
-    private final int height = 8;
-    private boolean isDestroyed = false;
+    protected int tileX;
+    protected int tileY;
+    protected final int width = 16;
+    protected final int height = 8;
+    protected boolean canDestroy;
+    protected int health;
 
     /**
      * Constructs a new brick at the default position (0, 0).
@@ -27,13 +28,10 @@ public class Brick extends GameObject {
     /**
      * Constructs a new brick at the specified coordinates.
      *
-     * @param x     the x-coordinate for the paddle's initial position
-     * @param y     the y-coordinate for the paddle's initial position
      * @param tileX to position color
      * @param tileY to position color
      */
-    public Brick(int x, int y, int tileX, int tileY) {
-        super(x, y);
+    public Brick(int tileX, int tileY) {
         this.tileX = tileX;
         this.tileY = tileY;
     }
@@ -62,24 +60,8 @@ public class Brick extends GameObject {
         return height;
     }
 
-    @Override
-    protected Entity createEntity(SpawnData spawnData) {
-        var texture = TextureUtils.crop(FXGL.texture("bricks.png"),
-            tileX * width, tileY * height, height, width);
-
-        var e = entityBuilder(spawnData)
-            .type(EntityType.PADDLE)
-            .viewWithBBox(texture)
-            .build();
-
-        e.setScaleX(2.0);
-        e.setScaleY(2.0);
-
-        return e;
-    }
-
     public boolean isDestroyed() {
-        return isDestroyed;
+        return canDestroy;
     }
 
     /**
@@ -90,10 +72,12 @@ public class Brick extends GameObject {
      * destroyed, this method has no effect.
      */
     public void destroy() {
-        if (isDestroyed) {
-            return;
+        this.health--;
+
+        if (!canDestroy || this.health > 0) {
+            return; // Nếu gạch là loại không thể bị phá hoặc có máu > 0 thì không destroy
         }
-        isDestroyed = true;
+        canDestroy = false;
 
         if (entity != null && entity.isActive()) {
             // Xóa hitBox (tránh bị lỗi crash: BoundingBoxComponent.getEntity() is null)
