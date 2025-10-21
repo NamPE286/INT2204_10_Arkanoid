@@ -6,6 +6,7 @@ import com.almasb.fxgl.app.GameSettings;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
+import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.Background;
 
 import java.util.ArrayList;
@@ -52,6 +53,8 @@ public class Main extends GameApplication {
         gameObjects.add(leftwall);
         gameObjects.add(topwall);
         gameObjects.add(rightwall);
+
+        SoundManager.play("round_start.mp3");
     }
 
     @Override

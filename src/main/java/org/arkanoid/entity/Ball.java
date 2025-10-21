@@ -12,6 +12,8 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
 
+    private int paddleCollisionSound = 0;
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5);
@@ -65,21 +67,29 @@ public class Ball extends MovableObject {
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
         distanceRatio = Math.max(-1, Math.min(1, distanceRatio));
         double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-                0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+            0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
 
         if (distanceRatio < 0) {
             nonLinearDistanceRatio *= -1;
         }
 
-        double ANGLE = 90 - (55 * nonLinearDistanceRatio); // Hằng số để đảm bảo góc xiên <= 55 độ và giữ nguyên tốc độ bóng
+        double ANGLE = 90 - (55
+            * nonLinearDistanceRatio); // Hằng số để đảm bảo góc xiên <= 55 độ và giữ nguyên tốc độ bóng
 
         double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
         double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
-        setLinearVelocity((float)vx, (float)-vy);
+        setLinearVelocity((float) vx, (float) -vy);
 
         System.out.println(String.format("(%.3f, %.3f)", vx, vy));
         System.out.println("Collide with Paddle");
-        SoundManager.play("ball_hit_1.wav");
+
+        if (paddleCollisionSound == 0) {
+            SoundManager.play("ball_hit_1.wav");
+        } else {
+            SoundManager.play("ball_hit_2.wav");
+        }
+
+        paddleCollisionSound = 1 - paddleCollisionSound;
     }
 
     /**
