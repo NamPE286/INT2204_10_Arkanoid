@@ -35,26 +35,20 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-
         var leftwall = new Wall(0, 0, HEIGHT, THICK);
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
-
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(rightwall);
-        var brick1 = new Brick(300, 100, 0, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
-                .listenToCollisionWith(brick1)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(topwall)
                 .listenToCollisionWith(rightwall);
-
         gameObjects.add(paddle);
         gameObjects.add(ball);
-        gameObjects.add(brick1);
         gameObjects.add(leftwall);
         gameObjects.add(topwall);
         gameObjects.add(rightwall);
