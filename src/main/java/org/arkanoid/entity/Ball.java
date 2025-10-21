@@ -5,7 +5,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.utilities.TextureUtils;
-import org.arkanoid.managers.SoundManager;
+import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.Vec2Utils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;

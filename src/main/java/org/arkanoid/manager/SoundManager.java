@@ -1,4 +1,4 @@
-package org.arkanoid.managers;
+package org.arkanoid.manager;
 
 import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.dsl.FXGL;
