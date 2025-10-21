@@ -70,4 +70,27 @@ public class Paddle extends MovableObject {
     public Paddle(int x, int y) {
         super(x, y);
     }
+
+
+    /**
+     * Collision checking wall, power up with paddle.
+     * @param e the Entity that this object has collided with
+     */
+    @Override
+    public void onCollisionWith(GameObject e) {
+        float vy = this.getVelocityY();
+        if (e instanceof Wall) {
+            float curVx = this.getVelocityX();
+
+            if(curVx < 0 && this.getX() > e.getX()) {
+                System.out.println("Paddle collision with Left wall");
+                setLinearVelocity(0, vy);
+            } else if(curVx > 0 && this.getX() < e.getX()) {
+                System.out.println("Paddle collision with Right wall");
+                setLinearVelocity(0, vy);
+            }
+        }
+
+    }
+
 }

@@ -4,8 +4,6 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.managers.SoundManager;
 import org.arkanoid.utilities.Vec2Utils;

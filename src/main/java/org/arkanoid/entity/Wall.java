@@ -7,17 +7,17 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 
 public class Wall extends GameObject{
-    private double wallHeight;
-    private double wallThick;
+    private final double wallHeight;
+    private final double wallThick;
 
-    // Initilize wall.
+    // Initialize wall.
     public Wall(int x, int y, double wallHeight, double wallThick) {
         this.wallHeight = wallHeight;
         this.wallThick = wallThick;
 
         SpawnData spawnData = new SpawnData(x, y);
-        spawnData.put("height",  wallHeight);
-        spawnData.put("thick",   wallThick);
+        spawnData.put("height", wallHeight);
+        spawnData.put("thick", wallThick);
 
         this.entity = createEntity(spawnData);
         spawn();
@@ -25,8 +25,8 @@ public class Wall extends GameObject{
     }
 
 
-    /// Setting the wall with entity builder, collidable, va build.
-    /// The background has all wall, so unecessary to drowing a wall.
+    /// Setting the wall with entity builder, collision, and build.
+    /// The background has all wall, so unnecessary to drawing a wall.
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         return FXGL.entityBuilder(spawnData)
@@ -35,5 +35,7 @@ public class Wall extends GameObject{
                 .collidable()
                 .build();
     }
+
+
 
 }
