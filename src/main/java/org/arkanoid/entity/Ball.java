@@ -1,10 +1,12 @@
 package org.arkanoid.entity;
 
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.managers.SoundManager;
+import org.arkanoid.utilities.Vec2Utils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -27,120 +29,92 @@ public class Ball extends MovableObject {
 
     /**
      * Handles collision logic between the ball and another game object.
+     *
+     * @param e the {@link GameObject} that the ball collided with
+     */
+    @Override
+    public void onCollisionWith(GameObject e) {
+        if (e instanceof Paddle) {
+            this.onCollisionWith((Paddle) e);
+        } else if (e instanceof Brick) {
+            this.onCollisionWith((Brick) e);
+        } else if (e instanceof Wall) {
+            this.onCollisionWith((Wall) e);
+        }
+    }
+
+    /**
+     * Handles collision logic between the ball and paddle.
+     *
      * <p>
      * When colliding with a {@link Paddle}, the bounce angle depends on how far the ball hits from
      * the paddle's center, producing a dynamic reflection. The bounce angle is constrained between
      * 35° and 55°, and the total velocity (speed) of the ball remains constant.
      * </p>
      *
+     * @param paddle the {@link Paddle} that the ball collided with
+     */
+    public void onCollisionWith(Paddle paddle) {
+        double ballSpeed = this.getLinearVelocity().length();
+
+        double ballCenter = entity.getX() + entity.getWidth() / 2;
+        double paddleCenter = paddle.getX() + paddle.getEntity().getWidth() / 2;
+        double haftPaddleWidth = paddle.getEntity().getWidth() / 2;
+
+        double distanceBallToPaddleCenter = ballCenter - paddleCenter;
+        double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
+        distanceRatio = Math.max(-1, Math.min(1, distanceRatio));
+        double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
+                0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+
+        if (distanceRatio < 0) {
+            nonLinearDistanceRatio *= -1;
+        }
+
+        double ANGLE = 90 - (55 * nonLinearDistanceRatio); // Hằng số để đảm bảo góc xiên <= 55 độ và giữ nguyên tốc độ bóng
+
+        double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
+        double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
+        setLinearVelocity((float)vx, (float)-vy);
+
+        System.out.println(String.format("(%.3f, %.3f)", vx, vy));
+        System.out.println("Collide with Paddle");
+        SoundManager.play("ball_hit_1.wav");
+    }
+
+    /**
+     * Handles collision logic between the ball and brick.
+     *
      * <p>
      * When colliding with a {@link Brick}, the ball simply reverses its velocity along the axis of
      * collision and triggers the brick’s destruction.
      * </p>
      *
-     * @param e the {@link GameObject} that the ball collided with
+     * @param brick the {@link Brick} that the ball collided with
      */
-    @Override
-    public void onCollisionWith(GameObject e) {
-        float vx = this.getVelocityX();
-        float vy = this.getVelocityY();
-        double ballSpeed = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
+    public void onCollisionWith(Brick brick) {
+        Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, brick);
+        setLinearVelocity(newVelocity.x, newVelocity.y);
 
-        double ballX = entity.getX();
-        double ballY = entity.getY();
-        double ballW = entity.getWidth();
-        double ballH = entity.getHeight();
+        System.out.println("Collide with brick");
+        brick.destroy();
+    }
 
-        double eX = e.getX();
-        double eY = e.getY();
-        double eW = e.getEntity().getWidth();
-        double eH = e.getEntity().getHeight();
+    /**
+     * Handles collision logic between the ball and wall.
+     *
+     * <p>
+     * When colliding with a {@link Wall}, the ball simply reverses its velocity along the axis of
+     * collision and triggers the brick’s destruction.
+     * </p>
+     *
+     * @param wall the {@link Wall} that the ball collided with
+     */
+    public void onCollisionWith(Wall wall) {
+        Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, wall);
+        setLinearVelocity(newVelocity.x, newVelocity.y);
 
-        double overlapLeft = (ballX + ballW) - eX;
-        double overlapRight = (eX + eW) - ballX;
-        double overlapTop = (ballY + ballH) - eY;
-        double overlapBottom = (eY + eH) - ballY;
-
-        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
-            Math.min(overlapTop, overlapBottom));
-
-        if (e instanceof Paddle) {
-            double ballCenter = ballX + ballW / 2;
-            double paddleCenter = eX + eW / 2;
-            double haftPaddleWidth = eW / 2;
-
-            double distanceBallToPaddleCenter = ballCenter - paddleCenter;
-            double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
-
-            if (minOverlap == overlapLeft) {
-                vx = -(Math.abs(vx) + 5);
-            } else if (minOverlap == overlapRight) {
-                vx = Math.abs(vx) + 5;
-            } else if (minOverlap == overlapTop) {
-                double minAngle = 5;
-                double maxAngle = 55; // Hằng số để đảm bảo 5 độ <= góc <= 55 độ và giữ nguyên tốc độ bóng
-                double ANGLE =
-                    Math.sin(Math.toRadians(maxAngle)) - Math.sin(Math.toRadians(minAngle));
-
-                double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-                    0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
-                if (nonLinearDistanceRatio > 1) {
-                    nonLinearDistanceRatio = 1;
-                }
-
-                float tempVx = (float) ballSpeed * (
-                    (float) Math.abs(nonLinearDistanceRatio) * (float) ANGLE + (float) Math.sin(
-                        Math.toRadians(minAngle))
-                );
-                float tempVy = (float) Math.sqrt(Math.pow(ballSpeed, 2) - Math.pow(tempVx, 2));
-
-                if (distanceRatio > 0) {
-                    vx = tempVx;
-                    vy = -Math.abs(tempVy);
-                } else if (distanceRatio < 0) {
-                    vx = -tempVx;
-                    vy = -Math.abs(tempVy);
-                } else {
-                    vx = 0;
-                    vy = -Math.abs(tempVy);
-                }
-
-                System.out.println(String.format("(%.3f, %.3f)", vx, vy));
-            } else if (minOverlap == overlapBottom) {
-                vy = Math.abs(vy);
-            }
-
-            setLinearVelocity(vx, vy);
-            System.out.println("Collide with Paddle");
-            SoundManager.play("ball_hit_1.wav");
-        } else if (e instanceof Brick) {
-            if (minOverlap == overlapLeft) {
-                vx = -Math.abs(vx);
-            } else if (minOverlap == overlapRight) {
-                vx = Math.abs(vx);
-            } else if (minOverlap == overlapTop) {
-                vy = -Math.abs(vy);
-            } else if (minOverlap == overlapBottom) {
-                vy = Math.abs(vy);
-            }
-
-            setLinearVelocity(vx, vy);
-            System.out.println("Collide with brick");
-            ((Brick) e).destroy();
-        } else if (e instanceof Wall) {
-            if (minOverlap == overlapLeft) {
-                vx = -Math.abs(vx);
-            } else if (minOverlap == overlapRight) {
-                vx = Math.abs(vx);
-            } else if (minOverlap == overlapTop) {
-                vy = -Math.abs(vy);
-            } else if (minOverlap == overlapBottom) {
-                vy = Math.abs(vy);
-            }
-
-            setLinearVelocity(vx, vy);
-            System.out.println("Collide with wall");
-        }
+        System.out.println("Collide with wall");
     }
 
     /**
