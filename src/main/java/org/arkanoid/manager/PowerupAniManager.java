@@ -12,35 +12,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-enum PowerUpType {
-    SLOW,
-    CATCH,
-    LASER,
-    EXTEND,
-    DISRUPT,
-    BREAK,
-    PLAYER
-}
-
-
 public class PowerupAniManager {
-    public static final int frameW = 14;
-    public static final int frameH = 7;
-    public static final int colNum = 8;
-    public static final int rowNum = 7;
-    public static final int spaceX = 2;
-    public static final int startX = 1;
-    public static final int startY = 0;
-    public static final int spaceY = 1;
+    public static final int FRAME_W = 14;
+    public static final int FRAME_H = 7;
+    public static final int COL_NUM = 8;
+    public static final int ROW_NUM = 7;
+    public static final int SPACE_X = 2;
+    public static final int START_X = 1;
+    public static final int START_Y = 0;
+    public static final int SPACE_Y = 1;
     /**
      * Using map to store the type of power up.
      */
-    private Map<PowerUpType, AnimationChannel> animationCache = new HashMap<>();
+    private Map<PowerupType, AnimationChannel> animationCache = new HashMap<>();
     private Image powerSheet;
 
     public void loadAnimations() {
         powerSheet = FXGL.image("powerups.png");
-        PowerUpType[] types = PowerUpType.values();
+        PowerupType[] types = PowerupType.values();
         
         for (int i = 0; i < types.length; i++) {
             // Cut each row.
@@ -51,23 +40,22 @@ public class PowerupAniManager {
 
     }
 
-
     private AnimationChannel createAnimeChannel(int rowIndex) {
         // Create a list to store all frame.
-        if (rowIndex < 0 || rowIndex >= rowNum) {
+        if (rowIndex < 0 || rowIndex >= ROW_NUM) {
            throw new IndexOutOfBoundsException("Out of bound");
         }
         List<Image> frames = new ArrayList<>();
 
-        int y = startY + ( rowIndex *  (spaceY + frameH) );
+        int y = START_Y + ( rowIndex *  (SPACE_Y + FRAME_H) );
 
         // Load each frame picture.
-        for (int j = 0; j < colNum; j++) {
+        for (int j = 0; j < COL_NUM; j++) {
 
-            int x = startX + j * (frameW + spaceX);
+            int x = START_X + j * (FRAME_W + SPACE_X);
 
             Image cutFrame = new WritableImage(
-                    powerSheet.getPixelReader(), x, y, frameW, frameH);
+                    powerSheet.getPixelReader(), x, y, FRAME_W, FRAME_H);
             // add frame into list.
             frames.add(cutFrame);
         }
@@ -77,7 +65,7 @@ public class PowerupAniManager {
     /**
      * Getter for the animation.
      */
-    public AnimationChannel getAnimation(PowerUpType type) {
+    public AnimationChannel getAnimation(PowerupType type) {
         return animationCache.get(type);
     }
 
