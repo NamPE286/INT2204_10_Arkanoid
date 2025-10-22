@@ -4,21 +4,28 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
-import org.arkanoid.utilities.TextureUtils;
+import org.arkanoid.component.animation.PaddleAnimationComponent;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {
 
+    private final int SPEED = 400;
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 16 * 2, 0, 4 * 2, 16 * 2);
-
         var e = entityBuilder(spawnData)
             .type(EntityType.PADDLE)
-            .viewWithBBox(texture)
+            .bbox(new HitBox(
+                "PADDLE",
+                new Point2D(0, 0),
+                BoundingShape.box(32, 8)))
+            .with(new PaddleAnimationComponent())
             .build();
 
         e.setScaleX(2.0);
@@ -32,7 +39,7 @@ public class Paddle extends MovableObject {
         FXGL.getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                setLinearVelocity(-200, 0);
+                setLinearVelocity(-SPEED, 0);
             }
 
             @Override
@@ -44,7 +51,7 @@ public class Paddle extends MovableObject {
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                setLinearVelocity(200, 0);
+                setLinearVelocity(SPEED, 0);
             }
 
             @Override
@@ -74,6 +81,7 @@ public class Paddle extends MovableObject {
 
     /**
      * Collision checking wall, power up with paddle.
+     *
      * @param e the Entity that this object has collided with
      */
     @Override
@@ -82,10 +90,10 @@ public class Paddle extends MovableObject {
         if (e instanceof Wall) {
             float curVx = this.getVelocityX();
 
-            if(curVx < 0 && this.getX() > e.getX()) {
+            if (curVx < 0 && this.getX() > e.getX()) {
                 System.out.println("Paddle collision with Left wall");
                 setLinearVelocity(0, vy);
-            } else if(curVx > 0 && this.getX() < e.getX()) {
+            } else if (curVx > 0 && this.getX() < e.getX()) {
                 System.out.println("Paddle collision with Right wall");
                 setLinearVelocity(0, vy);
             }
