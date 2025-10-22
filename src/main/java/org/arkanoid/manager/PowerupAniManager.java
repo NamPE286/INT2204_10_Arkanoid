@@ -5,13 +5,10 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.image.Image;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +51,29 @@ public class PowerupAniManager {
 
     }
 
+
+    private AnimationChannel createAnimeChannel(int rowIndex) {
+        // Create a list to store all frame.
+        if (rowIndex < 0 || rowIndex >= rowNum) {
+           throw new IndexOutOfBoundsException("Out of bound");
+        }
+        List<Image> frames = new ArrayList<>();
+
+        int y = startY + ( rowIndex *  (spaceY + frameH) );
+
+        // Load each frame picture.
+        for (int j = 0; j < colNum; j++) {
+
+            int x = startX + j * (frameW + spaceX);
+
+            Image cutFrame = new WritableImage(
+                    powerSheet.getPixelReader(), x, y, frameW, frameH);
+            // add frame into list.
+            frames.add(cutFrame);
+        }
+        return new AnimationChannel(frames, Duration.seconds(1));
+    }
+
     /**
      * Getter for the animation.
      */
@@ -61,30 +81,6 @@ public class PowerupAniManager {
         return animationCache.get(type);
     }
 
-    private AnimationChannel createAnimeChannel(int rowIndex) {
-
-        // 1. Tạo một danh sách rỗng để chứa các khung hình đã cắt
-        List<Image> frames = new ArrayList<>();
-
-        // 2. Tính tọa độ Y của hàng này (code này của bạn đã đúng)
-        int y = startY + ( rowIndex *  (spaceY + frameH) );
-
-        // 3. Lặp qua 8 cột để cắt từng ô
-        for (int j = 0; j < colNum; j++) {
-
-            int x = startX + j * (frameW + spaceX);
-
-            Image cutFrame = new WritableImage(
-                    powerSheet.getPixelReader(), x, y, frameW, frameH);
-
-
-            // add frame into list.
-            frames.add(cutFrame);
-        }
-
-
-        return new AnimationChannel(frames, Duration.seconds(1));
-    }
 }
 
 
