@@ -40,6 +40,7 @@ public class Main extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("score", 0); // player score.
+        vars.put("highScore", 50000); // default high score.
     }
 
     @Override

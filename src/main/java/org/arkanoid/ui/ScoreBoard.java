@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 public class ScoreBoard {
 
     private Label scoreLabel;
+    private Label highScoreLabel;
 
     public ScoreBoard() {
         initLabels();
@@ -24,6 +25,15 @@ public class ScoreBoard {
         scoreLabel.setTranslateX(20);
         scoreLabel.setTranslateY(20);
 
+        // High Score
+        highScoreLabel = new Label();
+        highScoreLabel.setFont(nesFont);
+        highScoreLabel.setTextFill(Color.WHITE);
+        highScoreLabel.textProperty().bind(FXGL.getip("highScore").asString("HIGH SCORE %d"));
+        highScoreLabel.setTranslateX(FXGL.getAppWidth() / 2.0 - 100);
+        highScoreLabel.setTranslateY(20);
+
         FXGL.addUINode(scoreLabel);
+        FXGL.addUINode(highScoreLabel);
     }
 }
