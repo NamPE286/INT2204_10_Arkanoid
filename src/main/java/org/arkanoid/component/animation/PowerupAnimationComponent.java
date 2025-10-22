@@ -8,7 +8,7 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.PowerupType;
 
-import java.util.concurrent.atomic.LongAdder;
+
 
 public class PowerupAnimationComponent extends Component{
     private final AnimatedTexture texture;
