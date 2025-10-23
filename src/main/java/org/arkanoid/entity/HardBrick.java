@@ -12,9 +12,9 @@ public class HardBrick extends Brick {
      * Default constructor for serialization or framework usage.
      * Initializes a HardBrick with no position or texture information.
      */
-    public HardBrick() {
-        super();
-    }
+//    public HardBrick() {
+//        super();
+//    }
 
     /**
      * Creates a new {@code HardBrick} instance at a specific position and tile coordinates.
@@ -30,7 +30,7 @@ public class HardBrick extends Brick {
      * @param tileY  the Y index in the brick sprite sheet.
      */
     public HardBrick(int x, int y, int tileX, int tileY) {
-        super(tileX, tileY);
+        super(x, y, tileX, tileY);
         this.canDestroy = false; // Viên gạch không thể bị phá hủy
         this.health = 0;
 

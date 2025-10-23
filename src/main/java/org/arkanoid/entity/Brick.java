@@ -25,9 +25,9 @@ public abstract class Brick extends GameObject {
     /**
      * Constructs a new brick at the default position (0, 0).
      */
-    public Brick() {
-        super();
-    }
+//    public Brick() {
+//        super();
+//    }
 
     /**
      * Constructs a new brick at the specified coordinates.
@@ -35,7 +35,8 @@ public abstract class Brick extends GameObject {
      * @param tileX to position color
      * @param tileY to position color
      */
-    public Brick(int tileX, int tileY) {
+    public Brick(int x, int y, int tileX, int tileY) {
+        super(x, y);
         this.tileX = tileX;
         this.tileY = tileY;
     }
@@ -84,12 +85,13 @@ public abstract class Brick extends GameObject {
         canDestroy = false;
 
         // 20% pop out Power up
-        if(FXGLMath.randomBoolean(1)) {
+        if(FXGLMath.randomBoolean(1.0)) {
+            System.out.println("--- DA VAO HAM SPAWN POWERUP ---");
             Point2D brickPosition = entity.getPosition();
-
+            System.out.println(brickPosition.getX());
+            System.out.println(brickPosition.getY());
             SpawnData spawnData = new SpawnData(brickPosition);
-            ExtendPowerup ex = new ExtendPowerup();
-            ex.createEntity(spawnData);
+            new ExtendPowerup(spawnData);
 
         }
 

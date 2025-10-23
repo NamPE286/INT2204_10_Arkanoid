@@ -157,5 +157,7 @@ public class Ball extends MovableObject {
      */
     public Ball(int x, int y) {
         super(x, y);
+        spawn();
+        initInput();
     }
 }

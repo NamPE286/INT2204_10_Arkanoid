@@ -12,9 +12,16 @@ import org.arkanoid.component.animation.PowerupAnimationComponent;
 import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.PowerupType;
 
-public abstract class PowerUp extends MovableObject {
+public abstract class PowerUp extends GameObject {
     private final int speedDown = 80;
 
+    public PowerUp(SpawnData data) {
+
+        super((int)data.getX(), (int)data.getY());
+        spawn();
+        initInput();
+
+    }
     public abstract PowerupType getType();
 
 
@@ -25,8 +32,8 @@ public abstract class PowerUp extends MovableObject {
      */
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        final int W = PowerupAniManager.FRAME_W;
-        final int H = PowerupAniManager.FRAME_H;
+        final int W = 16;
+        final int H = 8;
 
         PowerupType currentType = getType();
         // Go through screen also disappear.
@@ -40,13 +47,21 @@ public abstract class PowerUp extends MovableObject {
                 .build();
     }
 
-    @Override
-    public void onCollisionWith(GameObject e) {
 
-        if (e instanceof Paddle) {
-            this.entity.removeFromWorld();
-        }
-    }
+//    public void onCollisionWith(GameObject e) {
+//
+//        if (e instanceof Paddle) {
+//            if (entity != null && entity.isActive()) {
+//                // Erase hitbox.
+//                if (entity.getBoundingBoxComponent() != null) {
+//                    entity.getBoundingBoxComponent().clearHitBoxes();
+//                }
+//
+//                // Erase from world.
+//                entity.removeFromWorld();
+//            }
+//        }
+//    }
 
     public abstract void applyEffect(Paddle paddle);
 }

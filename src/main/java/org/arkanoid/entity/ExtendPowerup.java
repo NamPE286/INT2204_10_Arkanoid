@@ -6,8 +6,11 @@ import org.arkanoid.manager.PowerupType;
 
 public class ExtendPowerup extends PowerUp{
 
-    public ExtendPowerup() {
-
+    /**
+     * Do notthing.
+     */
+    public ExtendPowerup(SpawnData data) {
+        super(data);
     }
 
     @Override

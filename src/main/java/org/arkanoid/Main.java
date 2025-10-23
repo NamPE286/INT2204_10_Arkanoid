@@ -19,6 +19,7 @@ public class Main extends GameApplication {
     private static final int THICK = WIDTH / 28;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
+
     //khai bao background
 
     @Override
@@ -48,13 +49,15 @@ public class Main extends GameApplication {
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(rightwall);
         var brick = new NormalBrick(300, 300, 1, 0);
+        var brick2 = new NormalBrick(360, 360, 2, 0);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(topwall)
                 .listenToCollisionWith(rightwall)
-                .listenToCollisionWith(brick);
+                .listenToCollisionWith(brick)
+                .listenToCollisionWith(brick2);
         gameObjects.add(paddle);
         gameObjects.add(ball);
         gameObjects.add(leftwall);
