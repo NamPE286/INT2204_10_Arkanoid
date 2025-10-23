@@ -36,6 +36,7 @@ public class PowerupAniManager {
             AnimationChannel anime = createAnimeChannel(i);
             // Store into map.
             animationCache.put(types[i], anime);
+            System.out.println("Loaded powerup animations: " + animationCache.keySet());
         }
 
     }

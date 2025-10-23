@@ -13,15 +13,10 @@ import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.PowerupType;
 
 public abstract class PowerUp extends MovableObject {
-    protected final int speedDown = 80;
-
-    protected PowerupType type;
-
-    public PowerUp(PowerupType type) {
-        this.type = type;
-    }
+    private final int speedDown = 80;
 
     public abstract PowerupType getType();
+
 
     /**
      *
@@ -33,14 +28,24 @@ public abstract class PowerUp extends MovableObject {
         final int W = PowerupAniManager.FRAME_W;
         final int H = PowerupAniManager.FRAME_H;
 
+        PowerupType currentType = getType();
+        // Go through screen also disappear.
         return FXGL.entityBuilder(spawnData)
                 .type(EntityType.POWERUP)
                 .bbox(new HitBox(BoundingShape.box(W, H)))
                 .with(new ProjectileComponent(new Point2D(0, 1 ), speedDown))
                 .collidable()
                 .with(new OffscreenCleanComponent())
-                .with(new PowerupAnimationComponent(type))
+                .with(new PowerupAnimationComponent(currentType))
                 .build();
+    }
+
+    @Override
+    public void onCollisionWith(GameObject e) {
+
+        if (e instanceof Paddle) {
+            this.entity.removeFromWorld();
+        }
     }
 
     public abstract void applyEffect(Paddle paddle);

@@ -19,8 +19,13 @@ public class PowerupAnimationComponent extends Component{
      */
     public PowerupAnimationComponent(PowerupType type) {
         PowerupAniManager aniManager = FXGL.geto("AnimationManager");
-
+        if (aniManager == null) {
+            throw new NullPointerException("AnimationManager chua duoc set vao FXGL!");
+        }
         this.animeLoop = aniManager.getAnimation(type);
+        if(this.animeLoop == null) {
+            throw new NullPointerException("Khong tim thay");
+        }
         // Khoi tao texture.
         this.texture = new AnimatedTexture(this.animeLoop);
     }

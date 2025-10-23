@@ -40,8 +40,6 @@ public class Ball extends MovableObject {
             this.onCollisionWith((Paddle) e);
         } else if (e instanceof Brick) {
             this.onCollisionWith((Brick) e);
-
-            // tao mot powerup o cho nay
         } else if (e instanceof Wall) {
             this.onCollisionWith((Wall) e);
         }
