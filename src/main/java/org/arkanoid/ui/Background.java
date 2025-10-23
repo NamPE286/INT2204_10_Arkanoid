@@ -30,7 +30,7 @@ public class Background {
             posX += BG_WIDTH + DISTANCE;
         }
     }
-    //constructor lam nhiem vu tai va cat anh 1 lan
+    //constructor for loading and cropping once.
     public Background() {
         this.textures = new Texture[NUM_BACKGROUND];
         loadAndCrop();
