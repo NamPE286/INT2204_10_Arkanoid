@@ -30,7 +30,7 @@ public class NormalBrick extends Brick {
      * @param tileY  the Y index in the brick texture atlas (sprite sheet).
      */
     public NormalBrick(int x, int y, int tileX, int tileY) {
-        super(tileX, tileY);
+        super(x, y, tileX, tileY);
         this.canDestroy = true; // Viên gạch có thể bị phá hủy
         this.health = 1;
 

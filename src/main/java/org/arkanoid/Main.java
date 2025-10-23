@@ -39,12 +39,14 @@ public class Main extends GameApplication {
         var leftwall = new Wall(0, 0, HEIGHT, THICK);
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
+        var brick = new NormalBrick(300, 300, 1, 0);
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(rightwall);
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
+                .listenToCollisionWith(brick)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(topwall)
                 .listenToCollisionWith(rightwall);

@@ -31,7 +31,8 @@ public abstract class Brick extends GameObject {
      * @param tileX to position color
      * @param tileY to position color
      */
-    public Brick(int tileX, int tileY) {
+    public Brick(int x, int y, int tileX, int tileY) {
+        super(x, y);
         this.tileX = tileX;
         this.tileY = tileY;
     }
