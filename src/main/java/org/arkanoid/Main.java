@@ -3,12 +3,15 @@ package org.arkanoid;
 import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.Background;
+import org.arkanoid.ui.ScoreBoard;
 
+import java.util.Map;
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
@@ -32,6 +35,12 @@ public class Main extends GameApplication {
         settings.setTicksPerSecond(60);
         settings.setSceneFactory(new SceneFactory());
 
+    }
+
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("score", 0); // player score.
+        vars.put("highScore", 50000); // default high score.
     }
 
     @Override
@@ -59,6 +68,8 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
+        // Init scoreboard.
+        new ScoreBoard();
         // Init background.
         Background backGround = new Background();
         backGround.displayLevel(1);
