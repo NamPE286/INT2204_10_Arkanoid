@@ -13,7 +13,7 @@ import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.PowerupType;
 
 public abstract class PowerUp extends GameObject {
-    private final int speedDown = 80;
+    private static final int speedDown = 80;
 
     public PowerUp(SpawnData data) {
 
@@ -32,15 +32,15 @@ public abstract class PowerUp extends GameObject {
      */
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        final int W = 16;
-        final int H = 8;
-
+        final int W = PowerupAniManager.FRAME_W;
+        final int H = PowerupAniManager.FRAME_H;
         PowerupType currentType = getType();
         // Go through screen also disappear.
+        // bat buoc phải thêm allowRotation(false) thì nó sẽ không xoay doc.
         return FXGL.entityBuilder(spawnData)
                 .type(EntityType.POWERUP)
                 .bbox(new HitBox(BoundingShape.box(W, H)))
-                .with(new ProjectileComponent(new Point2D(0, 1 ), speedDown))
+                .with(new ProjectileComponent(new Point2D(0, 1), speedDown).allowRotation(false))
                 .collidable()
                 .with(new OffscreenCleanComponent())
                 .with(new PowerupAnimationComponent(currentType))
