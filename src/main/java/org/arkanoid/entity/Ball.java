@@ -65,7 +65,7 @@ public class Ball extends MovableObject {
 
         double distanceBallToPaddleCenter = ballCenter - paddleCenter;
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
-        distanceRatio = Math.max(-1, Math.min(1, distanceRatio));
+        distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
         double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
             0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
 

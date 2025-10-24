@@ -10,7 +10,9 @@ import org.arkanoid.factory.SceneFactory;
 import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.Background;
+import org.arkanoid.ui.ScoreBoard;
 
+import java.util.Map;
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
@@ -38,6 +40,12 @@ public class Main extends GameApplication {
     }
 
     @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("score", 0); // player score.
+        vars.put("highScore", 50000); // default high score.
+    }
+
+    @Override
     protected void initGame() {
         PowerupAniManager aniManager = new PowerupAniManager();
         aniManager.loadAnimations();
@@ -45,6 +53,7 @@ public class Main extends GameApplication {
         var leftwall = new Wall(0, 0, HEIGHT, THICK);
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
+        var brick = new NormalBrick(300, 300, 1, 0);
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(rightwall);
@@ -53,6 +62,7 @@ public class Main extends GameApplication {
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
+                .listenToCollisionWith(brick)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(topwall)
                 .listenToCollisionWith(rightwall)
@@ -69,6 +79,8 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
+        // Init scoreboard.
+        new ScoreBoard();
         // Init background.
         Background backGround = new Background();
         backGround.displayLevel(1);
