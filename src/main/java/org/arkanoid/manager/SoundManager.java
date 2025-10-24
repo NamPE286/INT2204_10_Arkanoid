@@ -12,8 +12,14 @@ import java.util.HashMap;
  * </p>
  */
 public class SoundManager {
+    private static final HashMap<String, Sound> soundHashMap = new HashMap<>();
 
-    private final static HashMap<String, Sound> soundHashMap = new HashMap<>();
+    /**
+     * Define a non-public constructor to prevent the class from being instantiated.
+     */
+    private SoundManager() {
+
+    }
 
     /**
      * Loads a sound file into the cache. If the sound already exists in the cache, the method does
