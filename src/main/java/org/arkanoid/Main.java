@@ -57,7 +57,6 @@ public class Main extends GameApplication {
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(rightwall);
-        var brick = new NormalBrick(300, 300, 1, 0);
         var brick2 = new NormalBrick(360, 360, 2, 0);
 
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
