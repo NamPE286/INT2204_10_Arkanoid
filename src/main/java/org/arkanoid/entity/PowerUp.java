@@ -56,6 +56,8 @@ public abstract class PowerUp extends MovableObject {
 
 
     public void onCollisionWith(GameObject e) {
+        System.out.println("Power up collided with paddle");
+
         if (e instanceof Paddle) {
             if (entity != null && entity.isActive()) {
                 // Erase hitbox.
