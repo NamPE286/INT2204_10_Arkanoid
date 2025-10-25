@@ -9,9 +9,11 @@ import org.arkanoid.entity.Brick;
 import org.arkanoid.entity.NormalBrick;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.Wall;
+import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.SoundManager;
 
 public class Level implements MonoBehaviour {
+
     Paddle paddle;
     Ball ball;
     List<Brick> bricks = new ArrayList<>();
@@ -21,6 +23,11 @@ public class Level implements MonoBehaviour {
             .setPaddle(paddle));
         bricks.add(new NormalBrick(360, 360, 2, 0)
             .setPaddle(paddle));
+    }
+
+    public void setBackground() {
+        BackgroundManager backGround = BackgroundManager.getInstance();
+        backGround.displayLevel(1);
     }
 
     public void onUpdate(double deltaTime) {

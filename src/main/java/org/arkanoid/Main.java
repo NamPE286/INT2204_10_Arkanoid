@@ -4,9 +4,8 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import org.arkanoid.core.Game;
-import org.arkanoid.core.Level;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.ui.Background;
+import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.ui.ScoreBoard;
 
 import java.util.Map;
@@ -16,7 +15,7 @@ public class Main extends GameApplication {
     public static final int HEIGHT = 768;
     public static final int WIDTH = 672;
     Game game;
-    //khai bao background
+    ScoreBoard scoreBoard;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -30,7 +29,6 @@ public class Main extends GameApplication {
         settings.setDeveloperMenuEnabled(true);
         settings.setTicksPerSecond(60);
         settings.setSceneFactory(new SceneFactory());
-
     }
 
     @Override
@@ -46,11 +44,8 @@ public class Main extends GameApplication {
 
     @Override
     protected void initUI() {
-        // Init scoreboard.
-        new ScoreBoard();
-        // Init background.
-        Background backGround = new Background();
-        backGround.displayLevel(1);
+        scoreBoard = new ScoreBoard();
+        game.initUI();
     }
 
 
