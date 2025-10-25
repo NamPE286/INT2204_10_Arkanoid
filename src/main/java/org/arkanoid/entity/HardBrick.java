@@ -30,7 +30,7 @@ public class HardBrick extends Brick {
      * @param tileY  the Y index in the brick sprite sheet.
      */
     public HardBrick(int x, int y, int tileX, int tileY) {
-        super(tileX, tileY);
+        super(x, y, tileX, tileY);
         this.canDestroy = false; // Viên gạch không thể bị phá hủy
         this.health = 0;
 

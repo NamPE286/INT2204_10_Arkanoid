@@ -76,6 +76,8 @@ public class Paddle extends MovableObject {
      */
     public Paddle(int x, int y) {
         super(x, y);
+        spawn();
+        initInput();
     }
 
 

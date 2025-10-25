@@ -153,7 +153,7 @@ abstract public class GameObject {
      */
     public GameObject(int x, int y) {
         entity = createEntity(new SpawnData(x, y));
-        spawn();
-        initInput();
+        /*spawn();
+        initInput();*/
     }
 }
