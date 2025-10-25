@@ -1,12 +1,12 @@
-package org.arkanoid.core;
+package org.arkanoid.level;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.entity.Ball;
-import org.arkanoid.entity.Brick;
-import org.arkanoid.entity.NormalBrick;
+import org.arkanoid.entity.brick.Brick;
+import org.arkanoid.entity.brick.NormalBrick;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.Wall;
 import org.arkanoid.manager.BackgroundManager;

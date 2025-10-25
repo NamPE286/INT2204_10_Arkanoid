@@ -1,17 +1,15 @@
-package org.arkanoid.entity;
+package org.arkanoid.entity.powerUp;
 
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import org.arkanoid.entity.Paddle;
 import org.arkanoid.manager.PowerupType;
-import java.util.List;
-import java.util.ArrayList;
 
-public class ExtendPowerup extends PowerUp{
+public class ExtendPowerUp extends PowerUp {
 
     /**
      * Do notthing.
      */
-    public ExtendPowerup(SpawnData data) {
+    public ExtendPowerUp(SpawnData data) {
         super(data);
        
     }

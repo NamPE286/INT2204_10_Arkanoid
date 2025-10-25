@@ -1,4 +1,4 @@
-package org.arkanoid.entity;
+package org.arkanoid.core;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;

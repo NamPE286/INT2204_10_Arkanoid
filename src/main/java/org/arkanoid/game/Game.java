@@ -1,6 +1,7 @@
-package org.arkanoid.core;
+package org.arkanoid.game;
 
 import org.arkanoid.behaviour.MonoBehaviour;
+import org.arkanoid.level.Level;
 
 public class Game implements MonoBehaviour {
     Level currentLevel;

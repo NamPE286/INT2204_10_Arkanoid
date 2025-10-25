@@ -5,8 +5,9 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import org.arkanoid.core.GameObject;
 
-public class Wall extends GameObject{
+public class Wall extends GameObject {
     private final double wallHeight;
     private final double wallThick;
 
