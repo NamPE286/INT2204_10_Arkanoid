@@ -57,23 +57,6 @@ public abstract class PowerUp extends MovableObject {
         return e;
     }
 
-
-    public void onCollisionWith(GameObject e) {
-        System.out.println("Power up collided with paddle");
-
-        if (e instanceof Paddle) {
-            if (entity != null && entity.isActive()) {
-                // Erase hitbox.
-                if (entity.getBoundingBoxComponent() != null) {
-                    entity.getBoundingBoxComponent().clearHitBoxes();
-                }
-
-                // Erase from world.
-                entity.removeFromWorld();
-            }
-        }
-    }
-
     public abstract void applyEffect(Paddle paddle);
 
 }
