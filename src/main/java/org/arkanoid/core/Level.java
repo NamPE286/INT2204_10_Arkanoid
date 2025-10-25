@@ -11,8 +11,6 @@ import org.arkanoid.entity.Wall;
 import org.arkanoid.manager.SoundManager;
 
 public class Level {
-    private static final int WALL_THICKNESS = Main.WIDTH / 28;
-
     Paddle paddle;
     Ball ball;
     List<Brick> bricks = new ArrayList<>();
@@ -34,6 +32,8 @@ public class Level {
     }
 
     public Level() {
+        final int WALL_THICKNESS = Main.WIDTH / 28;
+
         var leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
         var topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
         var rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
