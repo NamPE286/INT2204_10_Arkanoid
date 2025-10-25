@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PowerupAniManager {
+public class PowerupAnimationManager {
     public static final int FRAME_W = 14;
     public static final int FRAME_H = 7;
     public static final int COL_NUM = 8;
@@ -24,16 +24,16 @@ public class PowerupAniManager {
     /**
      * Using map to store the type of power up.
      */
-    private Map<PowerupType, AnimationChannel> animationCache = new HashMap<>();
-    private Image powerSheet;
+    private static Map<PowerupType, AnimationChannel> animationCache = new HashMap<>();
+    private static Image powerSheet;
 
-    public void loadAnimations() {
-        powerSheet = FXGL.image("powerups.png");
+    public static void load(String path) {
+        powerSheet = FXGL.image(path);
         PowerupType[] types = PowerupType.values();
         
         for (int i = 0; i < types.length; i++) {
             // Cut each row.
-            AnimationChannel anime = createAnimeChannel(i);
+            AnimationChannel anime = createAnimationChannel(i);
             // Store into map.
             animationCache.put(types[i], anime);
             System.out.println("Loaded powerup animations: " + animationCache.keySet());
@@ -41,7 +41,7 @@ public class PowerupAniManager {
 
     }
 
-    private AnimationChannel createAnimeChannel(int rowIndex) {
+    private static AnimationChannel createAnimationChannel(int rowIndex) {
         // Create a list to store all frame.
         if (rowIndex < 0 || rowIndex >= ROW_NUM) {
            throw new IndexOutOfBoundsException("Out of bound");
@@ -66,7 +66,7 @@ public class PowerupAniManager {
     /**
      * Getter for the animation.
      */
-    public AnimationChannel getAnimation(PowerupType type) {
+    public static AnimationChannel get(PowerupType type) {
         return animationCache.get(type);
     }
 

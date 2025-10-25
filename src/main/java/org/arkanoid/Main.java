@@ -7,7 +7,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.manager.PowerupAniManager;
+import org.arkanoid.manager.PowerupAnimationManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.Background;
 import org.arkanoid.ui.ScoreBoard;
@@ -47,9 +47,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        PowerupAniManager aniManager = new PowerupAniManager();
-        aniManager.loadAnimations();
-        FXGL.set("AnimationManager", aniManager);
+        PowerupAnimationManager.load("powerups.png");
         var leftwall = new Wall(0, 0, HEIGHT, THICK);
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);

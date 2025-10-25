@@ -6,7 +6,7 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import org.arkanoid.entity.NormalBrick;
-import org.arkanoid.manager.PowerupAniManager;
+import org.arkanoid.manager.PowerupAnimationManager;
 import org.arkanoid.manager.PowerupType;
 
 
@@ -18,11 +18,7 @@ public class PowerupAnimationComponent extends Component {
      * Constructor tao ra PowerUp base to PowerUp type.
      */
     public PowerupAnimationComponent(PowerupType type) {
-        PowerupAniManager aniManager = FXGL.geto("AnimationManager");
-        if (aniManager == null) {
-            throw new NullPointerException("AnimationManager chua duoc set vao FXGL!");
-        }
-        this.animeLoop = aniManager.getAnimation(type);
+        this.animeLoop = PowerupAnimationManager.get(type);
         if (this.animeLoop == null) {
             throw new NullPointerException("Khong tim thay");
         }

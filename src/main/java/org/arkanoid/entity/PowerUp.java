@@ -9,7 +9,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import org.arkanoid.component.animation.PowerupAnimationComponent;
-import org.arkanoid.manager.PowerupAniManager;
+import org.arkanoid.manager.PowerupAnimationManager;
 import org.arkanoid.manager.PowerupType;
 
 public abstract class PowerUp extends MovableObject{
@@ -32,8 +32,8 @@ public abstract class PowerUp extends MovableObject{
      */
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        final int W = PowerupAniManager.FRAME_W;
-        final int H = PowerupAniManager.FRAME_H;
+        final int W = PowerupAnimationManager.FRAME_W;
+        final int H = PowerupAnimationManager.FRAME_H;
         PowerupType currentType = getType();
         // Go through screen also disappear.
         // bat buoc phải thêm allowRotation(false) thì nó sẽ không xoay doc.
