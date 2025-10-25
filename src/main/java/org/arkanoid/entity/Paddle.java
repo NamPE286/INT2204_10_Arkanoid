@@ -99,6 +99,16 @@ public class Paddle extends MovableObject {
                 System.out.println("Paddle collision with Right wall");
                 setLinearVelocity(0, vy);
             }
+        } else if (e instanceof ExtendPowerup) {
+            if (e.entity != null && e.entity.isActive()) {
+                // Erase hitbox.
+                if (e.entity.getBoundingBoxComponent() != null) {
+                    entity.getBoundingBoxComponent().clearHitBoxes();
+                }
+
+                // Erase from world.
+                e.entity.removeFromWorld();
+            }
         }
 
     }

@@ -12,9 +12,9 @@ public class HardBrick extends Brick {
      * Default constructor for serialization or framework usage.
      * Initializes a HardBrick with no position or texture information.
      */
-    public HardBrick() {
-        super();
-    }
+//    public HardBrick() {
+//        super();
+//    }
 
     /**
      * Creates a new {@code HardBrick} instance at a specific position and tile coordinates.

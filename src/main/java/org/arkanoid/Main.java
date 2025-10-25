@@ -7,6 +7,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.entity.*;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
+import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.Background;
 import org.arkanoid.ui.ScoreBoard;
@@ -20,6 +21,7 @@ public class Main extends GameApplication {
     private static final int THICK = WIDTH / 28;
     private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
+
     //khai bao background
 
     @Override
@@ -45,6 +47,9 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
+        PowerupAniManager aniManager = new PowerupAniManager();
+        aniManager.loadAnimations();
+        FXGL.set("AnimationManager", aniManager);
         var leftwall = new Wall(0, 0, HEIGHT, THICK);
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
@@ -52,13 +57,18 @@ public class Main extends GameApplication {
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(rightwall);
+        var brick = new NormalBrick(300, 300, 1, 0);
+        var brick2 = new NormalBrick(360, 360, 2, 0);
+
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
                 .setLinearVelocity(300f, 300f)
                 .listenToCollisionWith(paddle)
                 .listenToCollisionWith(brick)
                 .listenToCollisionWith(leftwall)
                 .listenToCollisionWith(topwall)
-                .listenToCollisionWith(rightwall);
+                .listenToCollisionWith(rightwall)
+                .listenToCollisionWith(brick)
+                .listenToCollisionWith(brick2);
         gameObjects.add(paddle);
         gameObjects.add(ball);
         gameObjects.add(leftwall);

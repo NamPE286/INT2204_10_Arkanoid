@@ -30,7 +30,7 @@ public class Background {
             posX += BG_WIDTH + DISTANCE;
         }
     }
-    //constructor lam nhiem vu tai va cat anh 1 lan
+    //constructor for loading and cropping once.
     public Background() {
         this.textures = new Texture[NUM_BACKGROUND];
         loadAndCrop();
@@ -58,8 +58,8 @@ public class Background {
         /*
            Create an new entity for loading background.
            at (0, 0), zIndex is the order of background,
-           insure that background behind all of things,
-           bulid and attach into game world.
+           ensure that background behind of the things,
+           build and attach into game world.
          */
         currentBackground = FXGL.entityBuilder()
                 .at(0, 48)

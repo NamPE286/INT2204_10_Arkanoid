@@ -1,11 +1,15 @@
 package org.arkanoid.entity;
 
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import org.arkanoid.manager.PowerupType;
 import org.arkanoid.utilities.TextureUtils;
+import javafx.geometry.Point2D;
+
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -21,9 +25,9 @@ public abstract class Brick extends GameObject {
     /**
      * Constructs a new brick at the default position (0, 0).
      */
-    public Brick() {
-        super();
-    }
+//    public Brick() {
+//        super();
+//    }
 
     /**
      * Constructs a new brick at the specified coordinates.
@@ -79,6 +83,16 @@ public abstract class Brick extends GameObject {
             return; // Nếu gạch là loại không thể bị phá hoặc có máu > 0 thì không destroy
         }
         canDestroy = false;
+
+        // 36% pop out Power up
+        if(FXGLMath.randomBoolean(1.0)) {
+            System.out.println("--- DA VAO HAM SPAWN POWERUP ---");
+            Point2D brickPosition = entity.getPosition();
+            System.out.println(brickPosition.getX());
+            System.out.println(brickPosition.getY());
+            SpawnData spawnData = new SpawnData(brickPosition);
+            new ExtendPowerup(spawnData);
+        }
 
         if (entity != null && entity.isActive()) {
             // Xóa hitBox (tránh bị lỗi crash: BoundingBoxComponent.getEntity() is null)

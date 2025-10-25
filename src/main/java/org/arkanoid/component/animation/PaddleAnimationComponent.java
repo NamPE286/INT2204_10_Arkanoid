@@ -45,6 +45,7 @@ public class PaddleAnimationComponent extends Component {
         animLoop = new AnimationChannel(getIdleFrames(), Duration.seconds(1));
 
         texture = new AnimatedTexture(animInit);
+
     }
 
     @Override
