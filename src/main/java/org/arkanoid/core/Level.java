@@ -3,6 +3,7 @@ package org.arkanoid.core;
 import java.util.ArrayList;
 import java.util.List;
 import org.arkanoid.Main;
+import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.entity.Ball;
 import org.arkanoid.entity.Brick;
 import org.arkanoid.entity.NormalBrick;
@@ -10,7 +11,7 @@ import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.Wall;
 import org.arkanoid.manager.SoundManager;
 
-public class Level {
+public class Level implements MonoBehaviour {
     Paddle paddle;
     Ball ball;
     List<Brick> bricks = new ArrayList<>();

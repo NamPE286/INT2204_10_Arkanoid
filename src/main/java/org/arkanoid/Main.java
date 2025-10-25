@@ -3,6 +3,7 @@ package org.arkanoid;
 import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import org.arkanoid.core.Game;
 import org.arkanoid.core.Level;
 import org.arkanoid.factory.SceneFactory;
 import org.arkanoid.ui.Background;
@@ -14,7 +15,7 @@ public class Main extends GameApplication {
 
     public static final int HEIGHT = 768;
     public static final int WIDTH = 672;
-    Level level;
+    Game game;
     //khai bao background
 
     @Override
@@ -40,7 +41,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        level = new Level();
+        game = new Game();
     }
 
     @Override
@@ -55,7 +56,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void onUpdate(double deltaTime) {
-        level.onUpdate(deltaTime);
+        game.onUpdate(deltaTime);
     }
 
     static void main(String[] args) {
