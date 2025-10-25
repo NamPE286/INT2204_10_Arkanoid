@@ -8,15 +8,32 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainMenu extends FXGLMenu {
 
     private Font nesFont;
+
+    // Danh sách các lựa chọn menu (START GAME, EXIT GAME)
+    private List<Label> menuItems = new ArrayList<>();
+
+    // Danh sách các mũi tên hiển thị bên cạnh lựa chọn
+    private List<ImageView> arrowSlots = new ArrayList<>();
+
+    // Chỉ số của lựa chọn hiện tại
+    private int currentIndex = 0;
+
+    // Hình ảnh mũi tên
+    private ImageView arrowImage;
+
 
     public MainMenu(MenuType type) {
         super(MenuType.MAIN_MENU);
@@ -40,22 +57,49 @@ public class MainMenu extends FXGLMenu {
         HBox logoBox = new HBox(logoView);
         logoBox.setAlignment(Pos.CENTER);
 
-        // Tạo nhãn kiểu NES (Start, Exit)
-        Label startLabel = createMenuLabel("START GAME", this::fireNewGame);
-        Label exitLabel = createMenuLabel("EXIT GAME", () -> FXGL.getGameController().exit());
+        // Loát ảnh mũi tên.
+        Texture arrowTexture = FXGL.texture("arrow.png");
+        arrowTexture.setFitWidth(24);
+        arrowTexture.setPreserveRatio(true);
+        arrowImage = new ImageView(arrowTexture.getImage());
+        arrowImage.setSmooth(false);
 
-        // Gom nhãn lại thành VBox
-        VBox menuOptions = new VBox(20, startLabel, exitLabel);
-        menuOptions.setAlignment(Pos.CENTER);
+        // Các lựa chọn trong mainmenu.
+        String[] options = {"START GAME", "EXIT  GAME"};
+
+        // VBox chứa các dòng lựa chọn.
+        VBox menuVBox = new VBox(20);
+        menuVBox.setAlignment(Pos.CENTER);
+
+        // Tạo từng lựa chọn gồm label + chỗ hiển thị mũi tên.
+        for (String option : options) {
+            // Tạo label.
+            Label label = new Label(option);
+            label.setFont(nesFont);
+            label.setTextFill(Color.WHITE);
+
+            // Chỗ gắn mũi tên.
+            ImageView arrowSlot = new ImageView();
+            arrowSlot.setFitWidth(24);
+            arrowSlot.setPreserveRatio(true);
+
+            // HBox label + mũi tên.
+            HBox row = new HBox(15, arrowSlot, label);
+            row.setAlignment(Pos.CENTER);
+
+            // lưu vào.
+            menuItems.add(label);
+            arrowSlots.add(arrowSlot);
+            menuVBox.getChildren().add(row);
+        }
 
         // Thêm bản quyền nhỏ ở cuối
         Label copyright = new Label("HANOI36PP");
         copyright.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 16));
         copyright.setTextFill(Color.GRAY);
-        copyright.setAlignment(Pos.CENTER);
 
         // Gom toàn bộ phần logo, menu và bản quyền vào VBox
-        VBox menuBox = new VBox(30, logoBox, menuOptions, copyright);
+        VBox menuBox = new VBox(30, logoBox, menuVBox, copyright);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
 
@@ -64,24 +108,37 @@ public class MainMenu extends FXGLMenu {
 
         // Thêm menuBox vào giao diện
         getContentRoot().getChildren().add(menuBox);
+        getContentRoot().setFocusTraversable(true);
+        getContentRoot().requestFocus();
+        getContentRoot().setOnMouseClicked(e -> e.consume()); // Không cho chuột click.
+
+        // Thêm điều khiển bàn phím và highlight.
+        addKeyControls();
+        highlightCurrent();
     }
 
-    /**
-     * Tạo một Label có font NES, hiệu ứng hover xanh lá, và hành động khi click.
-     */
-    private Label createMenuLabel(String text, Runnable action) {
-        Label label = new Label(text);
-        label.setFont(nesFont);
-        label.setTextFill(Color.WHITE);
-        label.setStyle("-fx-cursor: hand;");
+    // Xử lý phím.
+    private void addKeyControls() {
+        getContentRoot().setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SPACE) {
+                currentIndex = (currentIndex + 1) % menuItems.size();
+                highlightCurrent();
+            }
+            if (e.getCode() == KeyCode.ENTER) {
+                if (currentIndex == 0) {
+                    fireNewGame();
+                } else {
+                    FXGL.getGameController().exit();
+                }
+            }
+        });
+    }
 
-        // Khi di chuột vào → đổi sang màu xanh lá
-        label.setOnMouseEntered(e -> label.setTextFill(Color.LIMEGREEN));
-        // Khi rời chuột ra → về trắng
-        label.setOnMouseExited(e -> label.setTextFill(Color.WHITE));
-        // Khi nhấn chuột → chạy hành động
-        label.setOnMouseClicked(e -> action.run());
-
-        return label;
+    // Đổi màu và gắn mũi tên vào lựa chọn.
+    private void highlightCurrent() {
+        for (int i = 0; i < menuItems.size(); i++) {
+            arrowSlots.get(i).setImage(i == currentIndex ? arrowImage.getImage() : null);
+            menuItems.get(i).setTextFill(i == currentIndex ? Color.GREEN : Color.WHITE);
+        }
     }
 }
