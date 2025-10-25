@@ -1,4 +1,4 @@
-package org.arkanoid.entity.powerUp;
+package org.arkanoid.entity.powerup;
 
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.core.GameObject;

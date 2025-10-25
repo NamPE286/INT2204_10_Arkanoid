@@ -1,4 +1,4 @@
-package org.arkanoid.entity.powerUp;
+package org.arkanoid.entity.powerup;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
@@ -9,7 +9,6 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.component.animation.PowerupAnimationComponent;
 import org.arkanoid.entity.EntityType;
-import org.arkanoid.core.GameObject;
 import org.arkanoid.core.MovableObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.manager.PowerupAnimationManager;

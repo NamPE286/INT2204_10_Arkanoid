@@ -11,7 +11,6 @@ import javafx.scene.input.KeyCode;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.core.GameObject;
 import org.arkanoid.core.MovableObject;
-import org.arkanoid.entity.powerUp.ExtendPowerUp;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;

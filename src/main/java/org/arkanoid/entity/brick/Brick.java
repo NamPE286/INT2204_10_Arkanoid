@@ -2,10 +2,10 @@ package org.arkanoid.entity.brick;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.SpawnData;
-import org.arkanoid.entity.powerUp.ExtendPowerUp;
+import org.arkanoid.entity.powerup.ExtendPowerUp;
 import org.arkanoid.core.GameObject;
 import org.arkanoid.entity.Paddle;
-import org.arkanoid.entity.powerUp.PowerUp;
+import org.arkanoid.entity.powerup.PowerUp;
 import javafx.geometry.Point2D;
 
 
