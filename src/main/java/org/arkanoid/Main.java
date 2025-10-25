@@ -3,26 +3,18 @@ package org.arkanoid;
 import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.dsl.FXGL;
-import org.arkanoid.entity.*;
-import org.arkanoid.factory.LabelFactory;
+import org.arkanoid.core.Level;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.manager.PowerupAnimationManager;
-import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.Background;
 import org.arkanoid.ui.ScoreBoard;
 
 import java.util.Map;
-import java.util.ArrayList;
 
 public class Main extends GameApplication {
 
-    private static final int HEIGHT = 768;
-    private static final int WIDTH = 672;
-    private static final int THICK = WIDTH / 28;
-    private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
-    private final ArrayList<GameObject> gameObjects = new ArrayList<>();
-
+    public static final int HEIGHT = 768;
+    public static final int WIDTH = 672;
+    Level level;
     //khai bao background
 
     @Override
@@ -48,37 +40,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        PowerupAnimationManager.load("powerups.png");
-        var leftwall = new Wall(0, 0, HEIGHT, THICK);
-        var topwall = new Wall(0, 48, THICK, WIDTH);
-        var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
-        var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
-            .listenToCollisionWith(leftwall)
-            .listenToCollisionWith(rightwall);
-        var brick = new NormalBrick(300, 300, 1, 0)
-            .setPaddle((Paddle) paddle);
-        var brick2 = new NormalBrick(360, 360, 2, 0)
-            .setPaddle((Paddle) paddle);
-
-        var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
-            .setLinearVelocity(300f, 300f)
-            .listenToCollisionWith(paddle)
-            .listenToCollisionWith(brick)
-            .listenToCollisionWith(leftwall)
-            .listenToCollisionWith(topwall)
-            .listenToCollisionWith(rightwall)
-            .listenToCollisionWith(brick)
-            .listenToCollisionWith(brick2);
-
-        gameObjects.add(paddle);
-        gameObjects.add(ball);
-        gameObjects.add(leftwall);
-        gameObjects.add(topwall);
-        gameObjects.add(rightwall);
-        gameObjects.add(brick);
-        gameObjects.add(brick2);
-
-        SoundManager.play("round_start.mp3");
+        level = new Level();
     }
 
     @Override
@@ -93,9 +55,7 @@ public class Main extends GameApplication {
 
     @Override
     protected void onUpdate(double deltaTime) {
-        for (var i : gameObjects) {
-            i.onUpdate(deltaTime);
-        }
+        level.onUpdate(deltaTime);
     }
 
     static void main(String[] args) {
