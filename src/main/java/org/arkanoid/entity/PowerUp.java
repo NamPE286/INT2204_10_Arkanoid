@@ -35,6 +35,8 @@ public abstract class PowerUp extends MovableObject {
      */
     @Override
     protected Entity createEntity(SpawnData spawnData) {
+        PowerupAnimationManager.load("powerups.png");
+
         final int W = PowerupAnimationManager.FRAME_W;
         final int H = PowerupAnimationManager.FRAME_H;
         PowerupType currentType = getType();

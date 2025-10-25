@@ -48,7 +48,6 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        PowerupAnimationManager.load("powerups.png");
         var leftwall = new Wall(0, 0, HEIGHT, THICK);
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
