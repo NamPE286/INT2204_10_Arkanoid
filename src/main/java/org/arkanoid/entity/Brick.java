@@ -85,14 +85,13 @@ public abstract class Brick extends GameObject {
         canDestroy = false;
 
         // 36% pop out Power up
-        if(FXGLMath.randomBoolean(0.36)) {
+        if(FXGLMath.randomBoolean(1.0)) {
             System.out.println("--- DA VAO HAM SPAWN POWERUP ---");
             Point2D brickPosition = entity.getPosition();
             System.out.println(brickPosition.getX());
             System.out.println(brickPosition.getY());
             SpawnData spawnData = new SpawnData(brickPosition);
             new ExtendPowerup(spawnData);
-
         }
 
         if (entity != null && entity.isActive()) {

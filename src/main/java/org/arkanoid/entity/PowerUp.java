@@ -12,8 +12,8 @@ import org.arkanoid.component.animation.PowerupAnimationComponent;
 import org.arkanoid.manager.PowerupAniManager;
 import org.arkanoid.manager.PowerupType;
 
-public abstract class PowerUp extends GameObject {
-    private static final int speedDown = 80;
+public abstract class PowerUp extends MovableObject{
+    private static final int speedDown = 100;
 
     public PowerUp(SpawnData data) {
 
@@ -48,20 +48,20 @@ public abstract class PowerUp extends GameObject {
     }
 
 
-//    public void onCollisionWith(GameObject e) {
-//
-//        if (e instanceof Paddle) {
-//            if (entity != null && entity.isActive()) {
-//                // Erase hitbox.
-//                if (entity.getBoundingBoxComponent() != null) {
-//                    entity.getBoundingBoxComponent().clearHitBoxes();
-//                }
-//
-//                // Erase from world.
-//                entity.removeFromWorld();
-//            }
-//        }
-//    }
+    public void onCollisionWith(GameObject e) {
+
+        if (e instanceof Paddle) {
+            if (entity != null && entity.isActive()) {
+                // Erase hitbox.
+                if (entity.getBoundingBoxComponent() != null) {
+                    entity.getBoundingBoxComponent().clearHitBoxes();
+                }
+
+                // Erase from world.
+                entity.removeFromWorld();
+            }
+        }
+    }
 
     public abstract void applyEffect(Paddle paddle);
 }
