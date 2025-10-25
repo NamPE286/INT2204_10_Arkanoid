@@ -29,14 +29,18 @@ public class ExtendPowerUp extends PowerUp {
     public void onCollisionWith(GameObject e) {
         System.out.println("Power up collided with paddle");
 
-        if (e instanceof Paddle) {
-            if (entity != null && entity.isActive()) {
-                if (entity.getBoundingBoxComponent() != null) {
-                    entity.getBoundingBoxComponent().clearHitBoxes();
-                }
-
-                entity.removeFromWorld();
-            }
+        if (!(e instanceof Paddle)) {
+            return;
         }
+
+        if (!(entity != null && entity.isActive())) {
+            return;
+        }
+
+        if (entity.getBoundingBoxComponent() != null) {
+            entity.getBoundingBoxComponent().clearHitBoxes();
+        }
+
+        entity.removeFromWorld();
     }
 }
