@@ -1,5 +1,7 @@
 package org.arkanoid.entity;
 
+import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.OffscreenCleanComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
@@ -12,16 +14,17 @@ import org.arkanoid.component.animation.PowerupAnimationComponent;
 import org.arkanoid.manager.PowerupAnimationManager;
 import org.arkanoid.manager.PowerupType;
 
-public abstract class PowerUp extends MovableObject{
+public abstract class PowerUp extends MovableObject {
+
     private static final int speedDown = 100;
 
     public PowerUp(SpawnData data) {
-
-        super((int)data.getX(), (int)data.getY());
+        super((int) data.getX(), (int) data.getY());
         spawn();
         initInput();
-
+        setLinearVelocity(0, 100);
     }
+
     public abstract PowerupType getType();
 
 
@@ -37,19 +40,22 @@ public abstract class PowerUp extends MovableObject{
         PowerupType currentType = getType();
         // Go through screen also disappear.
         // bat buoc phải thêm allowRotation(false) thì nó sẽ không xoay doc.
-        return FXGL.entityBuilder(spawnData)
-                .type(EntityType.POWERUP)
-                .bbox(new HitBox(BoundingShape.box(W, H)))
-                .with(new ProjectileComponent(new Point2D(0, 1), speedDown).allowRotation(false))
-                .collidable()
-                .with(new OffscreenCleanComponent())
-                .with(new PowerupAnimationComponent(currentType))
-                .build();
+
+        var e = entityBuilder(spawnData)
+            .type(EntityType.POWERUP)
+            .bbox(new HitBox(BoundingShape.box(W, H)))
+            .with(new OffscreenCleanComponent())
+            .with(new PowerupAnimationComponent(currentType))
+            .build();
+
+        e.setScaleX(0.5);
+        e.setScaleY(0.5);
+
+        return e;
     }
 
 
     public void onCollisionWith(GameObject e) {
-
         if (e instanceof Paddle) {
             if (entity != null && entity.isActive()) {
                 // Erase hitbox.

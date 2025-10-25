@@ -66,11 +66,14 @@ public class Main extends GameApplication {
                 .listenToCollisionWith(rightwall)
                 .listenToCollisionWith(brick)
                 .listenToCollisionWith(brick2);
+
         gameObjects.add(paddle);
         gameObjects.add(ball);
         gameObjects.add(leftwall);
         gameObjects.add(topwall);
         gameObjects.add(rightwall);
+        gameObjects.add(brick);
+        gameObjects.add(brick2);
 
         SoundManager.play("round_start.mp3");
     }

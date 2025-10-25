@@ -15,6 +15,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public abstract class Brick extends GameObject {
 
+    PowerUp powerUp;
     protected int tileX;
     protected int tileY;
     protected final int width = 16;
@@ -85,13 +86,13 @@ public abstract class Brick extends GameObject {
         canDestroy = false;
 
         // 36% pop out Power up
-        if(FXGLMath.randomBoolean(1.0)) {
+        if (FXGLMath.randomBoolean(1.0)) {
             System.out.println("--- DA VAO HAM SPAWN POWERUP ---");
             Point2D brickPosition = entity.getPosition();
             System.out.println(brickPosition.getX());
             System.out.println(brickPosition.getY());
             SpawnData spawnData = new SpawnData(brickPosition);
-            new ExtendPowerup(spawnData);
+            powerUp = new ExtendPowerup(spawnData);
         }
 
         if (entity != null && entity.isActive()) {
@@ -102,6 +103,13 @@ public abstract class Brick extends GameObject {
 
             // Xóa khỏi world
             entity.removeFromWorld();
+        }
+    }
+
+    @Override
+    public void onUpdate(double deltaTime) {
+        if (powerUp != null) {
+            powerUp.onUpdate(deltaTime);
         }
     }
 }
