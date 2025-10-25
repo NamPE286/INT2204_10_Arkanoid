@@ -4,6 +4,8 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -14,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +25,20 @@ public class MainMenu extends FXGLMenu {
 
     private Font nesFont;
 
-    // Danh sách các lựa chọn menu (START GAME, EXIT GAME)
+    // Danh sách các lựa chọn menu (START GAME, EXIT GAME).
     private List<Label> menuItems = new ArrayList<>();
 
-    // Danh sách các mũi tên hiển thị bên cạnh lựa chọn
+    // Danh sách các mũi tên hiển thị bên cạnh lựa chọn.
     private List<ImageView> arrowSlots = new ArrayList<>();
 
-    // Chỉ số của lựa chọn hiện tại
+    // Chỉ số của lựa chọn hiện tại.
     private int currentIndex = 0;
 
-    // Hình ảnh mũi tên
+    // Hình ảnh mũi tên.
     private ImageView arrowImage;
+
+    // Hiệu ứng nhấp nháy.
+    private Timeline blinkTimeline;
 
 
     public MainMenu(MenuType type) {
@@ -93,20 +99,20 @@ public class MainMenu extends FXGLMenu {
             menuVBox.getChildren().add(row);
         }
 
-        // Thêm bản quyền nhỏ ở cuối
+        // Thêm bản quyền nhỏ ở cuối.
         Label copyright = new Label("HANOI36PP");
         copyright.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 16));
         copyright.setTextFill(Color.GRAY);
 
-        // Gom toàn bộ phần logo, menu và bản quyền vào VBox
+        // Gom toàn bộ phần logo, menu và bản quyền vào VBox.
         VBox menuBox = new VBox(30, logoBox, menuVBox, copyright);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
 
-        // Nền đen
+        // Nền đen.
         getContentRoot().setStyle("-fx-background-color: black;");
 
-        // Thêm menuBox vào giao diện
+        // Thêm menuBox vào giao diện.
         getContentRoot().getChildren().add(menuBox);
         getContentRoot().setFocusTraversable(true);
         getContentRoot().requestFocus();
@@ -140,5 +146,40 @@ public class MainMenu extends FXGLMenu {
             arrowSlots.get(i).setImage(i == currentIndex ? arrowImage.getImage() : null);
             menuItems.get(i).setTextFill(i == currentIndex ? Color.GREEN : Color.WHITE);
         }
+        blinkingEffect();
+    }
+
+    // Hiệu ứng nhấp nháy mũi tên lựa chọn.
+    private void blinkingEffect() {
+        // Tránh nhân đôi hiệu ứng.
+        if (blinkTimeline != null) {
+            blinkTimeline.stop();
+        }
+
+        blinkTimeline = new Timeline(
+                // Tại 0s mũi tên hiện, chữ xanh.
+                new KeyFrame(Duration.seconds(0.0), e -> {
+                    arrowSlots.get(currentIndex).setOpacity(1);
+                    menuItems.get(currentIndex).setTextFill(Color.GREEN);
+                }),
+
+                // Tại 0.5s mũi tên ẩn, chữ trắng.
+                new KeyFrame(Duration.seconds(0.5), e -> {
+                    arrowSlots.get(currentIndex).setOpacity(0);
+                    menuItems.get(currentIndex).setTextFill(Color.WHITE);
+                }),
+
+                // Tại 1.0s mũi tên hiện, chữ xanh.
+                new KeyFrame(Duration.seconds(1.0), e -> {
+                    arrowSlots.get(currentIndex).setOpacity(1);
+                    menuItems.get(currentIndex).setTextFill(Color.GREEN);
+                })
+        );
+
+        // Lặp vô hạn.
+        blinkTimeline.setCycleCount(Timeline.INDEFINITE);
+
+        // Bắt đầu chạy hiệu ứng.
+        blinkTimeline.play();
     }
 }
