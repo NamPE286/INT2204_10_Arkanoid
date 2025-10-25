@@ -2,6 +2,7 @@ package org.arkanoid.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.arkanoid.Main;
 import org.arkanoid.entity.Ball;
 import org.arkanoid.entity.Brick;
 import org.arkanoid.entity.NormalBrick;
@@ -10,10 +11,7 @@ import org.arkanoid.entity.Wall;
 import org.arkanoid.manager.SoundManager;
 
 public class Level {
-
-    private static final int HEIGHT = 768;
-    private static final int WIDTH = 672;
-    private static final int THICK = WIDTH / 28;
+    private static final int WALL_THICKNESS = Main.WIDTH / 28;
 
     Paddle paddle;
     Ball ball;
@@ -36,17 +34,17 @@ public class Level {
     }
 
     public Level() {
-        var leftwall = new Wall(0, 0, HEIGHT, THICK);
-        var topwall = new Wall(0, 48, THICK, WIDTH);
-        var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
+        var leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
+        var topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
+        var rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
 
-        paddle = (Paddle) new Paddle(WIDTH / 2, HEIGHT - 50)
+        paddle = (Paddle) new Paddle(Main.WIDTH / 2, Main.HEIGHT - 50)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
         loadBrickConfiguration();
 
-        ball = (Ball) new Ball(WIDTH / 2, HEIGHT - 50 - 100)
+        ball = (Ball) new Ball(Main.WIDTH / 2, Main.HEIGHT - 50 - 100)
             .setLinearVelocity(300f, 300f)
             .listenToCollisionWith(paddle)
             .listenToCollisionWith(leftwall)

@@ -4,23 +4,16 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import org.arkanoid.core.Level;
-import org.arkanoid.entity.*;
-import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.factory.SceneFactory;
 import org.arkanoid.ui.Background;
-import org.arkanoid.ui.LevelBackground;
 import org.arkanoid.ui.ScoreBoard;
 
 import java.util.Map;
-import java.util.ArrayList;
 
 public class Main extends GameApplication {
 
-    private static final int HEIGHT = 768;
-    private static final int WIDTH = 672;
-    private static final int THICK = WIDTH / 28;
-    private final LabelFactory labelFactory = new LabelFactory("/fonts/nes.otf", 20);
-    private final ArrayList<GameObject> gameObjects = new ArrayList<>();
+    public static final int HEIGHT = 768;
+    public static final int WIDTH = 672;
     Level level;
     //khai bao background
 
