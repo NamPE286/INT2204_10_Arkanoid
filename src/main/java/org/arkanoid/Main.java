@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.ArrayList;
 
 public class Main extends GameApplication {
+
     private static final int HEIGHT = 768;
     private static final int WIDTH = 672;
     private static final int THICK = WIDTH / 28;
@@ -52,20 +53,22 @@ public class Main extends GameApplication {
         var topwall = new Wall(0, 48, THICK, WIDTH);
         var rightwall = new Wall(WIDTH - THICK, 0, HEIGHT, THICK);
         var paddle = new Paddle(WIDTH / 2, HEIGHT - 50)
-                .listenToCollisionWith(leftwall)
-                .listenToCollisionWith(rightwall);
-        var brick = new NormalBrick(300, 300, 1, 0);
-        var brick2 = new NormalBrick(360, 360, 2, 0);
+            .listenToCollisionWith(leftwall)
+            .listenToCollisionWith(rightwall);
+        var brick = new NormalBrick(300, 300, 1, 0)
+            .setPaddle((Paddle) paddle);
+        var brick2 = new NormalBrick(360, 360, 2, 0)
+            .setPaddle((Paddle) paddle);
 
         var ball = new Ball(WIDTH / 2, HEIGHT - 50 - 100)
-                .setLinearVelocity(300f, 300f)
-                .listenToCollisionWith(paddle)
-                .listenToCollisionWith(brick)
-                .listenToCollisionWith(leftwall)
-                .listenToCollisionWith(topwall)
-                .listenToCollisionWith(rightwall)
-                .listenToCollisionWith(brick)
-                .listenToCollisionWith(brick2);
+            .setLinearVelocity(300f, 300f)
+            .listenToCollisionWith(paddle)
+            .listenToCollisionWith(brick)
+            .listenToCollisionWith(leftwall)
+            .listenToCollisionWith(topwall)
+            .listenToCollisionWith(rightwall)
+            .listenToCollisionWith(brick)
+            .listenToCollisionWith(brick2);
 
         gameObjects.add(paddle);
         gameObjects.add(ball);

@@ -15,6 +15,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public abstract class Brick extends GameObject {
 
+    Paddle paddle;
     PowerUp powerUp;
     protected int tileX;
     protected int tileY;
@@ -40,6 +41,11 @@ public abstract class Brick extends GameObject {
         super(x, y);
         this.tileX = tileX;
         this.tileY = tileY;
+    }
+
+    public Brick setPaddle(Paddle paddle) {
+        this.paddle = paddle;
+        return this;
     }
 
     public int getTileX() {
@@ -92,7 +98,12 @@ public abstract class Brick extends GameObject {
             System.out.println(brickPosition.getX());
             System.out.println(brickPosition.getY());
             SpawnData spawnData = new SpawnData(brickPosition);
-            powerUp = new ExtendPowerup(spawnData);
+
+            if (paddle != null) {
+                powerUp = new ExtendPowerup(spawnData);
+                powerUp.listenToCollisionWith(paddle);
+            }
+
         }
 
         if (entity != null && entity.isActive()) {
