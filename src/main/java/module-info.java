@@ -15,8 +15,6 @@ open module org.arkanoid {
     requires javafx.swing;
     requires com.almasb.fxgl.entity;
     requires annotations;
-    //requires org.arkanoid;
-    //requires org.arkanoid;
 
     exports org.arkanoid;
 }
