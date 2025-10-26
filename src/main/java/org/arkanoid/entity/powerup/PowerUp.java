@@ -1,16 +1,16 @@
-package org.arkanoid.entity;
+package org.arkanoid.entity.powerup;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.OffscreenCleanComponent;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import javafx.geometry.Point2D;
 import org.arkanoid.component.animation.PowerupAnimationComponent;
+import org.arkanoid.entity.EntityType;
+import org.arkanoid.core.MovableObject;
+import org.arkanoid.entity.Paddle;
 import org.arkanoid.manager.PowerupAnimationManager;
 import org.arkanoid.manager.PowerupType;
 
@@ -26,7 +26,6 @@ public abstract class PowerUp extends MovableObject {
     }
 
     public abstract PowerupType getType();
-
 
     /**
      *
@@ -46,7 +45,6 @@ public abstract class PowerUp extends MovableObject {
         var e = entityBuilder(spawnData)
             .type(EntityType.POWERUP)
             .bbox(new HitBox(BoundingShape.box(W, H)))
-            .with(new OffscreenCleanComponent())
             .with(new PowerupAnimationComponent(currentType))
             .build();
 
@@ -54,23 +52,6 @@ public abstract class PowerUp extends MovableObject {
         e.setScaleY(0.5);
 
         return e;
-    }
-
-
-    public void onCollisionWith(GameObject e) {
-        System.out.println("Power up collided with paddle");
-
-        if (e instanceof Paddle) {
-            if (entity != null && entity.isActive()) {
-                // Erase hitbox.
-                if (entity.getBoundingBoxComponent() != null) {
-                    entity.getBoundingBoxComponent().clearHitBoxes();
-                }
-
-                // Erase from world.
-                entity.removeFromWorld();
-            }
-        }
     }
 
     public abstract void applyEffect(Paddle paddle);

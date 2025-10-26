@@ -1,11 +1,10 @@
 package org.arkanoid.component.animation;
 
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import org.arkanoid.entity.NormalBrick;
+import org.arkanoid.entity.brick.NormalBrick;
 import org.arkanoid.manager.PowerupAnimationManager;
 import org.arkanoid.manager.PowerupType;
 

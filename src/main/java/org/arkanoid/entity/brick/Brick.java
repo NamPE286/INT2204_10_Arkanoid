@@ -1,13 +1,11 @@
-package org.arkanoid.entity;
+package org.arkanoid.entity.brick;
 
 import com.almasb.fxgl.core.math.FXGLMath;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import org.arkanoid.manager.PowerupType;
-import org.arkanoid.utilities.TextureUtils;
+import org.arkanoid.entity.powerup.ExtendPowerUp;
+import org.arkanoid.core.GameObject;
+import org.arkanoid.entity.Paddle;
+import org.arkanoid.entity.powerup.PowerUp;
 import javafx.geometry.Point2D;
 
 
@@ -100,7 +98,7 @@ public abstract class Brick extends GameObject {
             SpawnData spawnData = new SpawnData(brickPosition);
 
             if (paddle != null) {
-                powerUp = new ExtendPowerup(spawnData);
+                powerUp = new ExtendPowerUp(spawnData);
                 powerUp.listenToCollisionWith(paddle);
             }
 
@@ -121,6 +119,11 @@ public abstract class Brick extends GameObject {
     public void onUpdate(double deltaTime) {
         if (powerUp != null) {
             powerUp.onUpdate(deltaTime);
+
+            if (powerUp.isOutOfBound()) {
+                powerUp.destroy();
+                powerUp = null;
+            }
         }
     }
 }

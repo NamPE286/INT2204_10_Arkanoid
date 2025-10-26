@@ -9,6 +9,8 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
+import org.arkanoid.core.GameObject;
+import org.arkanoid.core.MovableObject;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -99,18 +101,6 @@ public class Paddle extends MovableObject {
                 System.out.println("Paddle collision with Right wall");
                 setLinearVelocity(0, vy);
             }
-        } else if (e instanceof ExtendPowerup) {
-            if (e.entity != null && e.entity.isActive()) {
-                // Erase hitbox.
-                if (e.entity.getBoundingBoxComponent() != null) {
-                    entity.getBoundingBoxComponent().clearHitBoxes();
-                }
-
-                // Erase from world.
-                e.entity.removeFromWorld();
-            }
         }
-
     }
-
 }

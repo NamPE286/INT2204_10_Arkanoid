@@ -1,7 +1,7 @@
 package org.arkanoid.utilities;
 
 import com.almasb.fxgl.core.math.Vec2;
-import org.arkanoid.entity.GameObject;
+import org.arkanoid.core.GameObject;
 
 public class Vec2Utils {
     /**
