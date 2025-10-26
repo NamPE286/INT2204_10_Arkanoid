@@ -55,7 +55,7 @@ public class Level implements MonoBehaviour {
         }
     }
 
-    public Level(int id) throws IOException {
+    public Level(int id) {
         this.id = id;
         final int WALL_THICKNESS = Main.WIDTH / 28;
 
