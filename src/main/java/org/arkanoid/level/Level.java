@@ -1,9 +1,11 @@
 package org.arkanoid.level;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.entity.Ball;
@@ -18,6 +20,7 @@ import org.arkanoid.manager.SoundManager;
 
 public class Level implements MonoBehaviour {
 
+    Runnable onCompletedCallback, onDeathCallback;
     int id;
     Paddle paddle;
     Ball ball;
@@ -56,6 +59,14 @@ public class Level implements MonoBehaviour {
         }
     }
 
+    public void setOnCompletedCallback(Runnable callback) {
+        this.onCompletedCallback = callback;
+    }
+
+    public void setOnDeathCallback(Runnable onDeathCallback) {
+        this.onDeathCallback = onDeathCallback;
+    }
+
     public void setBackground(int id) {
         BackgroundManager backGround = BackgroundManager.getInstance();
         backGround.displayLevel(id);
@@ -65,12 +76,26 @@ public class Level implements MonoBehaviour {
         paddle.onUpdate(deltaTime);
         ball.onUpdate(deltaTime);
 
+        boolean isCompleted = true;
+
         for (var brick : bricks) {
-            if(brick.getEntity() == null) {
+            if (brick.getEntity() == null) {
                 continue;
             }
 
             brick.onUpdate(deltaTime);
+
+            if (brick.getHealth() > 0) {
+                isCompleted = false;
+            }
+        }
+
+        if (isCompleted && onCompletedCallback != null) {
+            onCompletedCallback.run();
+        }
+
+        if(ball.isOutOfBound() && onDeathCallback != null) {
+            onDeathCallback.run();
         }
     }
 
@@ -93,7 +118,7 @@ public class Level implements MonoBehaviour {
         setBackground(brickConfig.getBackgroundId());
 
         ball = (Ball) new Ball(Main.WIDTH / 2, Main.HEIGHT - 50 - 100)
-            .setLinearVelocity(300f, 300f)
+            .setLinearVelocity(300f, -300f)
             .listenToCollisionWith(paddle)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(topwall)
