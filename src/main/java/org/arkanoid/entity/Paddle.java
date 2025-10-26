@@ -48,7 +48,7 @@ public class Paddle extends MovableObject {
             protected void onActionEnd() {
                 setLinearVelocity(0, 0);
             }
-        }, KeyCode.A);
+        }, KeyCode.LEFT);
 
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
@@ -60,7 +60,7 @@ public class Paddle extends MovableObject {
             protected void onActionEnd() {
                 setLinearVelocity(0, 0);
             }
-        }, KeyCode.D);
+        }, KeyCode.RIGHT);
     }
 
     /**
