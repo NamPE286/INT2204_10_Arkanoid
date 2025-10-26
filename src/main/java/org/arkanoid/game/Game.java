@@ -18,6 +18,6 @@ public class Game implements MonoBehaviour {
     }
 
     public void initUI() {
-        currentLevel.setBackground();
+
     }
 }

@@ -21,10 +21,7 @@ public class Level implements MonoBehaviour {
     Ball ball;
     List<Brick> bricks = new ArrayList<>();
 
-    private void loadBrickConfig() {
-        var brickConfig = Objects.requireNonNull(LevelLoader.loadFromCSV("/levels/1.csv"))
-            .getBrickMap();
-
+    private void loadBrickConfig(int[][] brickConfig) {
         for (int i = 0; i < brickConfig.length; i++) {
             for (int j = 0; j < brickConfig[i].length; j++) {
                 if (brickConfig[i][j] == 0) {
@@ -41,9 +38,9 @@ public class Level implements MonoBehaviour {
         }
     }
 
-    public void setBackground() {
+    public void setBackground(int id) {
         BackgroundManager backGround = BackgroundManager.getInstance();
-        backGround.displayLevel(1);
+        backGround.displayLevel(id);
     }
 
     public void onUpdate(double deltaTime) {
@@ -71,7 +68,11 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
-        loadBrickConfig();
+        var brickConfig = Objects.requireNonNull(
+            LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
+
+        loadBrickConfig(brickConfig.getBrickMap());
+        setBackground(brickConfig.getBackgroundId());
 
         ball = (Ball) new Ball(Main.WIDTH / 2, Main.HEIGHT - 50 - 100)
             .setLinearVelocity(300f, 300f)
