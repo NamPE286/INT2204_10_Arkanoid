@@ -126,8 +126,13 @@ public class MainMenu extends FXGLMenu {
     // Xử lý phím.
     private void addKeyControls() {
         getContentRoot().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SPACE) {
-                currentIndex = (currentIndex + 1) % menuItems.size();
+            if (e.getCode() == KeyCode.UP) {
+                currentIndex = Math.max(0, currentIndex - 1);
+                highlightCurrent();
+            }
+            if (e.getCode() == KeyCode.DOWN) {
+                int lastIndex = menuItems.size() - 1;
+                currentIndex = Math.min(lastIndex, currentIndex + 1);
                 highlightCurrent();
             }
             if (e.getCode() == KeyCode.ENTER) {
