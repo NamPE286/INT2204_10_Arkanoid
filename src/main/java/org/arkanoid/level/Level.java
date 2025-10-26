@@ -1,7 +1,9 @@
 package org.arkanoid.level;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.entity.Ball;
@@ -14,15 +16,29 @@ import org.arkanoid.manager.SoundManager;
 
 public class Level implements MonoBehaviour {
 
+    int id;
     Paddle paddle;
     Ball ball;
     List<Brick> bricks = new ArrayList<>();
 
-    private void loadBrickConfiguration() {
-        bricks.add(new NormalBrick(300, 300, 1, 0)
-            .setPaddle(paddle));
-        bricks.add(new NormalBrick(360, 360, 2, 0)
-            .setPaddle(paddle));
+    private void loadBrickConfig() {
+        var brickConfig = Objects.requireNonNull(LevelLoader.loadFromCSV("/levels/1.csv"))
+            .getBrickMap();
+
+        for (int i = 0; i < brickConfig.length; i++) {
+            for (int j = 0; j < brickConfig[i].length; j++) {
+                if(brickConfig[i][j] == 0) {
+                    continue;
+                }
+
+                bricks.add(new NormalBrick(
+                    300 + 48 * j,
+                    300 + 24 * i,
+                    brickConfig[i][j],
+                    0
+                ).setPaddle(paddle));
+            }
+        }
     }
 
     public void setBackground() {
@@ -39,7 +55,8 @@ public class Level implements MonoBehaviour {
         }
     }
 
-    public Level() {
+    public Level(int id) throws IOException {
+        this.id = id;
         final int WALL_THICKNESS = Main.WIDTH / 28;
 
         var leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
@@ -50,7 +67,7 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
-        loadBrickConfiguration();
+        loadBrickConfig();
 
         ball = (Ball) new Ball(Main.WIDTH / 2, Main.HEIGHT - 50 - 100)
             .setLinearVelocity(300f, 300f)
