@@ -1,4 +1,4 @@
-package org.arkanoid.ui;
+package org.arkanoid.manager;
 
 
 import com.almasb.fxgl.texture.Texture;
@@ -8,7 +8,7 @@ import com.almasb.fxgl.entity.Entity;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
-public class Background {
+public class BackgroundManager {
 
     private static final int BG_WIDTH = 224;
     private static final int BG_HEIGHT = 240;
@@ -20,6 +20,7 @@ public class Background {
 
     // setting the current background by an entity.
     private Entity currentBackground;
+    private static BackgroundManager instance;
 
     private void loadAndCrop() {
         Texture tiles = getAssetLoader().loadTexture("fields.png");
@@ -30,13 +31,14 @@ public class Background {
             posX += BG_WIDTH + DISTANCE;
         }
     }
-    //constructor lam nhiem vu tai va cat anh 1 lan
-    public Background() {
+
+    //constructor for loading and cropping once.
+    public BackgroundManager() {
         this.textures = new Texture[NUM_BACKGROUND];
         loadAndCrop();
     }
 
-    public void displayLevel (int level) {
+    public void displayLevel(int level) {
 
         if (currentBackground != null) {
             currentBackground.removeFromWorld();
@@ -58,16 +60,22 @@ public class Background {
         /*
            Create an new entity for loading background.
            at (0, 0), zIndex is the order of background,
-           insure that background behind all of things,
-           bulid and attach into game world.
+           ensure that background behind of the things,
+           build and attach into game world.
          */
         currentBackground = FXGL.entityBuilder()
-                .at(0, 48)
-                .view(newBG)
-                .zIndex(-100)
-                .buildAndAttach();
+            .at(0, 48)
+            .view(newBG)
+            .zIndex(-100)
+            .buildAndAttach();
 
     }
 
+    public static BackgroundManager getInstance() {
+        if (instance == null) {
+            instance = new BackgroundManager();
+        }
+        return instance;
+    }
 }
 

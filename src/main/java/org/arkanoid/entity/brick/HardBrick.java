@@ -1,8 +1,9 @@
-package org.arkanoid.entity;
+package org.arkanoid.entity.brick;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import org.arkanoid.entity.EntityType;
 import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -12,9 +13,9 @@ public class HardBrick extends Brick {
      * Default constructor for serialization or framework usage.
      * Initializes a HardBrick with no position or texture information.
      */
-    public HardBrick() {
-        super();
-    }
+//    public HardBrick() {
+//        super();
+//    }
 
     /**
      * Creates a new {@code HardBrick} instance at a specific position and tile coordinates.

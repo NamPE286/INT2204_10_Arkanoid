@@ -4,6 +4,9 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import org.arkanoid.core.GameObject;
+import org.arkanoid.core.MovableObject;
+import org.arkanoid.entity.brick.Brick;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.Vec2Utils;
@@ -137,16 +140,6 @@ public class Ball extends MovableObject {
     @Override
     public void onUpdate(double deltaTime) {
         super.onUpdate(deltaTime);
-
-        // Va chạm tường
-        if (entity.getX() + entity.getWidth() / 2 >= 672 ||
-            entity.getX() <= 0) {
-            setLinearVelocity(this.getVelocityX() * -1, this.getVelocityY());
-        }
-        if (entity.getY() + entity.getHeight() / 2 >= 768 ||
-            entity.getY() <= 0) {
-            setLinearVelocity(this.getVelocityX(), this.getVelocityY() * -1);
-        }
     }
 
     /**

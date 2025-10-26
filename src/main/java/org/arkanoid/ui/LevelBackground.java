@@ -1,4 +1,4 @@
-package org.arkanoid.entity;
+package org.arkanoid.ui;
 
 import com.almasb.fxgl.texture.Texture;
 import org.arkanoid.utilities.TextureUtils;
@@ -7,19 +7,17 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 
-import java.awt.desktop.AboutEvent;
-
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
-public class Level {
+public class LevelBackground {
 
-    private int level;
+    private int background;
 
     /**
      * Getting the level
      */
-    public int getLevel() {
-        return level;
+    public int getBackground() {
+        return background;
     }
 
     /**
@@ -54,16 +52,16 @@ public class Level {
          * Set the level
          */
         if (level <= 5) {
-            this.level = level;
+            this.background = level;
         } else {
-            this.level = level % 5;
+            this.background = level % 5;
         }
         /**
          * Setting the background level-th
          */
-        Backgrounds[this.level - 1].setFitWidth(getAppWidth());
-        Backgrounds[this.level - 1].setFitHeight(getAppHeight());
-        getGameScene().addUINode(Backgrounds[this.level - 1]);
+        Backgrounds[this.background - 1].setFitWidth(getAppWidth());
+        Backgrounds[this.background - 1].setFitHeight(getAppHeight());
+        getGameScene().addUINode(Backgrounds[this.background - 1]);
     }
 
 

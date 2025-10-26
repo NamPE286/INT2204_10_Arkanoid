@@ -1,16 +1,20 @@
-package org.arkanoid.entity;
+package org.arkanoid.entity.brick;
 
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import org.arkanoid.utilities.TextureUtils;
+import org.arkanoid.entity.powerup.ExtendPowerUp;
+import org.arkanoid.core.GameObject;
+import org.arkanoid.entity.Paddle;
+import org.arkanoid.entity.powerup.PowerUp;
+import javafx.geometry.Point2D;
+
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public abstract class Brick extends GameObject {
 
+    Paddle paddle;
+    PowerUp powerUp;
     protected int tileX;
     protected int tileY;
     protected final int width = 16;
@@ -21,9 +25,9 @@ public abstract class Brick extends GameObject {
     /**
      * Constructs a new brick at the default position (0, 0).
      */
-    public Brick() {
-        super();
-    }
+//    public Brick() {
+//        super();
+//    }
 
     /**
      * Constructs a new brick at the specified coordinates.
@@ -35,6 +39,15 @@ public abstract class Brick extends GameObject {
         super(x, y);
         this.tileX = tileX;
         this.tileY = tileY;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public Brick setPaddle(Paddle paddle) {
+        this.paddle = paddle;
+        return this;
     }
 
     public int getTileX() {
@@ -72,6 +85,7 @@ public abstract class Brick extends GameObject {
      * null-pointer errors when accessing the bounding box component. If the brick is already
      * destroyed, this method has no effect.
      */
+    @Override
     public void destroy() {
         this.health--;
 
@@ -79,6 +93,20 @@ public abstract class Brick extends GameObject {
             return; // Nếu gạch là loại không thể bị phá hoặc có máu > 0 thì không destroy
         }
         canDestroy = false;
+
+        // 36% pop out Power up
+        if (FXGLMath.randomBoolean(1.0)) {
+            Point2D brickPosition = entity.getPosition();
+            System.out.println(brickPosition.getX());
+            System.out.println(brickPosition.getY());
+            SpawnData spawnData = new SpawnData(brickPosition);
+
+            if (paddle != null) {
+                powerUp = new ExtendPowerUp(spawnData);
+                powerUp.listenToCollisionWith(paddle);
+            }
+
+        }
 
         if (entity != null && entity.isActive()) {
             // Xóa hitBox (tránh bị lỗi crash: BoundingBoxComponent.getEntity() is null)
@@ -88,6 +116,18 @@ public abstract class Brick extends GameObject {
 
             // Xóa khỏi world
             entity.removeFromWorld();
+        }
+    }
+
+    @Override
+    public void onUpdate(double deltaTime) {
+        if (powerUp != null) {
+            powerUp.onUpdate(deltaTime);
+
+            if (powerUp.isOutOfBound()) {
+                powerUp.destroy();
+                powerUp = null;
+            }
         }
     }
 }
