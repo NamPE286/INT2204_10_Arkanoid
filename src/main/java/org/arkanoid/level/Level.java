@@ -8,9 +8,11 @@ import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.entity.Ball;
 import org.arkanoid.entity.brick.Brick;
+import org.arkanoid.entity.brick.HardBrick;
 import org.arkanoid.entity.brick.NormalBrick;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.Wall;
+import org.arkanoid.entity.brick.StrongBrick;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.SoundManager;
 
@@ -23,17 +25,33 @@ public class Level implements MonoBehaviour {
 
     private void loadBrickConfig(int[][] brickConfig) {
         for (int i = 0; i < brickConfig.length; i++) {
-            for (int j = 0; j < brickConfig[i].length; j++) {
+            for (int j = 0; j < brickConfig[i].length - 2; j += 3) {
                 if (brickConfig[i][j] == 0) {
                     continue;
                 }
 
-                bricks.add(new NormalBrick(
-                    300 + 48 * j,
-                    300 + 24 * i,
-                    brickConfig[i][j],
-                    0
-                ).setPaddle(paddle));
+                if (brickConfig[i][j] == 1) {
+                    bricks.add(new NormalBrick(
+                            300 + 48 * (j / 3),
+                            300 + 24 * i,
+                            brickConfig[i][j + 1],
+                            brickConfig[i][j + 2]
+                    ).setPaddle(paddle));
+                } else if (brickConfig[i][j] == 2) {
+                    bricks.add(new StrongBrick(
+                            300 + 48 * (j / 3),
+                            300 + 24 * i,
+                            brickConfig[i][j + 1],
+                            brickConfig[i][j + 2]
+                    ).setPaddle(paddle));
+                } else if (brickConfig[i][j] == 3) {
+                    bricks.add(new HardBrick(
+                            300 + 48 * (j / 3),
+                            300 + 24 * i,
+                            brickConfig[i][j + 1],
+                            brickConfig[i][j + 2]
+                    ).setPaddle(paddle));
+                }
             }
         }
     }
