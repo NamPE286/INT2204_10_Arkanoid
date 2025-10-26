@@ -130,4 +130,11 @@ public class Level implements MonoBehaviour {
 
         SoundManager.play("round_start.mp3");
     }
+    public Ball getBall() {
+        return ball;
+    }
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
 }
