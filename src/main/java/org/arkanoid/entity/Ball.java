@@ -147,15 +147,5 @@ public class Ball extends MovableObject {
     public Ball(int x, int y) {
         super(x, y);
         spawn();
-        setLinearVelocity(300f, -300f);
-    }
-
-    public Ball(int x, int y, int delay) {
-        super(x, y);
-        spawn();
-
-        SchedulerUtils.setTimeout(() -> {
-            setLinearVelocity(300f, -300f);
-        }, delay);
     }
 }

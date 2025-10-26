@@ -17,6 +17,7 @@ import org.arkanoid.entity.Wall;
 import org.arkanoid.entity.brick.StrongBrick;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.SoundManager;
+import org.arkanoid.utilities.SchedulerUtils;
 
 public class Level implements MonoBehaviour {
 
@@ -119,11 +120,15 @@ public class Level implements MonoBehaviour {
         loadBrickConfig(brickConfig.getBrickMap());
         setBackground(brickConfig.getBackgroundId());
 
-        ball = (Ball) new Ball(Main.WIDTH / 2 - 4, Main.HEIGHT - 61, INIT_DELAY)
+        ball = (Ball) new Ball(Main.WIDTH / 2 - 4, Main.HEIGHT - 61)
             .listenToCollisionWith(paddle)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(topwall)
             .listenToCollisionWith(rightwall);
+
+        SchedulerUtils.setTimeout(() -> {
+            ball.setLinearVelocity(300, -300);
+        }, INIT_DELAY);
 
         for (var brick : bricks) {
             ball.listenToCollisionWith(brick);
