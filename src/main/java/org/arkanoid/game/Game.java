@@ -9,6 +9,13 @@ public class Game implements MonoBehaviour {
 
     public Game() {
         currentLevel = new Level(1);
+        currentLevel.setOnCompletedCallback(() -> {
+            System.out.println("Level completed!");
+        });
+
+        currentLevel.setOnDeathCallback(() -> {
+            System.out.println("Died");
+        });
     }
 
     public void onUpdate(double deltaTime) {

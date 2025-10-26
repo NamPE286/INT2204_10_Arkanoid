@@ -140,16 +140,6 @@ public class Ball extends MovableObject {
     @Override
     public void onUpdate(double deltaTime) {
         super.onUpdate(deltaTime);
-
-        // Va chạm tường
-        if (entity.getX() + entity.getWidth() / 2 >= 672 ||
-            entity.getX() <= 0) {
-            setLinearVelocity(this.getVelocityX() * -1, this.getVelocityY());
-        }
-        if (entity.getY() + entity.getHeight() / 2 >= 768 ||
-            entity.getY() <= 0) {
-            setLinearVelocity(this.getVelocityX(), this.getVelocityY() * -1);
-        }
     }
 
     /**
