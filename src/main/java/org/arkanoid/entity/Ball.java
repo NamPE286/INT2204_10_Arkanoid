@@ -7,6 +7,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.core.GameObject;
 import org.arkanoid.core.MovableObject;
 import org.arkanoid.entity.brick.Brick;
+import org.arkanoid.utilities.SchedulerUtils;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.Vec2Utils;
@@ -137,11 +138,6 @@ public class Ball extends MovableObject {
         super();
     }
 
-    @Override
-    public void onUpdate(double deltaTime) {
-        super.onUpdate(deltaTime);
-    }
-
     /**
      * Constructs a new ball at the specified coordinates.
      *
@@ -151,6 +147,15 @@ public class Ball extends MovableObject {
     public Ball(int x, int y) {
         super(x, y);
         spawn();
-        initInput();
+        setLinearVelocity(300f, -300f);
+    }
+
+    public Ball(int x, int y, int delay) {
+        super(x, y);
+        spawn();
+
+        SchedulerUtils.setTimeout(() -> {
+            setLinearVelocity(300f, -300f);
+        }, delay);
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.core.GameObject;
 import org.arkanoid.core.MovableObject;
+import org.arkanoid.utilities.SchedulerUtils;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -80,6 +81,13 @@ public class Paddle extends MovableObject {
         super(x, y);
         spawn();
         initInput();
+    }
+
+    public Paddle(int x, int y, int inputDelay) {
+        super(x, y);
+        spawn();
+
+        SchedulerUtils.setTimeout(this::initInput, inputDelay);
     }
 
 

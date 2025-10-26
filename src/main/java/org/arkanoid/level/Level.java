@@ -101,13 +101,15 @@ public class Level implements MonoBehaviour {
 
     public Level(int id) {
         this.id = id;
+
         final int WALL_THICKNESS = Main.WIDTH / 28;
+        final int INIT_DELAY = 2500;
 
         var leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
         var topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
         var rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
 
-        paddle = (Paddle) new Paddle(Main.WIDTH / 2, Main.HEIGHT - 50)
+        paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50, INIT_DELAY)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
@@ -117,8 +119,7 @@ public class Level implements MonoBehaviour {
         loadBrickConfig(brickConfig.getBrickMap());
         setBackground(brickConfig.getBackgroundId());
 
-        ball = (Ball) new Ball(Main.WIDTH / 2, Main.HEIGHT - 50 - 100)
-            .setLinearVelocity(300f, -300f)
+        ball = (Ball) new Ball(Main.WIDTH / 2 - 4, Main.HEIGHT - 61, INIT_DELAY)
             .listenToCollisionWith(paddle)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(topwall)
