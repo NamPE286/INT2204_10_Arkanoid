@@ -1,4 +1,4 @@
-package org.arkanoid;
+package org.arkanoid.balltest;
 
 public class BallPhysics {
 
@@ -7,20 +7,20 @@ public class BallPhysics {
      */
     public static double[] handleCollision(
             double ballX, double ballY, double ballW, double ballH, double vx, double vy,
-            double paddleX, double paddleY, double paddleW, double paddleH) {
+            double eX, double eY, double eW, double eH) {
 
-        double overlapLeft   = (ballX + ballW) - paddleX;
-        double overlapRight  = (paddleX + paddleW) - ballX;
-        double overlapTop    = (ballY + ballH) - paddleY;
-        double overlapBottom = (paddleY + paddleH) - ballY;
+        double overlapLeft   = (ballX + ballW) - eX;
+        double overlapRight  = (eX + eW) - ballX;
+        double overlapTop    = (ballY + ballH) - eY;
+        double overlapBottom = (eY + eH) - ballY;
 
         double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
                 Math.min(overlapTop, overlapBottom));
 
         if (minOverlap == overlapLeft) {
-            vx = -(Math.abs(vx) + 5);
+            vx = -Math.abs(vx);
         } else if (minOverlap  == overlapRight) {
-            vx = Math.abs(vx) + 5;
+            vx = Math.abs(vx);
         } else if (minOverlap  == overlapTop) {
             vy = -Math.abs(vy);
         } else if (minOverlap  == overlapBottom) {
