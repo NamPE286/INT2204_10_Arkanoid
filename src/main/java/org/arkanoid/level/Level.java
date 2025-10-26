@@ -29,8 +29,8 @@ public class Level implements MonoBehaviour {
                 }
 
                 bricks.add(new NormalBrick(
-                    300 + 48 * j,
-                    300 + 24 * i,
+                    48 + 48 * j,
+                    86 + 24 * i,
                     brickConfig[i][j],
                     0
                 ).setPaddle(paddle));
