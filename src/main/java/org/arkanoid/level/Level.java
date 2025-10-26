@@ -18,7 +18,8 @@ import org.arkanoid.utilities.SchedulerUtils;
 
 public class Level implements MonoBehaviour {
 
-    Runnable onCompletedCallback, onDeathCallback;
+    Runnable onCompletedCallback;
+    Runnable onDeathCallback;
     int id;
     Paddle paddle;
     Ball ball;
