@@ -15,6 +15,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  * Handles entity creation, spawning, input initialization, and per-frame updates.
  */
 abstract public class GameObject implements MonoBehaviour {
+
     protected Entity entity = null;
     List<GameObject> collisionListeners = new ArrayList<>();
 
@@ -37,8 +38,8 @@ abstract public class GameObject implements MonoBehaviour {
     /**
      * Creates the FXGL entity for this game object.
      * <p>
-     * Subclasses must implement this method to define how their entity
-     * is constructed and initialized.
+     * Subclasses must implement this method to define how their entity is constructed and
+     * initialized.
      *
      * @param spawnData the spawn data used to initialize the entity
      * @return the newly created entity
@@ -48,8 +49,8 @@ abstract public class GameObject implements MonoBehaviour {
     /**
      * Initializes input controls for this game object.
      * <p>
-     * Subclasses can override this method to bind keys or actions.
-     * The default implementation does nothing.
+     * Subclasses can override this method to bind keys or actions. The default implementation does
+     * nothing.
      */
     protected void initInput() {
         // Default implementation does nothing
@@ -58,23 +59,23 @@ abstract public class GameObject implements MonoBehaviour {
     /**
      * Called once per frame to update the object's state.
      * <p>
-     * Subclasses should override this method to implement per-frame
-     * logic, such as movement, animations, or other behavior.
+     * Subclasses should override this method to implement per-frame logic, such as movement,
+     * animations, or other behavior.
      *
      * @param deltaTime the time elapsed (in seconds) since the last frame
      */
     public void onUpdate(double deltaTime) {
         for (var e : collisionListeners) {
             if (entity.getBoundingBoxComponent()
-                    .isCollidingWith(e.getEntity().getBoundingBoxComponent())) {
+                .isCollidingWith(e.getEntity().getBoundingBoxComponent())) {
                 onCollisionWith(e);
             }
         }
     }
 
     /**
-     * Adds a GameObject as a collision subscriber.
-     * When this object collides with another, all subscribers can be notified or react accordingly.
+     * Adds a GameObject as a collision subscriber. When this object collides with another, all
+     * subscribers can be notified or react accordingly.
      *
      * @param o the GameObject to subscribe for collision events
      * @return this GameObject (for method chaining)
@@ -87,7 +88,8 @@ abstract public class GameObject implements MonoBehaviour {
     /**
      * Called when this GameObject collides with another entity.
      * <p>
-     * The default implementation does nothing. Override this method in subclasses to define custom collision behavior.
+     * The default implementation does nothing. Override this method in subclasses to define custom
+     * collision behavior.
      *
      * @param e the Entity that this object has collided with
      */
@@ -143,11 +145,19 @@ abstract public class GameObject implements MonoBehaviour {
         initInput();
     }
 
+    public void destroy() {
+        var e = getEntity();
+
+        if (e != null) {
+            e.removeFromWorld();
+        }
+    }
+
     /**
      * Constructs a new game object at the specified coordinates.
      * <p>
-     * Initializes the entity with the given position, spawns it in the
-     * game world, and sets up input.
+     * Initializes the entity with the given position, spawns it in the game world, and sets up
+     * input.
      *
      * @param x the x-coordinate for the entity's initial position
      * @param y the y-coordinate for the entity's initial position

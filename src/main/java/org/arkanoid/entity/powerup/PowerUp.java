@@ -27,7 +27,6 @@ public abstract class PowerUp extends MovableObject {
 
     public abstract PowerupType getType();
 
-
     /**
      *
      * @param spawnData the spawn data used to initialize the entity
@@ -46,7 +45,6 @@ public abstract class PowerUp extends MovableObject {
         var e = entityBuilder(spawnData)
             .type(EntityType.POWERUP)
             .bbox(new HitBox(BoundingShape.box(W, H)))
-            .with(new OffscreenCleanComponent())
             .with(new PowerupAnimationComponent(currentType))
             .build();
 

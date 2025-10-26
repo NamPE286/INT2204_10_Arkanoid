@@ -51,6 +51,10 @@ public class Level implements MonoBehaviour {
         ball.onUpdate(deltaTime);
 
         for (var brick : bricks) {
+            if(brick.getEntity() == null) {
+                continue;
+            }
+
             brick.onUpdate(deltaTime);
         }
     }

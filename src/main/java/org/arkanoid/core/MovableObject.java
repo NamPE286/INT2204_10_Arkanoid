@@ -1,6 +1,7 @@
 package org.arkanoid.core;
 
 import com.almasb.fxgl.core.math.Vec2;
+import com.almasb.fxgl.dsl.FXGL;
 
 /**
  * Abstract base class for all movable game objects.
@@ -8,6 +9,7 @@ import com.almasb.fxgl.core.math.Vec2;
  * Extends {@link GameObject} and adds physics-based movement capabilities.
  */
 abstract public class MovableObject extends GameObject {
+
     /**
      * The physics component used to control velocity and collisions.
      */
@@ -45,6 +47,11 @@ abstract public class MovableObject extends GameObject {
 
         setX(getX() + getVelocityX() * deltaTime);
         setY(getY() + getVelocityY() * deltaTime);
+    }
+
+    public boolean isOutOfBound() {
+        return getX() < 0 || getX() > FXGL.getAppWidth() ||
+            getY() < 0 || getY() > FXGL.getAppHeight();
     }
 
     /**

@@ -119,6 +119,11 @@ public abstract class Brick extends GameObject {
     public void onUpdate(double deltaTime) {
         if (powerUp != null) {
             powerUp.onUpdate(deltaTime);
+
+            if (powerUp.isOutOfBound()) {
+                powerUp.destroy();
+                powerUp = null;
+            }
         }
     }
 }
