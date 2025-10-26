@@ -9,6 +9,7 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
+import org.arkanoid.component.animation.PaddleInitAnimationComponent;
 import org.arkanoid.core.GameObject;
 import org.arkanoid.core.MovableObject;
 import org.arkanoid.utilities.SchedulerUtils;
@@ -19,6 +20,12 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Paddle extends MovableObject {
 
     private final int SPEED = 400;
+
+    public Paddle addInitAnimation() {
+        entity.removeComponent(PaddleAnimationComponent.class);
+        entity.addComponent(new PaddleInitAnimationComponent());
+        return this;
+    }
 
     @Override
     protected Entity createEntity(SpawnData spawnData) {

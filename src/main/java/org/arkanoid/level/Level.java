@@ -3,9 +3,6 @@ package org.arkanoid.level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.entity.Ball;
@@ -111,6 +108,7 @@ public class Level implements MonoBehaviour {
         var rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
 
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50, INIT_DELAY)
+            .addInitAnimation()
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
