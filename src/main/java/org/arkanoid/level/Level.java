@@ -27,7 +27,7 @@ public class Level implements MonoBehaviour {
 
         for (int i = 0; i < brickConfig.length; i++) {
             for (int j = 0; j < brickConfig[i].length; j++) {
-                if(brickConfig[i][j] == 0) {
+                if (brickConfig[i][j] == 0) {
                     continue;
                 }
 
