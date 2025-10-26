@@ -9,6 +9,7 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class HardBrick extends Brick {
+    public static double SETSCALE = 3.0;
     /**
      * Default constructor for serialization or framework usage.
      * Initializes a HardBrick with no position or texture information.
@@ -64,8 +65,8 @@ public class HardBrick extends Brick {
                 .viewWithBBox(texture)
                 .build();
 
-        e.setScaleX(2.0);
-        e.setScaleY(2.0);
+        e.setScaleX(SETSCALE);
+        e.setScaleY(SETSCALE);
 
         return e;
     }
