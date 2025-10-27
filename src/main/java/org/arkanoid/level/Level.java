@@ -18,12 +18,20 @@ import org.arkanoid.utilities.SchedulerUtils;
 
 public class Level implements MonoBehaviour {
 
-    Runnable onCompletedCallback;
-    Runnable onDeathCallback;
-    int id;
-    Paddle paddle;
-    Ball ball;
-    List<Brick> bricks = new ArrayList<>();
+    private final int DELAY = 2500;
+    private final int WALL_THICKNESS = Main.WIDTH / 28;
+    private Runnable onCompletedCallback;
+    private Runnable onDeathCallback;
+    private int id;
+    private Paddle paddle;
+    private Ball ball;
+    private List<Brick> bricks = new ArrayList<>();
+    private boolean ballOnPaddle = true;     // Bóng đang dính paddle
+    private final double BALL_OFFSET_X = 3;  // Lệch phải nhẹ cho đẹp
+    Wall leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
+    Wall topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
+    Wall rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
+
 
     private void loadBrickConfig(int[][] brickConfig) {
         for (int i = 0; i < brickConfig.length; i++) {
@@ -34,24 +42,24 @@ public class Level implements MonoBehaviour {
 
                 if (brickConfig[i][j] == 1) {
                     bricks.add(new NormalBrick(
-                            300 + 48 * (j / 3),
-                            300 + 24 * i,
-                            brickConfig[i][j + 1],
-                            brickConfig[i][j + 2]
+                        300 + 48 * (j / 3),
+                        300 + 24 * i,
+                        brickConfig[i][j + 1],
+                        brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 } else if (brickConfig[i][j] == 2) {
                     bricks.add(new StrongBrick(
-                            300 + 48 * (j / 3),
-                            300 + 24 * i,
-                            brickConfig[i][j + 1],
-                            brickConfig[i][j + 2]
+                        300 + 48 * (j / 3),
+                        300 + 24 * i,
+                        brickConfig[i][j + 1],
+                        brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 } else if (brickConfig[i][j] == 3) {
                     bricks.add(new HardBrick(
-                            300 + 48 * (j / 3),
-                            300 + 24 * i,
-                            brickConfig[i][j + 1],
-                            brickConfig[i][j + 2]
+                        300 + 48 * (j / 3),
+                        300 + 24 * i,
+                        brickConfig[i][j + 1],
+                        brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 }
             }
@@ -93,7 +101,7 @@ public class Level implements MonoBehaviour {
             onCompletedCallback.run();
         }
 
-        if(ball.isOutOfBound() && onDeathCallback != null) {
+        if (ball.isOutOfBound() && onDeathCallback != null) {
             onDeathCallback.run();
         }
     }
@@ -101,23 +109,17 @@ public class Level implements MonoBehaviour {
     public Level(int id) {
         this.id = id;
 
-        final int WALL_THICKNESS = Main.WIDTH / 28;
-        final int INIT_DELAY = 2500;
-
-        var leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
-        var topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
-        var rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
-
-        paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50, INIT_DELAY)
-            .addInitAnimation()
-            .listenToCollisionWith(leftwall)
-            .listenToCollisionWith(rightwall);
-
         var brickConfig = Objects.requireNonNull(
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
         loadBrickConfig(brickConfig.getBrickMap());
         setBackground(brickConfig.getBackgroundId());
+
+        paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
+            .addInitAnimation()
+            .delayInput(DELAY)
+            .listenToCollisionWith(leftwall)
+            .listenToCollisionWith(rightwall);
 
         ball = (Ball) new Ball(Main.WIDTH / 2 - 4, Main.HEIGHT - 61)
             .listenToCollisionWith(paddle)
@@ -125,21 +127,24 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(topwall)
             .listenToCollisionWith(rightwall);
 
-        SchedulerUtils.setTimeout(() -> {
-            ball.setLinearVelocity(300, -300);
-        }, INIT_DELAY);
+        reset();
 
         for (var brick : bricks) {
             ball.listenToCollisionWith(brick);
         }
+    }
+
+    public void reset() {
+        paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
+        ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
+
+        paddle.delayInput(DELAY);
+        ball.setLinearVelocity(0, 0);
+
+        SchedulerUtils.setTimeout(() -> {
+            ball.setLinearVelocity(300, -300);
+        }, DELAY);
 
         SoundManager.play("round_start.mp3");
-    }
-    public Ball getBall() {
-        return ball;
-    }
-
-    public Paddle getPaddle() {
-        return paddle;
     }
 }

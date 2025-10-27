@@ -3,6 +3,7 @@ package org.arkanoid.core;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 
+import com.almasb.fxgl.input.UserAction;
 import java.util.ArrayList;
 import java.util.List;
 import org.arkanoid.behaviour.MonoBehaviour;
@@ -14,7 +15,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
  * <p>
  * Handles entity creation, spawning, input initialization, and per-frame updates.
  */
-abstract public class GameObject implements MonoBehaviour {
+public abstract class GameObject implements MonoBehaviour {
 
     protected Entity entity = null;
     List<GameObject> collisionListeners = new ArrayList<>();
@@ -151,6 +152,11 @@ abstract public class GameObject implements MonoBehaviour {
         if (e != null) {
             e.removeFromWorld();
         }
+    }
+
+    public void setPosition(int x, int y) {
+        setX(x);
+        setY(y);
     }
 
     /**

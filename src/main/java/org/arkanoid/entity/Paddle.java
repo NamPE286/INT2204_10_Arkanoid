@@ -27,6 +27,17 @@ public class Paddle extends MovableObject {
         return this;
     }
 
+    public Paddle delayInput(int ms) {
+        setLinearVelocity(0, 0);
+        FXGL.getInput().setProcessInput(false);
+
+        SchedulerUtils.setTimeout(() -> {
+            FXGL.getInput().setProcessInput(true);
+        }, ms);
+
+        return this;
+    }
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
@@ -89,14 +100,6 @@ public class Paddle extends MovableObject {
         spawn();
         initInput();
     }
-
-    public Paddle(int x, int y, int inputDelay) {
-        super(x, y);
-        spawn();
-
-        SchedulerUtils.setTimeout(this::initInput, inputDelay);
-    }
-
 
     /**
      * Collision checking wall, power up with paddle.

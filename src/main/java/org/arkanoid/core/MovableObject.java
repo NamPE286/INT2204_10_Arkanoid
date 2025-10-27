@@ -8,16 +8,15 @@ import com.almasb.fxgl.dsl.FXGL;
  * <p>
  * Extends {@link GameObject} and adds physics-based movement capabilities.
  */
-abstract public class MovableObject extends GameObject {
+public abstract class MovableObject extends GameObject {
 
     /**
      * The physics component used to control velocity and collisions.
      */
-    private Vec2 velocity = new Vec2(0, 0);
+    private final Vec2 velocity = new Vec2(0, 0);
 
-    public MovableObject setLinearVelocity(float x, float y) {
+    public void setLinearVelocity(float x, float y) {
         velocity.set(x, y);
-        return this;
     }
 
     public Vec2 getLinearVelocity() {
@@ -37,7 +36,7 @@ abstract public class MovableObject extends GameObject {
      * <p>
      * Initializes the entity and physics component and spawns the object.
      */
-    public MovableObject() {
+    protected MovableObject() {
         super();
     }
 
@@ -62,7 +61,7 @@ abstract public class MovableObject extends GameObject {
      * @param x the x-coordinate for the entity's initial position
      * @param y the y-coordinate for the entity's initial position
      */
-    public MovableObject(int x, int y) {
+    protected MovableObject(int x, int y) {
         super(x, y);
     }
 }
