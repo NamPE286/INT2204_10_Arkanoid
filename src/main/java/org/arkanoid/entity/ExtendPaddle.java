@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
+import org.arkanoid.component.animation.ExtendAnimationComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -19,7 +20,7 @@ public class ExtendPaddle extends Paddle{
                         "PADDLE",
                         new Point2D(0, 0),
                         BoundingShape.box(48, 8)))
-                .with(new PaddleAnimationComponent())
+                .with(new ExtendAnimationComponent())
                 .build();
 
         e.setScaleX(2.0);
@@ -27,4 +28,5 @@ public class ExtendPaddle extends Paddle{
 
         return e;
     }
+
 }

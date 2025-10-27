@@ -95,7 +95,7 @@ public abstract class Brick extends GameObject {
         canDestroy = false;
 
         // 36% pop out Power up
-        if (FXGLMath.randomBoolean(0.36)) {
+        if (FXGLMath.randomBoolean(0.1)) {
             Point2D brickPosition = entity.getPosition();
             System.out.println(brickPosition.getX());
             System.out.println(brickPosition.getY());

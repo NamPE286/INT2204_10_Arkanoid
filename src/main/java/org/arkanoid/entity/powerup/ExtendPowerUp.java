@@ -23,6 +23,8 @@ public class ExtendPowerUp extends PowerUp {
     @Override
     public void applyEffect(Paddle paddle) {
         System.out.println("Paddle get more Bigger");
+
+
     }
 
     @Override
