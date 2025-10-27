@@ -115,9 +115,6 @@ public class Level implements MonoBehaviour {
         var brickConfig = Objects.requireNonNull(
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
-        loadBrickConfig(brickConfig.getBrickMap());
-        setBackground(brickConfig.getBackgroundId());
-
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
             .playInitAnimation()
             .delayInput(DELAY)
@@ -131,6 +128,8 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(rightwall);
 
         reset();
+        loadBrickConfig(brickConfig.getBrickMap());
+        setBackground(brickConfig.getBackgroundId());
 
         for (var brick : bricks) {
             ball.listenToCollisionWith(brick);

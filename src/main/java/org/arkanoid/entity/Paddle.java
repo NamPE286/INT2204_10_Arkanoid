@@ -10,8 +10,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.component.animation.PaddleInitAnimationComponent;
-import org.arkanoid.core.GameObject;
-import org.arkanoid.core.MovableObject;
+import org.arkanoid.entity.core.GameObject;
+import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.utilities.SchedulerUtils;
 
 

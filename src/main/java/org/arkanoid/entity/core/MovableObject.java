@@ -1,4 +1,4 @@
-package org.arkanoid.core;
+package org.arkanoid.entity.core;
 
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;

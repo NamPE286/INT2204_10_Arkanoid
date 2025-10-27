@@ -1,7 +1,7 @@
 package org.arkanoid.entity.powerup;
 
 import com.almasb.fxgl.entity.SpawnData;
-import org.arkanoid.core.GameObject;
+import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.manager.PowerupType;
 

@@ -1,9 +1,8 @@
-package org.arkanoid.core;
+package org.arkanoid.entity.core;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 
-import com.almasb.fxgl.input.UserAction;
 import java.util.ArrayList;
 import java.util.List;
 import org.arkanoid.behaviour.MonoBehaviour;
