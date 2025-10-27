@@ -21,7 +21,7 @@ public class PowerupAnimationComponent extends Component {
         if (this.animeLoop == null) {
             throw new NullPointerException("Khong tim thay");
         }
-        // Khoi tao texture, chinh lai theo dung ti le.
+        
         this.texture = new AnimatedTexture(this.animeLoop);
 
         double scale = NormalBrick.SETSCALE * 8 / 7;

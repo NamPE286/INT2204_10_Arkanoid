@@ -15,7 +15,7 @@ import org.arkanoid.ui.ScoreBoard;
  */
 public class Game implements MonoBehaviour {
 
-    private boolean gameOver = false;        // Trạng thái game over
+    private boolean gameOver = false;        
     private static Game instance;
     private Level currentLevel;
     private int levelIndex = 1;
@@ -39,7 +39,7 @@ public class Game implements MonoBehaviour {
     public static Game reInit() {
         if (instance != null) {
             instance.destroy();
-            // Reset background manager so background entity is removed and recreated
+            
             BackgroundManager.reset();
 
             instance = null;
@@ -49,7 +49,7 @@ public class Game implements MonoBehaviour {
     }
 
     public Game() {
-        // Load highScore từ file.
+        
         int savedHighScore = HighScoreManager.loadHighScore();
         FXGL.set("highScore", savedHighScore);
 
@@ -77,14 +77,14 @@ public class Game implements MonoBehaviour {
      * Cộng điểm vào score.
      */
     public void addScore(int points) {
-        // Lấy giá trị score hiện tại từ FXGL.
+        
         int currentScore = FXGL.geti("score");
         int newScore = currentScore + points;
 
-        // Đặt giá trị score mới, FXGL sẽ tự động thông báo cho ScoreBoard.
+        
         FXGL.set("score", newScore);
 
-        // Cập nhật và lưu highScore ra file.
+        
         if (newScore >= FXGL.geti("highScore")) {
             FXGL.set("highScore", newScore);
             HighScoreManager.saveHighScore(newScore);
@@ -97,10 +97,10 @@ public class Game implements MonoBehaviour {
     private void setLevel(int id) {
         currentLevel = new Level(id);
 
-        // Khi chết -> xử lý mất mạng.
+        
         currentLevel.setOnDeathCallback(this::loseLife);
 
-        // Khi phá xong level.
+        
         currentLevel.setOnCompletedCallback(() -> {
             System.out.println("Level completed!");
         });

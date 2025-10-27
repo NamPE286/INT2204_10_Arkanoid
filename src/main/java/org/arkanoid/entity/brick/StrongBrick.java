@@ -26,7 +26,7 @@ public class StrongBrick extends Brick {
      */
     public StrongBrick(int x, int y, int tileX, int tileY) {
         super(x, y, tileX, tileY);
-        this.canDestroy = true; // Viên gạch có thể bị phá hủy
+        this.canDestroy = true; 
         this.health = 2;
 
         SpawnData spawnData = new SpawnData(x, y);

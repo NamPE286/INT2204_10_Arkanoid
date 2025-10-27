@@ -14,9 +14,9 @@ public class NormalBrick extends Brick {
      * Default constructor for framework or serialization use.
      * Initializes an empty {@code NormalBrick} without position or texture data.
      */
-//    public NormalBrick() {
-//        super();
-//    }
+
+
+
 
     /**
      * Creates a new {@code NormalBrick} instance at a specific position and tile coordinates.
@@ -33,7 +33,7 @@ public class NormalBrick extends Brick {
      */
     public NormalBrick(int x, int y, int tileX, int tileY) {
         super(x, y, tileX, tileY);
-        this.canDestroy = true; // Viên gạch có thể bị phá hủy
+        this.canDestroy = true; 
         this.health = 1;
 
         SpawnData spawnData = new SpawnData(x, y);

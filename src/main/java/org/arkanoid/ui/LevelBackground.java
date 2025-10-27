@@ -41,7 +41,7 @@ public class LevelBackground {
         Texture tiles = getAssetLoader().loadTexture("fields.png");
 
         Texture[] Backgrounds = new Texture[5];
-        int posX = 0; // First position x
+        int posX = 0; 
 
         for (int i = 0; i < 5; i++) {
             Backgrounds[i] = TextureUtils.crop(tiles, posX, 0, BG_HEIGHT, BG_WIDTH);

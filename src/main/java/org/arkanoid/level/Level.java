@@ -27,8 +27,8 @@ public class Level implements MonoBehaviour {
     private Paddle paddle;
     private Ball ball;
     private List<Brick> bricks = new ArrayList<>();
-    private boolean ballOnPaddle = true;     // Bóng đang dính paddle
-    private final double BALL_OFFSET_X = 3;  // Lệch phải nhẹ cho đẹp
+    private boolean ballOnPaddle = true;     
+    private final double BALL_OFFSET_X = 3;  
     private static final int BRICK_OFFSET_X = 100;
     private static final int BRICK_OFFSET_Y = 150;
 
@@ -146,7 +146,7 @@ public class Level implements MonoBehaviour {
     }
 
     public void reset() {
-        // Xu li truong hop paddle dang to thi chet
+        
         if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
             paddle.getEntity().removeComponent(ExtendComponent.class);
         }

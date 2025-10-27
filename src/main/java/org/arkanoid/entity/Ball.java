@@ -14,7 +14,7 @@ import org.arkanoid.utilities.Vec2Utils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
-    // Thêm biến để kiểm soát trạng thái dính paddle.
+    
     private boolean attached = false;
 
     @Override
@@ -39,7 +39,7 @@ public class Ball extends MovableObject {
      */
     @Override
     public void onCollisionWith(GameObject e) {
-        // Nếu đang dính paddle thì bỏ qua va chạm với paddle để không phát âm thanh.
+        
         if (attached && e instanceof Paddle) return;
 
         if (e instanceof Paddle) {
@@ -73,14 +73,14 @@ public class Ball extends MovableObject {
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
         distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
         double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-            0.5); // Hằng số để độ lệch của bóng không bị tuyến tính
+            0.5); 
 
         if (distanceRatio < 0) {
             nonLinearDistanceRatio *= -1;
         }
 
         double ANGLE = 90 - (55
-            * nonLinearDistanceRatio); // Hằng số để đảm bảo góc xiên <= 55 độ và giữ nguyên tốc độ bóng
+            * nonLinearDistanceRatio); 
 
         double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
         double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
@@ -146,7 +146,7 @@ public class Ball extends MovableObject {
         spawn();
     }
 
-    // Setter để bật/tắt trạng thái dính paddle.
+    
     public void setAttached(boolean value) {
         this.attached = value;
     }

@@ -13,10 +13,10 @@ public class PaddleTestCollideWall {
 
     @Test
     public void PaddleTestCollideRightWall1() {
-        // Paddle đi từ trái sang phải
+        
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                10, 0,            // vx dương = đi sang phải
+                10, 0,            
                 50 + PADDLE_WIDTH, 50, WALL_THICK, WALL_HEIGHT, 0, 0
         );
 
@@ -25,10 +25,10 @@ public class PaddleTestCollideWall {
 
     @Test
     public void PaddleTestCollideRightWall2() {
-        // Paddle đi từ trái sang phải
+        
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                10, 0,            // vx dương = đi sang phải
+                10, 0,            
                 100, 50, WALL_THICK, WALL_HEIGHT, 0, 0
         );
 
@@ -37,10 +37,10 @@ public class PaddleTestCollideWall {
 
     @Test
     public void PaddleTestCollideRightWall3() {
-        // Paddle đi từ phải sang trái
+        
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                -10, 0,            // vx âm = đi sang trái
+                -10, 0,            
                 50 + PADDLE_WIDTH, 50, WALL_THICK, WALL_HEIGHT, 0, 0
         );
 
@@ -49,10 +49,10 @@ public class PaddleTestCollideWall {
 
     @Test
     public void PaddleTestCollideLeftWall1() {
-        // Ball đi từ trái sang phải
+        
         double[] result = PaddlePhysics.handleCollision(
                 50 + WALL_THICK, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                -10, 0,            // vx âm = đi sang trái
+                -10, 0,            
                 50, 50, WALL_THICK, WALL_HEIGHT, 0, 0
         );
 
@@ -61,10 +61,10 @@ public class PaddleTestCollideWall {
 
     @Test
     public void PaddleTestCollideLeftWall2() {
-        // Ball đi từ trái sang phải
+        
         double[] result = PaddlePhysics.handleCollision(
                 50 + WALL_THICK, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                -10, 0,            // vx âm = đi sang trái
+                -10, 0,            
                 30, 50, WALL_THICK, WALL_HEIGHT, 0, 0
         );
 
@@ -73,10 +73,10 @@ public class PaddleTestCollideWall {
 
     @Test
     public void PaddleTestCollideLeftWall3() {
-        // Ball đi từ trái sang phải
+        
         double[] result = PaddlePhysics.handleCollision(
                 50 + WALL_THICK, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                10, 0,            // vx dương = đi sang phải
+                10, 0,            
                 50, 50, WALL_THICK, WALL_HEIGHT, 0, 0
         );
 

@@ -9,19 +9,19 @@ import org.arkanoid.factory.LabelFactory;
 public class GameOver {
 
     public static void show() {
-        // Load custom font
+        
         Font font = Font.loadFont(GameOver.class.getResourceAsStream("/fonts/nes.otf"), 32);
 
-        // Create and style label
+        
         Label label = new Label("GAME OVER");
         label.setFont(font);
         label.setTextFill(Color.WHITE);
-        label.setTranslateX(FXGL.getAppWidth() / 2.0 - 120); // slightly left of center
-        label.setTranslateY(FXGL.getAppHeight() - 100.0);     // near bottom
+        label.setTranslateX(FXGL.getAppWidth() / 2.0 - 120); 
+        label.setTranslateY(FXGL.getAppHeight() - 100.0);     
 
-        FXGL.addUINode(label); // add to UI
+        FXGL.addUINode(label); 
 
-        // Return to Main Menu after 3 seconds
+        
         FXGL.runOnce(() -> FXGL.getGameController().gotoMainMenu(),
             javafx.util.Duration.seconds(3));
     }

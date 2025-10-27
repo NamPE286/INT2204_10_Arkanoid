@@ -53,7 +53,7 @@ public abstract class GameObject implements MonoBehaviour {
      * nothing.
      */
     protected void initInput() {
-        // Default implementation does nothing
+        
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class GameObject implements MonoBehaviour {
      * @param e the Entity that this object has collided with
      */
     public void onCollisionWith(GameObject e) {
-        // Default implementation does nothing
+        
     }
 
     /**
@@ -169,7 +169,7 @@ public abstract class GameObject implements MonoBehaviour {
      */
     public GameObject(int x, int y) {
         entity = createEntity(new SpawnData(x, y));
-        /*spawn();
-        initInput();*/
+        
+
     }
 }

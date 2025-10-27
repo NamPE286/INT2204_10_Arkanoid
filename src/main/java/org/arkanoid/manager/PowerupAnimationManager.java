@@ -32,9 +32,9 @@ public class PowerupAnimationManager {
         PowerupType[] types = PowerupType.values();
         
         for (int i = 0; i < types.length; i++) {
-            // Cut each row.
+            
             AnimationChannel anime = createAnimationChannel(i);
-            // Store into map.
+            
             animationCache.put(types[i], anime);
             System.out.println("Loaded powerup animations: " + animationCache.keySet());
         }
@@ -42,7 +42,7 @@ public class PowerupAnimationManager {
     }
 
     private static AnimationChannel createAnimationChannel(int rowIndex) {
-        // Create a list to store all frame.
+        
         if (rowIndex < 0 || rowIndex >= ROW_NUM) {
            throw new IndexOutOfBoundsException("Out of bound");
         }
@@ -50,14 +50,14 @@ public class PowerupAnimationManager {
 
         int y = START_Y + ( rowIndex *  (SPACE_Y + FRAME_H) );
 
-        // Load each frame picture.
+        
         for (int j = 0; j < COL_NUM; j++) {
 
             int x = START_X + j * (FRAME_W + SPACE_X);
 
             Image cutFrame = new WritableImage(
                     powerSheet.getPixelReader(), x, y, FRAME_W, FRAME_H);
-            // add frame into list.
+            
             frames.add(cutFrame);
         }
         return new AnimationChannel(frames, Duration.seconds(1));

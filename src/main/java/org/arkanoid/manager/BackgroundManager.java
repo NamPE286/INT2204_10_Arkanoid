@@ -15,10 +15,10 @@ public class BackgroundManager {
     private static final int DISTANCE = 8;
     private static final int NUM_BACKGROUND = 5;
 
-    // array to saving all textures cropped.
+    
     private final Texture[] textures;
 
-    // setting the current background by an entity.
+    
     private Entity currentBackground;
     private static BackgroundManager instance;
 
@@ -32,7 +32,7 @@ public class BackgroundManager {
         }
     }
 
-    //constructor for loading and cropping once.
+    
     public BackgroundManager() {
         this.textures = new Texture[NUM_BACKGROUND];
         loadAndCrop();
@@ -44,25 +44,25 @@ public class BackgroundManager {
             currentBackground.removeFromWorld();
         }
 
-        // set background black.
+        
         FXGL.getGameScene().getRoot().setStyle("-fx-background-color: black;");
 
-        // create a index for background.
+        
         int indexBG = (level - 1) % NUM_BACKGROUND;
 
-        // text the texture was cropped.
+        
         Texture newBG = textures[indexBG];
 
-        // add size into UI
+        
         newBG.setFitWidth(getAppWidth());
         newBG.setFitHeight(getAppHeight());
 
-        /*
-           Create an new entity for loading background.
-           at (0, 0), zIndex is the order of background,
-           ensure that background behind of the things,
-           build and attach into game world.
-         */
+        
+
+
+
+
+
         currentBackground = FXGL.entityBuilder()
             .at(0, 48)
             .view(newBG)
@@ -88,7 +88,7 @@ public class BackgroundManager {
                 try {
                     instance.currentBackground.removeFromWorld();
                 } catch (Exception ignored) {
-                    // If the entity was already removed or the world is not available, ignore.
+                    
                 }
                 instance.currentBackground = null;
             }

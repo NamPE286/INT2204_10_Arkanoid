@@ -17,7 +17,7 @@ public class ScoreBoard {
     private void initLabels() {
         Font nesFont = Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 24);
 
-        // 1UP Score
+        
         scoreLabel = new Label();
         scoreLabel.setFont(nesFont);
         scoreLabel.setTextFill(Color.WHITE);
@@ -25,7 +25,7 @@ public class ScoreBoard {
         scoreLabel.setTranslateX(20);
         scoreLabel.setTranslateY(20);
 
-        // High Score
+        
         highScoreLabel = new Label();
         highScoreLabel.setFont(nesFont);
         highScoreLabel.setTextFill(Color.WHITE);

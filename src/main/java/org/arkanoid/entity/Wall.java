@@ -11,7 +11,7 @@ public class Wall extends GameObject {
     private final double wallHeight;
     private final double wallThick;
 
-    // Initialize wall.
+    
     public Wall(int x, int y, double wallHeight, double wallThick) {
         this.wallHeight = wallHeight;
         this.wallThick = wallThick;
@@ -26,8 +26,8 @@ public class Wall extends GameObject {
     }
 
 
-    /// Setting the wall with entity builder, collision, and build.
-    /// The background has all wall, so unnecessary to drawing a wall.
+    
+    
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         return FXGL.entityBuilder(spawnData)

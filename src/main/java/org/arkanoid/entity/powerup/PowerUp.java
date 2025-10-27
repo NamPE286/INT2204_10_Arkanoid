@@ -38,8 +38,8 @@ public abstract class PowerUp extends MovableObject {
         final int W = PowerupAnimationManager.FRAME_W;
         final int H = PowerupAnimationManager.FRAME_H;
         PowerupType currentType = getType();
-        // Go through screen also disappear.
-        // bat buoc phải thêm allowRotation(false) thì nó sẽ không xoay doc.
+        
+        
 
         var e = entityBuilder(spawnData)
             .type(EntityType.POWERUP)

@@ -15,7 +15,7 @@ import java.util.concurrent.ScheduledFuture;
 public class ExtendComponent extends Component {
 
     private final Duration duration;
-    private ScheduledFuture<?> timer; // Save the clock
+    private ScheduledFuture<?> timer; 
     private final int PADDLE_NORMAL_WIDTH = 32;
     private final int PADDLE_EXTEND_WIDTH = 48;
     private final int PADDLE_HEIGHT = 8;
@@ -30,9 +30,9 @@ public class ExtendComponent extends Component {
     }
 
     public void startNewCLock() {
-        // setTimeout for set time(hen gio)
-        // this::removeSelf là (Runnable task)
-        // duration.toMillis() là (long delayMillis)
+        
+        
+        
         timer = SchedulerUtils.setTimeout(this::removeItself, (long) duration.toMillis());
     }
 
@@ -63,7 +63,7 @@ public class ExtendComponent extends Component {
 
     @Override
     public void onRemoved() {
-        // always erase timer when component being erased
+        
         SchedulerUtils.clear(timer);
 
         if (entity == null || !entity.isActive()) {

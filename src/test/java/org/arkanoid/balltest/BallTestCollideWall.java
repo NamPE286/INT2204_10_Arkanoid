@@ -12,10 +12,10 @@ public class BallTestCollideWall {
 
     @Test
     void testCollisionFromTop() {
-        // Ball rơi từ trên xuống brick
+        
         double[] result = BallPhysics.handleCollision(
                 50, 40, BALL_WIDTH, BALL_HEIGHT,
-                0, 10,            // vx, vy (đang đi xuống)
+                0, 10,            
                 40, 50, WALL_HEIGHT, WALL_THICK
         );
 
@@ -24,10 +24,10 @@ public class BallTestCollideWall {
 
     @Test
     void testCollisionFromBottom() {
-        // Ball đi từ dưới lên brick
+        
         double[] result = BallPhysics.handleCollision(
                 70, 60, BALL_WIDTH, BALL_HEIGHT,
-                0, -10,           // vy âm = đi lên
+                0, -10,           
                 40, 50, WALL_HEIGHT, WALL_THICK
         );
 
@@ -36,10 +36,10 @@ public class BallTestCollideWall {
 
     @Test
     void testCollisionFromLeft() {
-        // Ball đi từ trái sang phải
+        
         double[] result = BallPhysics.handleCollision(
                 30, 50, BALL_WIDTH, BALL_HEIGHT,
-                10, 0,            // vx dương = đi sang phải
+                10, 0,            
                 40, 50, WALL_THICK, WALL_HEIGHT
         );
 
@@ -48,10 +48,10 @@ public class BallTestCollideWall {
 
     @Test
     void testCollisionFromRight() {
-        // Ball đi từ phải sang trái
+        
         double[] result = BallPhysics.handleCollision(
                 90, 50, BALL_WIDTH, BALL_HEIGHT,
-                -10, 0,           // vx âm = đi sang trái
+                -10, 0,           
                 40, 50, WALL_THICK, WALL_HEIGHT
         );
 

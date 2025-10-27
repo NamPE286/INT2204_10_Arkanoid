@@ -14,7 +14,7 @@ public class PaddleTestCollidePowerUp {
     public void PaddleTestCollidePower1() {
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                0, 10,            // vx dương = đi sang phải
+                0, 10,            
                 50, 50 - POWER_HEIGHT, POWER_WIDTH, POWER_HEIGHT, 0, PADDLE_HEIGHT
         );
 
@@ -25,7 +25,7 @@ public class PaddleTestCollidePowerUp {
     public void PaddleTestCollidePower2() {
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                0, 10,            // vx dương = đi sang phải
+                0, 10,            
                 43, 50 - POWER_HEIGHT, POWER_WIDTH, POWER_HEIGHT, 0, PADDLE_HEIGHT
         );
 
@@ -36,7 +36,7 @@ public class PaddleTestCollidePowerUp {
     public void PaddleTestCollidePower3() {
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                0, 10,            // vx dương = đi sang phải
+                0, 10,            
                 49 + PADDLE_WIDTH, 50 - POWER_HEIGHT, POWER_WIDTH, POWER_HEIGHT, 0, PADDLE_HEIGHT
         );
 
@@ -47,7 +47,7 @@ public class PaddleTestCollidePowerUp {
     public void PaddleTestCollidePower4() {
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                0, 10,            // vx dương = đi sang phải
+                0, 10,            
                 40, 50 - POWER_HEIGHT, POWER_WIDTH, POWER_HEIGHT, 0, PADDLE_HEIGHT
         );
 
@@ -58,7 +58,7 @@ public class PaddleTestCollidePowerUp {
     public void PaddleTestCollidePower5() {
         double[] result = PaddlePhysics.handleCollision(
                 50, 50, PADDLE_WIDTH, PADDLE_HEIGHT,
-                0, 10,            // vx dương = đi sang phải
+                0, 10,            
                 90, 50 - POWER_HEIGHT, POWER_WIDTH, POWER_HEIGHT, 0, PADDLE_HEIGHT
         );
 
