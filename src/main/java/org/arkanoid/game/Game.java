@@ -2,6 +2,7 @@ package org.arkanoid.game;
 
 import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.behaviour.MonoBehaviour;
+import org.arkanoid.entity.EntityType;
 import org.arkanoid.level.Level;
 import org.arkanoid.manager.HighScoreManager;
 import org.arkanoid.manager.SoundManager;
@@ -14,6 +15,7 @@ import org.arkanoid.ui.LivesUI;
 public class Game implements MonoBehaviour {
     private boolean gameOver = false;        // Trạng thái game over
     private static Game instance;
+
 
     Level currentLevel;
     int levelIndex = 1;
@@ -43,8 +45,10 @@ public class Game implements MonoBehaviour {
         lives--;
         FXGL.set("lives", lives);
 
+
         if (lives > 0) {
             currentLevel.reset();
+
         } else {
             SoundManager.play("death.wav");
             gameOver = true;
