@@ -21,9 +21,18 @@ public class Paddle extends MovableObject {
 
     private final int SPEED = 400;
 
-    public Paddle addInitAnimation() {
-        entity.removeComponent(PaddleAnimationComponent.class);
+    public Paddle playInitAnimation() {
+
+        if (entity.hasComponent(PaddleAnimationComponent.class)) {
+            entity.removeComponent(PaddleAnimationComponent.class);
+        }
+
+        if (entity.hasComponent(PaddleInitAnimationComponent.class)) {
+            entity.removeComponent(PaddleInitAnimationComponent.class);
+        }
+
         entity.addComponent(new PaddleInitAnimationComponent());
+
         return this;
     }
 

@@ -116,7 +116,7 @@ public class Level implements MonoBehaviour {
         setBackground(brickConfig.getBackgroundId());
 
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
-            .addInitAnimation()
+            .playInitAnimation()
             .delayInput(DELAY)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
@@ -139,6 +139,7 @@ public class Level implements MonoBehaviour {
         ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
 
         paddle.delayInput(DELAY);
+        paddle.playInitAnimation();
         ball.setLinearVelocity(0, 0);
 
         SchedulerUtils.setTimeout(() -> {
