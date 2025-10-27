@@ -28,6 +28,9 @@ public class Level implements MonoBehaviour {
     private List<Brick> bricks = new ArrayList<>();
     private boolean ballOnPaddle = true;     // Bóng đang dính paddle
     private final double BALL_OFFSET_X = 3;  // Lệch phải nhẹ cho đẹp
+    private static final int BRICK_OFFSET_X = 100;
+    private static final int BRICK_OFFSET_Y = 150;
+
     Wall leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
     Wall topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
     Wall rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
@@ -42,22 +45,22 @@ public class Level implements MonoBehaviour {
 
                 if (brickConfig[i][j] == 1) {
                     bricks.add(new NormalBrick(
-                        300 + 48 * (j / 3),
-                        300 + 24 * i,
+                        BRICK_OFFSET_X + 48 * (j / 3),
+                        BRICK_OFFSET_Y + 24 * i,
                         brickConfig[i][j + 1],
                         brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 } else if (brickConfig[i][j] == 2) {
                     bricks.add(new StrongBrick(
-                        300 + 48 * (j / 3),
-                        300 + 24 * i,
+                        BRICK_OFFSET_X + 48 * (j / 3),
+                        BRICK_OFFSET_Y + 24 * i,
                         brickConfig[i][j + 1],
                         brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 } else if (brickConfig[i][j] == 3) {
                     bricks.add(new HardBrick(
-                        300 + 48 * (j / 3),
-                        300 + 24 * i,
+                        BRICK_OFFSET_X + 48 * (j / 3),
+                        BRICK_OFFSET_Y + 24 * i,
                         brickConfig[i][j + 1],
                         brickConfig[i][j + 2]
                     ).setPaddle(paddle));
