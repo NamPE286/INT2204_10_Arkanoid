@@ -25,9 +25,7 @@
 //    /**
 //     * Constructs a new brick at the default position (0, 0).
 //     */
-////    public Brick() {
-////        super();
-////    }
+/// /    public Brick() { /        super(); /    }
 //
 //    /**
 //     * Constructs a new brick at the specified coordinates.
@@ -179,11 +177,19 @@ public abstract class Brick extends GameObject {
 
     // ... (các getter/setter khác)
 
+    @Override
+    public void destroy() {
+        super.destroy();
+
+        if (powerUp != null) {
+            powerUp.destroy();
+        }
+    }
+
     /**
      * Destroys the brick and removes it from the game world.
      */
-    @Override
-    public void destroy() {
+    public void breakBrick() {
         this.health--;
 
         // Nếu gạch là loại không thể bị phá hoặc có máu > 0 thì không destroy

@@ -2,32 +2,50 @@ package org.arkanoid.game;
 
 import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.behaviour.MonoBehaviour;
-import org.arkanoid.entity.EntityType;
 import org.arkanoid.level.Level;
+import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.HighScoreManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.GameOver;
 import org.arkanoid.ui.LivesUI;
+import org.arkanoid.ui.ScoreBoard;
 
 /**
  * Singleton quản lý level, mạng, reset bóng/paddle và Game Over.
  */
 public class Game implements MonoBehaviour {
+
     private boolean gameOver = false;        // Trạng thái game over
     private static Game instance;
-
-
-    Level currentLevel;
-    int levelIndex = 1;
-
+    private Level currentLevel;
+    private int levelIndex = 1;
     private int lives = 3;
     private LivesUI livesUI;
+    private ScoreBoard scoreBoard;
+
+    public void destroy() {
+        currentLevel.destroy();
+    }
+
 
     public static Game getInstance() {
         if (instance == null) {
             instance = new Game();
         }
+
         return instance;
+    }
+
+    public static Game reInit() {
+        if (instance != null) {
+            instance.destroy();
+            // Reset background manager so background entity is removed and recreated
+            BackgroundManager.reset();
+
+            instance = null;
+        }
+
+        return getInstance();
     }
 
     public Game() {
@@ -44,7 +62,6 @@ public class Game implements MonoBehaviour {
     private void loseLife() {
         lives--;
         FXGL.set("lives", lives);
-
 
         if (lives > 0) {
             currentLevel.reset();
@@ -95,6 +112,7 @@ public class Game implements MonoBehaviour {
     public void initUI() {
         livesUI = new LivesUI();
         livesUI.render();
+        scoreBoard = new ScoreBoard();
         FXGL.set("lives", lives);
     }
 

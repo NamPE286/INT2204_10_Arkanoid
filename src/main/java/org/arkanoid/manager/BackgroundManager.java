@@ -77,5 +77,24 @@ public class BackgroundManager {
         }
         return instance;
     }
+
+    /**
+     * Reset the BackgroundManager singleton and remove any current background entity from the world.
+     * Call this when restarting the game so the background will be recreated fresh.
+     */
+    public static void reset() {
+        if (instance != null) {
+            if (instance.currentBackground != null) {
+                try {
+                    instance.currentBackground.removeFromWorld();
+                } catch (Exception ignored) {
+                    // If the entity was already removed or the world is not available, ignore.
+                }
+                instance.currentBackground = null;
+            }
+
+            instance = null;
+        }
+    }
 }
 

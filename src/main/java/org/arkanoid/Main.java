@@ -5,7 +5,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import org.arkanoid.game.Game;
 import org.arkanoid.factory.SceneFactory;
-import org.arkanoid.ui.ScoreBoard;
 
 import java.util.Map;
 
@@ -14,7 +13,6 @@ public class Main extends GameApplication {
     public static final int HEIGHT = 768;
     public static final int WIDTH = 672;
     Game game;
-    ScoreBoard scoreBoard;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -32,18 +30,18 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("score", 0); // player score.
+        vars.put("score", 0);
+        vars.put("highScore", 0);
         vars.put("lives", 3);
     }
 
     @Override
     protected void initGame() {
-        game = Game.getInstance();
+        game = Game.reInit();
     }
 
     @Override
     protected void initUI() {
-        scoreBoard = new ScoreBoard();
         Game.getInstance().initUI();
     }
 

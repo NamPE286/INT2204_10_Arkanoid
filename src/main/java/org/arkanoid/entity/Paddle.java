@@ -14,7 +14,6 @@ import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.utilities.SchedulerUtils;
 
-
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {
@@ -50,13 +49,13 @@ public class Paddle extends MovableObject {
     @Override
     public Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
-            .type(EntityType.PADDLE)
-            .bbox(new HitBox(
-                "PADDLE",
-                new Point2D(0, 0),
-                BoundingShape.box(32, 8)))
-            .with(new PaddleAnimationComponent())
-            .build();
+                .type(EntityType.PADDLE)
+                .bbox(new HitBox(
+                        "PADDLE",
+                        new Point2D(0, 0),
+                        BoundingShape.box(32, 8)))
+                .with(new PaddleAnimationComponent())
+                .build();
 
         e.setScaleX(2.0);
         e.setScaleY(2.0);
@@ -66,7 +65,7 @@ public class Paddle extends MovableObject {
 
     @Override
     protected void initInput() {
-        FXGL.getInput().addAction(new UserAction("Left") {
+        FXGL.getInput().addAction(new UserAction("LEFT") {
             @Override
             protected void onAction() {
                 setLinearVelocity(-SPEED, 0);
@@ -78,7 +77,7 @@ public class Paddle extends MovableObject {
             }
         }, KeyCode.LEFT);
 
-        FXGL.getInput().addAction(new UserAction("Right") {
+        FXGL.getInput().addAction(new UserAction("RIGHT") {
             @Override
             protected void onAction() {
                 setLinearVelocity(SPEED, 0);
@@ -130,6 +129,5 @@ public class Paddle extends MovableObject {
             }
         }
     }
-
 
 }

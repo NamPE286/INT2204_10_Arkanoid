@@ -108,7 +108,7 @@ public class Ball extends MovableObject {
         SoundManager.play("ball_hit.wav");
 
         System.out.println("Collide with brick");
-        brick.destroy();
+        brick.breakBrick();
     }
 
     /**

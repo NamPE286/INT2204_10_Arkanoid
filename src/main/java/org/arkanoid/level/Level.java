@@ -36,6 +36,14 @@ public class Level implements MonoBehaviour {
     Wall topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
     Wall rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
 
+    public void destroy() {
+        for (var i : bricks) {
+            i.destroy();
+        }
+
+        paddle.destroy();
+        ball.destroy();
+    }
 
     private void loadBrickConfig(int[][] brickConfig) {
         for (int i = 0; i < brickConfig.length; i++) {
