@@ -34,17 +34,18 @@ public class Main extends GameApplication {
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("score", 0); // player score.
         vars.put("highScore", 50000); // default high score.
+        vars.put("lives", 3);
     }
 
     @Override
     protected void initGame() {
-        game = new Game();
+        game = Game.getInstance();
     }
 
     @Override
     protected void initUI() {
         scoreBoard = new ScoreBoard();
-        game.initUI();
+        Game.getInstance().initUI();
     }
 
 

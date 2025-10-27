@@ -18,6 +18,9 @@ public class Ball extends MovableObject {
 
     private int paddleCollisionSound = 0;
 
+    // Thêm biến để kiểm soát trạng thái dính paddle.
+    private boolean attached = false;
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5);
@@ -40,6 +43,9 @@ public class Ball extends MovableObject {
      */
     @Override
     public void onCollisionWith(GameObject e) {
+        // Nếu đang dính paddle thì bỏ qua va chạm với paddle để không phát âm thanh.
+        if (attached && e instanceof Paddle) return;
+
         if (e instanceof Paddle) {
             this.onCollisionWith((Paddle) e);
         } else if (e instanceof Brick) {
@@ -147,5 +153,14 @@ public class Ball extends MovableObject {
     public Ball(int x, int y) {
         super(x, y);
         spawn();
+    }
+
+    // Setter để bật/tắt trạng thái dính paddle.
+    public void setAttached(boolean value) {
+        this.attached = value;
+    }
+
+    public boolean isAttached() {
+        return attached;
     }
 }
