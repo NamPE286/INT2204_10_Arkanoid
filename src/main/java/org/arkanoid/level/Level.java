@@ -15,6 +15,7 @@ import org.arkanoid.entity.brick.StrongBrick;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.SchedulerUtils;
+import org.arkanoid.entity.powerup.ExtendComponent;
 
 public class Level implements MonoBehaviour {
 
@@ -137,6 +138,11 @@ public class Level implements MonoBehaviour {
     }
 
     public void reset() {
+        // Xu li truong hop paddle dang to thi chet
+        if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
+            paddle.getEntity().removeComponent(ExtendComponent.class);
+        }
+
         paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
         ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
 

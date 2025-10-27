@@ -34,8 +34,23 @@ public class PaddleAnimationComponent extends Component {
 
     @Override
     public void onAdded() {
+        // xoa cac texture cu
         entity.getViewComponent().addChild(texture);
-        texture.playAnimationChannel(animLoop);
+        texture.loopAnimationChannel(animLoop); // chuyen play thanh loop
+    }
+
+    /**
+     *  Xu li sau khi paddle to ra
+     */
+    @Override
+    public void onRemoved() {
+        if (texture != null) {
+            texture.stop();
+        }
+
+        if (entity != null && entity.getViewComponent() != null && texture != null) {
+            entity.getViewComponent().removeChild(texture);
+        }
     }
 }
 

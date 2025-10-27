@@ -20,7 +20,7 @@ public class ExtendAnimationComponent extends Component {
     private final AnimationChannel animLoop;
 
     private List<Image> getExtendFrame() {
-        Image image = new Image("vaus.png");
+        Image image = FXGL.image("vaus.png");
         List<Image> frames = new ArrayList<>();
         for (int i = 0; i <= 5; i++) {
             frames.add(new WritableImage(image.getPixelReader(), 64, 8 * i, 48, 8));
@@ -44,6 +44,13 @@ public class ExtendAnimationComponent extends Component {
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
-        texture.playAnimationChannel(animLoop);
+        texture.loopAnimationChannel(animLoop);
     }
+
+    @Override
+    public void onRemoved() {
+        texture.stop();
+        entity.getViewComponent().removeChild(texture);
+    }
+
 }

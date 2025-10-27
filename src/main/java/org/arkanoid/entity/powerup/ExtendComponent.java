@@ -1,8 +1,8 @@
 package org.arkanoid.entity.powerup;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.time.TimerAction;
 import javafx.util.Duration;
 import com.almasb.fxgl.entity.component.Component;
 import org.arkanoid.component.animation.ExtendAnimationComponent;
@@ -10,6 +10,8 @@ import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.utilities.SchedulerUtils;
 
 import java.util.concurrent.ScheduledFuture;
+
+
 
 
 public class ExtendComponent extends Component {
@@ -36,9 +38,11 @@ public class ExtendComponent extends Component {
     }
 
     public void removeItself() {
-        if (entity != null) {
-            entity.removeComponent(ExtendComponent.class);
-        }
+        FXGL.runOnce(() -> {
+            if (entity != null) {
+                entity.removeComponent(ExtendComponent.class);
+            }
+        }, Duration.ZERO);
     }
 
     @Override
@@ -69,13 +73,12 @@ public class ExtendComponent extends Component {
             entity.removeComponent(ExtendAnimationComponent.class);
         }
 
-        entity.addComponent(new PaddleAnimationComponent());
 
-        // Refactor origin hitbox
         entity.getBoundingBoxComponent().clearHitBoxes();
         entity.getBoundingBoxComponent().addHitBox(
                 new HitBox(BoundingShape.box(PADDLE_NORMAL_WIDTH, PADDLE_HEIGHT))
         );
 
+        entity.addComponent(new PaddleAnimationComponent());
     }
 }
