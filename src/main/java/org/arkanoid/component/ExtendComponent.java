@@ -1,4 +1,4 @@
-package org.arkanoid.entity.powerup;
+package org.arkanoid.component;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.BoundingShape;

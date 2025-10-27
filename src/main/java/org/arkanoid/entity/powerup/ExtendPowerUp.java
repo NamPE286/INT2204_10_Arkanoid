@@ -2,9 +2,11 @@ package org.arkanoid.entity.powerup;
 
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.util.Duration;
+import org.arkanoid.component.ExtendComponent;
 import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.manager.PowerupType;
+import org.arkanoid.manager.SoundManager;
 
 
 public class ExtendPowerUp extends PowerUp {
@@ -40,6 +42,7 @@ public class ExtendPowerUp extends PowerUp {
 
     @Override
     public void onCollisionWith(GameObject e) {
+        SoundManager.play("paddle_extend.wav");
         System.out.println("Power up collided with paddle");
 
         if (!(e instanceof Paddle curPaddle)) {

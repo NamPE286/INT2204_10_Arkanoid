@@ -14,9 +14,6 @@ import org.arkanoid.utilities.Vec2Utils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
-
-    private int paddleCollisionSound = 0;
-
     // Thêm biến để kiểm soát trạng thái dính paddle.
     private boolean attached = false;
 
@@ -92,13 +89,7 @@ public class Ball extends MovableObject {
         System.out.println(String.format("(%.3f, %.3f)", vx, vy));
         System.out.println("Collide with Paddle");
 
-        if (paddleCollisionSound == 0) {
-            SoundManager.play("ball_hit_1.wav");
-        } else {
-            SoundManager.play("ball_hit_2.wav");
-        }
-
-        paddleCollisionSound = 1 - paddleCollisionSound;
+        SoundManager.play("ball_hit_1.wav");
     }
 
     /**

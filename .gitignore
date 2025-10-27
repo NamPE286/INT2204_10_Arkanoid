@@ -40,4 +40,4 @@ logs/
 ### Mac OS ###
 .DS_Store
 
-highscore.txt
+./highscore.txt

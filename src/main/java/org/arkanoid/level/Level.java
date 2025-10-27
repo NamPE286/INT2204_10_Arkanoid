@@ -15,7 +15,7 @@ import org.arkanoid.entity.brick.StrongBrick;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.SchedulerUtils;
-import org.arkanoid.entity.powerup.ExtendComponent;
+import org.arkanoid.component.ExtendComponent;
 
 public class Level implements MonoBehaviour {
 
