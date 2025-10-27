@@ -2,7 +2,7 @@ package org.arkanoid.entity.powerup;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
-import com.almasb.fxgl.dsl.components.OffscreenCleanComponent;
+
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -39,8 +39,6 @@ public abstract class PowerUp extends MovableObject {
         final int W = PowerupAnimationManager.FRAME_W;
         final int H = PowerupAnimationManager.FRAME_H;
         PowerupType currentType = getType();
-        // Go through screen also disappear.
-        // bat buoc phải thêm allowRotation(false) thì nó sẽ không xoay doc.
 
         var e = entityBuilder(spawnData)
             .type(EntityType.POWERUP)
@@ -54,6 +52,6 @@ public abstract class PowerUp extends MovableObject {
         return e;
     }
 
-    public abstract void applyEffect(Paddle paddle);
+
 
 }

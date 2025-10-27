@@ -21,6 +21,7 @@ public class Level implements MonoBehaviour {
     Runnable onCompletedCallback, onDeathCallback;
     int id;
     Paddle paddle;
+    Paddle extendPaddle;
     Ball ball;
     List<Brick> bricks = new ArrayList<>();
 
@@ -92,6 +93,8 @@ public class Level implements MonoBehaviour {
         paddle = (Paddle) new Paddle(Main.WIDTH / 2, Main.HEIGHT - 50)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
+
+         
 
         var brickConfig = Objects.requireNonNull(
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));

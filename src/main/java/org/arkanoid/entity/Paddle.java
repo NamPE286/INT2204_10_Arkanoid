@@ -20,7 +20,7 @@ public class Paddle extends MovableObject {
     private final int SPEED = 400;
 
     @Override
-    protected Entity createEntity(SpawnData spawnData) {
+    public Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
             .type(EntityType.PADDLE)
             .bbox(new HitBox(

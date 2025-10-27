@@ -4,17 +4,22 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import com.almasb.fxgl.time.TimerAction;
 import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 import javafx.scene.image.Image;
 
 public class PaddleAnimationComponent extends Component {
+    private boolean extendActive;
 
     private final AnimatedTexture texture;
     private final AnimationChannel animInit;
     private final AnimationChannel animLoop;
+    private final AnimationChannel extendAnim;
 
     private List<Image> getInitFrames() {
         Image image = FXGL.image("vaus.png");
@@ -40,12 +45,34 @@ public class PaddleAnimationComponent extends Component {
         return frames;
     }
 
+    private List<Image> getExtendPowerFrames() {
+        Image image = FXGL.image("vaus.png");
+        List<Image> frames = new ArrayList<>();
+
+        for (int i = 0; i <= 5; i++) {
+            frames.add(new WritableImage(image.getPixelReader(), 64, 8 * i, 32, 8));
+        }
+        return frames;
+    }
+
     public PaddleAnimationComponent() {
+
         animInit = new AnimationChannel(getInitFrames(), Duration.seconds(1));
         animLoop = new AnimationChannel(getIdleFrames(), Duration.seconds(1));
-
+        extendAnim = new AnimationChannel(getExtendPowerFrames(), Duration.seconds(1));
         texture = new AnimatedTexture(animInit);
 
+    }
+
+    public void playExtendPower(Duration duration) {
+        texture.playAnimationChannel(extendAnim);
+        extendActive = true;
+
+        // Sau 'duration', FXGL sẽ tự động gọi callback để revert
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            texture.loopAnimationChannel(animLoop);
+            extendActive = false;
+        }, duration);
     }
 
     @Override
