@@ -20,9 +20,6 @@ public class Game implements MonoBehaviour {
     private int lives = 3;
     private LivesUI livesUI;
 
-
-
-    // Singleton
     public static Game getInstance() {
         if (instance == null) {
             instance = new Game();
