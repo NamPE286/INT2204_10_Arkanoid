@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BallTestCollidePaddle {
-    public double BALL_WIDTH = 10;
-    public double BALL_HEIGHT = 10;
-    public double PADDLE_WIDTH = 32;
-    public double PADDLE_HEIGHT = 8;
+    public final double BALL_WIDTH = 10;
+    public final double BALL_HEIGHT = 10;
+    public final double PADDLE_WIDTH = 32;
+    public final double PADDLE_HEIGHT = 8;
 
     @Test
     void testCollisionFromTop() {

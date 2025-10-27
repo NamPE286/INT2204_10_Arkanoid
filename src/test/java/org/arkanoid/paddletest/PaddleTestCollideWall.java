@@ -1,15 +1,14 @@
 package org.arkanoid.paddletest;
 
-import org.arkanoid.balltest.BallPhysics;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PaddleTestCollideWall {
-    public double PADDLE_WIDTH = 32;
-    public double PADDLE_HEIGHT = 8;
-    public double WALL_THICK = 24;
-    public double WALL_HEIGHT = 600;
+    public final double PADDLE_WIDTH = 32;
+    public final double PADDLE_HEIGHT = 8;
+    public final double WALL_THICK = 24;
+    public final double WALL_HEIGHT = 600;
 
     @Test
     public void PaddleTestCollideRightWall1() {

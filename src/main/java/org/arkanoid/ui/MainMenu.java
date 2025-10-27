@@ -8,7 +8,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
@@ -23,19 +22,19 @@ import java.util.List;
 
 public class MainMenu extends FXGLMenu {
 
-    private Font nesFont;
+    private final Font nesFont;
 
     
-    private List<Label> menuItems = new ArrayList<>();
+    private final List<Label> menuItems = new ArrayList<>();
 
     
-    private List<ImageView> arrowSlots = new ArrayList<>();
+    private final List<ImageView> arrowSlots = new ArrayList<>();
 
     
     private int currentIndex = 0;
 
     
-    private ImageView arrowImage;
+    private final ImageView arrowImage;
 
     
     private Timeline blinkTimeline;

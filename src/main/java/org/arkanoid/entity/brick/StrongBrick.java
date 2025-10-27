@@ -9,7 +9,7 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class StrongBrick extends Brick {
-    public static double SETSCALE = 3.0;
+    public static final double SETSCALE = 3.0;
 
     /**
      * Creates a new {@code StrongBrick} instance at a specific position and tile coordinates.

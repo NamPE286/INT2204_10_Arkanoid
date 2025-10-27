@@ -9,7 +9,7 @@ import org.arkanoid.utilities.TextureUtils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class NormalBrick extends Brick {
-    public static double SETSCALE = 3.0;
+    public static final double SETSCALE = 3.0;
     /**
      * Default constructor for framework or serialization use.
      * Initializes an empty {@code NormalBrick} without position or texture data.

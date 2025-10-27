@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PaddleTestCollidePowerUp {
-    public double PADDLE_WIDTH = 32;
-    public double PADDLE_HEIGHT = 8;
-    public double POWER_WIDTH = 8;
-    public double POWER_HEIGHT = 4;
+    public final double PADDLE_WIDTH = 32;
+    public final double PADDLE_HEIGHT = 8;
+    public final double POWER_WIDTH = 8;
+    public final double POWER_HEIGHT = 4;
 
     @Test
     public void PaddleTestCollidePower1() {

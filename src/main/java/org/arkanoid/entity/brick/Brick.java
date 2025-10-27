@@ -138,17 +138,14 @@ import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.powerup.PowerUp;
 import javafx.geometry.Point2D;
-import org.arkanoid.game.Game; 
-
-
-import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
+import org.arkanoid.game.Game;
 
 public abstract class Brick extends GameObject {
 
     Paddle paddle;
     PowerUp powerUp;
-    protected int tileX;
-    protected int tileY;
+    protected final int tileX;
+    protected final int tileY;
     protected final int width = 16;
     protected final int height = 8;
     protected boolean canDestroy;

@@ -3,19 +3,12 @@ package org.arkanoid.ui;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-
-import java.awt.*;
-import java.util.Stack;
-
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameController;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.gets;
 
 public class PauseMenu extends FXGLMenu {
     public PauseMenu(MenuType type) {

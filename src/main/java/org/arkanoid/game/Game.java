@@ -18,7 +18,7 @@ public class Game implements MonoBehaviour {
     private boolean gameOver = false;        
     private static Game instance;
     private Level currentLevel;
-    private int levelIndex = 1;
+    private final int levelIndex = 1;
     private int lives = 3;
     private LivesUI livesUI;
     private ScoreBoard scoreBoard;

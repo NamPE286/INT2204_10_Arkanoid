@@ -17,7 +17,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 public abstract class GameObject implements MonoBehaviour {
 
     protected Entity entity = null;
-    List<GameObject> collisionListeners = new ArrayList<>();
+    final List<GameObject> collisionListeners = new ArrayList<>();
 
     /**
      * Returns the FXGL entity associated with this game object.

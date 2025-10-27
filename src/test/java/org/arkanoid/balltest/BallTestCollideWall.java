@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BallTestCollideWall {
-    public double BALL_WIDTH = 10;
-    public double BALL_HEIGHT = 10;
-    public double WALL_THICK = 24;
-    public double WALL_HEIGHT = 600;
+    public final double BALL_WIDTH = 10;
+    public final double BALL_HEIGHT = 10;
+    public final double WALL_THICK = 24;
+    public final double WALL_HEIGHT = 600;
 
     @Test
     void testCollisionFromTop() {

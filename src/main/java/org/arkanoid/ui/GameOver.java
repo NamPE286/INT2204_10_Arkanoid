@@ -4,7 +4,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import org.arkanoid.factory.LabelFactory;
 
 public class GameOver {
 

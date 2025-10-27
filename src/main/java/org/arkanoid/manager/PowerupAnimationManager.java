@@ -24,7 +24,7 @@ public class PowerupAnimationManager {
     /**
      * Using map to store the type of power up.
      */
-    private static Map<PowerupType, AnimationChannel> animationCache = new HashMap<>();
+    private static final Map<PowerupType, AnimationChannel> animationCache = new HashMap<>();
     private static Image powerSheet;
 
     public static void load(String path) {

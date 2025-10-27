@@ -23,18 +23,18 @@ public class Level implements MonoBehaviour {
     private final int WALL_THICKNESS = Main.WIDTH / 28;
     private Runnable onCompletedCallback;
     private Runnable onDeathCallback;
-    private int id;
-    private Paddle paddle;
-    private Ball ball;
-    private List<Brick> bricks = new ArrayList<>();
-    private boolean ballOnPaddle = true;     
-    private final double BALL_OFFSET_X = 3;  
+    private final int id;
+    private final Paddle paddle;
+    private final Ball ball;
+    private final List<Brick> bricks = new ArrayList<>();
+    private boolean ballOnPaddle = true;
+    private final double BALL_OFFSET_X = 3;
     private static final int BRICK_OFFSET_X = 100;
     private static final int BRICK_OFFSET_Y = 150;
 
-    Wall leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
-    Wall topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
-    Wall rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
+    final Wall leftwall = new Wall(0, 0, Main.HEIGHT, WALL_THICKNESS);
+    final Wall topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
+    final Wall rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
 
     public void destroy() {
         for (var i : bricks) {
