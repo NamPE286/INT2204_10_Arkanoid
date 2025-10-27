@@ -12,9 +12,8 @@ import org.arkanoid.utilities.SchedulerUtils;
 import java.util.concurrent.ScheduledFuture;
 
 
-
-
 public class ExtendComponent extends Component {
+
     private final Duration duration;
     private ScheduledFuture<?> timer; // Save the clock
     private final int PADDLE_NORMAL_WIDTH = 32;
@@ -54,8 +53,10 @@ public class ExtendComponent extends Component {
 
         entity.getBoundingBoxComponent().clearHitBoxes();
         entity.getBoundingBoxComponent().addHitBox(
-                new HitBox(BoundingShape.box(PADDLE_EXTEND_WIDTH, PADDLE_HEIGHT))
+            new HitBox(BoundingShape.box(PADDLE_EXTEND_WIDTH, PADDLE_HEIGHT))
         );
+
+        entity.setX(entity.getX() - 16);
 
         startNewCLock();
     }
@@ -73,12 +74,13 @@ public class ExtendComponent extends Component {
             entity.removeComponent(ExtendAnimationComponent.class);
         }
 
-
         entity.getBoundingBoxComponent().clearHitBoxes();
         entity.getBoundingBoxComponent().addHitBox(
-                new HitBox(BoundingShape.box(PADDLE_NORMAL_WIDTH, PADDLE_HEIGHT))
+            new HitBox(BoundingShape.box(PADDLE_NORMAL_WIDTH, PADDLE_HEIGHT))
         );
 
         entity.addComponent(new PaddleAnimationComponent());
+
+        entity.setX(entity.getX() + 8);
     }
 }
