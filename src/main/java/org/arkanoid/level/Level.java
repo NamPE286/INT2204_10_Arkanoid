@@ -45,22 +45,22 @@ public class Level implements MonoBehaviour {
 
                 if (brickConfig[i][j] == 1) {
                     bricks.add(new NormalBrick(
-                        BRICK_OFFSET_X + 48 * (j / 3),
-                        BRICK_OFFSET_Y + 24 * i,
+                        BRICK_OFFSET_X + 46 * (j / 3),
+                        BRICK_OFFSET_Y + 22 * i,
                         brickConfig[i][j + 1],
                         brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 } else if (brickConfig[i][j] == 2) {
                     bricks.add(new StrongBrick(
-                        BRICK_OFFSET_X + 48 * (j / 3),
-                        BRICK_OFFSET_Y + 24 * i,
+                        BRICK_OFFSET_X + 46 * (j / 3),
+                        BRICK_OFFSET_Y + 22 * i,
                         brickConfig[i][j + 1],
                         brickConfig[i][j + 2]
                     ).setPaddle(paddle));
                 } else if (brickConfig[i][j] == 3) {
                     bricks.add(new HardBrick(
-                        BRICK_OFFSET_X + 48 * (j / 3),
-                        BRICK_OFFSET_Y + 24 * i,
+                        BRICK_OFFSET_X + 46 * (j / 3),
+                        BRICK_OFFSET_Y + 22 * i,
                         brickConfig[i][j + 1],
                         brickConfig[i][j + 2]
                     ).setPaddle(paddle));
