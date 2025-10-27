@@ -19,6 +19,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Paddle extends MovableObject {
 
     private final int SPEED = 400;
+    private static Paddle target;
 
     public Paddle playInitAnimation() {
 
@@ -49,13 +50,13 @@ public class Paddle extends MovableObject {
     @Override
     public Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
-                .type(EntityType.PADDLE)
-                .bbox(new HitBox(
-                        "PADDLE",
-                        new Point2D(0, 0),
-                        BoundingShape.box(32, 8)))
-                .with(new PaddleAnimationComponent())
-                .build();
+            .type(EntityType.PADDLE)
+            .bbox(new HitBox(
+                "PADDLE",
+                new Point2D(0, 0),
+                BoundingShape.box(32, 8)))
+            .with(new PaddleAnimationComponent())
+            .build();
 
         e.setScaleX(2.0);
         e.setScaleY(2.0);
@@ -65,29 +66,35 @@ public class Paddle extends MovableObject {
 
     @Override
     protected void initInput() {
-        FXGL.getInput().addAction(new UserAction("LEFT") {
-            @Override
-            protected void onAction() {
-                setLinearVelocity(-SPEED, 0);
-            }
+        try {
+            FXGL.getInput().addAction(new UserAction("LEFT") {
+                @Override
+                protected void onAction() {
+                    target.setLinearVelocity(-SPEED, 0);
+                }
 
-            @Override
-            protected void onActionEnd() {
-                setLinearVelocity(0, 0);
-            }
-        }, KeyCode.LEFT);
+                @Override
+                protected void onActionEnd() {
+                    target.setLinearVelocity(0, 0);
+                }
+            }, KeyCode.LEFT);
+        } catch (IllegalArgumentException _) {
+        }
 
-        FXGL.getInput().addAction(new UserAction("RIGHT") {
-            @Override
-            protected void onAction() {
-                setLinearVelocity(SPEED, 0);
-            }
+        try {
+            FXGL.getInput().addAction(new UserAction("RIGHT") {
+                @Override
+                protected void onAction() {
+                    target.setLinearVelocity(SPEED, 0);
+                }
 
-            @Override
-            protected void onActionEnd() {
-                setLinearVelocity(0, 0);
-            }
-        }, KeyCode.RIGHT);
+                @Override
+                protected void onActionEnd() {
+                    target.setLinearVelocity(0, 0);
+                }
+            }, KeyCode.RIGHT);
+        } catch (IllegalArgumentException _) {
+        }
     }
 
     /**
@@ -95,6 +102,8 @@ public class Paddle extends MovableObject {
      */
     public Paddle() {
         super();
+
+        target = this;
     }
 
     /**
@@ -107,6 +116,8 @@ public class Paddle extends MovableObject {
         super(x, y);
         spawn();
         initInput();
+
+        target = this;
     }
 
     /**
