@@ -115,6 +115,7 @@ public class Ball extends MovableObject {
     public void onCollisionWith(Brick brick) {
         Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, brick);
         setLinearVelocity(newVelocity.x, newVelocity.y);
+        SoundManager.play("ball_hit.wav");
 
         System.out.println("Collide with brick");
         brick.destroy();
