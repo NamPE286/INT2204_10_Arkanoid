@@ -4,8 +4,8 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import org.arkanoid.core.GameObject;
-import org.arkanoid.core.MovableObject;
+import org.arkanoid.entity.core.GameObject;
+import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.entity.brick.Brick;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.manager.SoundManager;
@@ -16,6 +16,9 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Ball extends MovableObject {
 
     private int paddleCollisionSound = 0;
+
+    // Thêm biến để kiểm soát trạng thái dính paddle.
+    private boolean attached = false;
 
     @Override
     protected Entity createEntity(SpawnData spawnData) {
@@ -39,6 +42,9 @@ public class Ball extends MovableObject {
      */
     @Override
     public void onCollisionWith(GameObject e) {
+        // Nếu đang dính paddle thì bỏ qua va chạm với paddle để không phát âm thanh.
+        if (attached && e instanceof Paddle) return;
+
         if (e instanceof Paddle) {
             this.onCollisionWith((Paddle) e);
         } else if (e instanceof Brick) {
@@ -108,6 +114,7 @@ public class Ball extends MovableObject {
     public void onCollisionWith(Brick brick) {
         Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, brick);
         setLinearVelocity(newVelocity.x, newVelocity.y);
+        SoundManager.play("ball_hit.wav");
 
         System.out.println("Collide with brick");
         brick.destroy();
@@ -137,11 +144,6 @@ public class Ball extends MovableObject {
         super();
     }
 
-    @Override
-    public void onUpdate(double deltaTime) {
-        super.onUpdate(deltaTime);
-    }
-
     /**
      * Constructs a new ball at the specified coordinates.
      *
@@ -151,6 +153,14 @@ public class Ball extends MovableObject {
     public Ball(int x, int y) {
         super(x, y);
         spawn();
-        initInput();
+    }
+
+    // Setter để bật/tắt trạng thái dính paddle.
+    public void setAttached(boolean value) {
+        this.attached = value;
+    }
+
+    public boolean isAttached() {
+        return attached;
     }
 }

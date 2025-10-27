@@ -9,8 +9,10 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
-import org.arkanoid.core.GameObject;
-import org.arkanoid.core.MovableObject;
+import org.arkanoid.component.animation.PaddleInitAnimationComponent;
+import org.arkanoid.entity.core.GameObject;
+import org.arkanoid.entity.core.MovableObject;
+import org.arkanoid.utilities.SchedulerUtils;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -18,6 +20,32 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class Paddle extends MovableObject {
 
     private final int SPEED = 400;
+
+    public Paddle playInitAnimation() {
+
+        if (entity.hasComponent(PaddleAnimationComponent.class)) {
+            entity.removeComponent(PaddleAnimationComponent.class);
+        }
+
+        if (entity.hasComponent(PaddleInitAnimationComponent.class)) {
+            entity.removeComponent(PaddleInitAnimationComponent.class);
+        }
+
+        entity.addComponent(new PaddleInitAnimationComponent());
+
+        return this;
+    }
+
+    public Paddle delayInput(int ms) {
+        setLinearVelocity(0, 0);
+        FXGL.getInput().setProcessInput(false);
+
+        SchedulerUtils.setTimeout(() -> {
+            FXGL.getInput().setProcessInput(true);
+        }, ms);
+
+        return this;
+    }
 
     @Override
     public Entity createEntity(SpawnData spawnData) {
@@ -48,7 +76,7 @@ public class Paddle extends MovableObject {
             protected void onActionEnd() {
                 setLinearVelocity(0, 0);
             }
-        }, KeyCode.A);
+        }, KeyCode.LEFT);
 
         FXGL.getInput().addAction(new UserAction("Right") {
             @Override
@@ -60,7 +88,7 @@ public class Paddle extends MovableObject {
             protected void onActionEnd() {
                 setLinearVelocity(0, 0);
             }
-        }, KeyCode.D);
+        }, KeyCode.RIGHT);
     }
 
     /**
@@ -81,7 +109,6 @@ public class Paddle extends MovableObject {
         spawn();
         initInput();
     }
-
 
     /**
      * Collision checking wall, power up with paddle.

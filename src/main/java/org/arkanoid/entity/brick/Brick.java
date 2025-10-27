@@ -3,7 +3,7 @@ package org.arkanoid.entity.brick;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.entity.powerup.ExtendPowerUp;
-import org.arkanoid.core.GameObject;
+import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.powerup.PowerUp;
 import javafx.geometry.Point2D;
@@ -95,7 +95,7 @@ public abstract class Brick extends GameObject {
         canDestroy = false;
 
         // 36% pop out Power up
-        if (FXGLMath.randomBoolean(1.0)) {
+        if (FXGLMath.randomBoolean(0.36)) {
             Point2D brickPosition = entity.getPosition();
             System.out.println(brickPosition.getX());
             System.out.println(brickPosition.getY());
