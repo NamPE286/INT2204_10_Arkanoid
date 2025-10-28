@@ -3,6 +3,11 @@ package org.arkanoid.entity.brick;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import javafx.geometry.Point2D;
+import org.arkanoid.component.animation.BrickAnimationComponent;
+import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.entity.EntityType;
 import org.arkanoid.utilities.TextureUtils;
 
@@ -57,12 +62,12 @@ public class HardBrick extends Brick {
      */
     @Override
     protected Entity createEntity(SpawnData spawnData) {
-        var texture = TextureUtils.crop(FXGL.texture("bricks.png"),
-                tileX * width, tileY * height, height, width);
-
         var e = entityBuilder(spawnData)
                 .type(EntityType.BRICK)
-                .viewWithBBox(texture)
+                .bbox(new HitBox(
+                        "BRICK",
+                        BoundingShape.box(16, 8)))
+                .with(new BrickAnimationComponent(this.tileX, this.tileY))
                 .build();
 
         e.setScaleX(SETSCALE);
