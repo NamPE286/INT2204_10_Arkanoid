@@ -4,6 +4,9 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import org.arkanoid.entity.brick.HardBrick;
+import org.arkanoid.entity.brick.StrongBrick;
+import org.arkanoid.component.animation.BrickAnimationComponent;
 import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.entity.brick.Brick;
@@ -106,6 +109,11 @@ public class Ball extends MovableObject {
         Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, brick);
         setLinearVelocity(newVelocity.x, newVelocity.y);
         SoundManager.play("ball_hit.wav");
+
+        if (brick instanceof HardBrick || brick instanceof StrongBrick) {
+            brick.getEntity().getComponentOptional(BrickAnimationComponent.class)
+                    .ifPresent(BrickAnimationComponent::playHitAnimation);
+        }
 
         System.out.println("Collide with brick");
         brick.breakBrick();

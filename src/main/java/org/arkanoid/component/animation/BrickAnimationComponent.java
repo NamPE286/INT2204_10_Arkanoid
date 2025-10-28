@@ -36,7 +36,11 @@ public class BrickAnimationComponent extends Component {
     public void onAdded() {
 
         entity.getViewComponent().addChild(texture);
-        texture.loopAnimationChannel(animLoop);
+        texture.playAnimationChannel(animLoop);
+    }
+
+    public void playHitAnimation() {
+        texture.playAnimationChannel(animLoop);
     }
 }
 
