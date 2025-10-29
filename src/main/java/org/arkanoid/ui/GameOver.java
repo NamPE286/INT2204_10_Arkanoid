@@ -46,7 +46,7 @@ public class GameOver {
         scoreLabel.setTextFill(Color.WHITE);
 
         // Hướng dẫn nhập tên 3 ký tự.
-        Label namePrompt = new Label("ENTER YOUR NAME (3 LETTERS):");
+        Label namePrompt = new Label("ENTER YOUR NAME FROM 3 CHARACTERS:");
         namePrompt.setFont(FONT_SMALL);
         namePrompt.setTextFill(Color.YELLOW);
 
@@ -60,7 +60,7 @@ public class GameOver {
         nameField.setPromptText("ABC");
 
         // Hướng dẫn nhỏ.
-        Label hint = new Label("Press ENTER to save");
+        Label hint = new Label("PRESS ENTER TO SAVE");
         hint.setFont(FONT_SMALL);
         hint.setTextFill(Color.LIGHTGRAY);
 
@@ -101,7 +101,7 @@ public class GameOver {
             } else {
                 // Nếu không đúng, cảnh báo người chơi.
                 hint.setTextFill(Color.RED);
-                hint.setText("Name must be 3 characters!");
+                hint.setText("NAME MUST BE 3 CHARACTERS!");
             }
         });
 
@@ -141,7 +141,7 @@ public class GameOver {
         }
 
         // Hướng dẫn quay về menu.
-        Label hint = new Label("Press ENTER to return to Main Menu");
+        Label hint = new Label("PRESS ENTER TO RETURM TO MAINMENU");
         hint.setFont(FONT_SMALL);
         hint.setTextFill(Color.GRAY);
 
@@ -159,7 +159,7 @@ public class GameOver {
         StackPane root = new StackPane(content);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
-        root.setPrefSize(500, 500);
+        root.setPrefSize(700, 700);
 
         Scene scene = new Scene(root, Color.TRANSPARENT);
         stage.setScene(scene);
