@@ -34,7 +34,7 @@ public class LaserPowerUp extends PowerUp {
 
     @Override
     public void onCollisionWith(GameObject e) {
-        SoundManager.play("paddle_extend.wav");
+        SoundManager.play("paddle_fire.wav");
         System.out.println("Power up collided with paddle");
 
         if (!(e instanceof Paddle curPaddle)) {
