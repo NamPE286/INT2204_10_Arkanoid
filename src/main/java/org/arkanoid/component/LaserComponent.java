@@ -1,0 +1,133 @@
+package org.arkanoid.component;
+
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.util.Duration;
+import org.arkanoid.component.animation.LaserPaddleAnimationComponent;
+import org.arkanoid.component.animation.PaddleAnimationComponent;
+import org.arkanoid.utilities.SchedulerUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+
+public class LaserComponent extends Component {
+    private final Duration duration;
+    private ScheduledFuture<?> timer;
+    private final int PADDLE_WIDTH = 32;
+    private final int PADDLE_HEIGHT = 8;
+    private static final Duration TRANSFORM_DURATION = Duration.seconds(0.5);
+
+    public LaserComponent(Duration duration) {
+        this.duration = duration;
+    }
+
+    private List<Image> getTransformFrames(String type) {
+        Image image = FXGL.image("vaus.png");
+        List<Image> frames = new ArrayList<>();
+
+        for (int i = 0; i < 9; i++) {
+            if (type == null || type.equals("InIt")) {
+                frames.add(new WritableImage(image.getPixelReader(), 112, i * 8, 32, 8));
+            } else if (type.equals("OutIt")) {
+                frames.add(new WritableImage(image.getPixelReader(), 112, 64 - i * 8, 32, 8));
+            }
+        }
+        return frames;
+    }
+
+    public void resetTimer() {
+        SchedulerUtils.clear(timer);
+        startNewCLock();
+    }
+
+    public void startNewCLock() {
+
+
+
+        timer = SchedulerUtils.setTimeout(this::removeItself, (long) duration.toMillis());
+    }
+
+    public void removeItself() {
+        FXGL.runOnce(() -> {
+            if (entity != null) {
+                entity.removeComponent(LaserComponent.class);
+            }
+        }, Duration.ZERO);
+    }
+
+    @Override
+    public void onAdded() {
+        if (entity.hasComponent(PaddleAnimationComponent.class)) {
+            entity.removeComponent(PaddleAnimationComponent.class);
+        }
+
+        AnimationChannel animTransformLoop = new AnimationChannel(getTransformFrames("InIt"), TRANSFORM_DURATION);
+        AnimatedTexture transformTexture = new AnimatedTexture(animTransformLoop);
+
+        entity.getViewComponent().addChild(transformTexture);
+        transformTexture.play();
+
+        FXGL.runOnce(() -> {
+            entity.getViewComponent().removeChild(transformTexture);
+
+            if (entity != null && entity.isActive()) {
+                entity.addComponent(new LaserPaddleAnimationComponent());
+            }
+
+        }, TRANSFORM_DURATION);
+
+        entity.getBoundingBoxComponent().clearHitBoxes();
+        entity.getBoundingBoxComponent().addHitBox(
+                new HitBox(BoundingShape.box(PADDLE_WIDTH, PADDLE_HEIGHT))
+        );
+
+        entity.setX(entity.getX());
+
+        startNewCLock();
+    }
+
+    @Override
+    public void onRemoved() {
+
+        SchedulerUtils.clear(timer);
+
+        if (entity == null || !entity.isActive()) {
+            return;
+        }
+        final Entity localEntity = entity;
+
+
+        if (localEntity.hasComponent(LaserPaddleAnimationComponent.class)) {
+            localEntity.removeComponent(LaserPaddleAnimationComponent.class);
+        }
+
+        AnimationChannel animTransformLoop = new AnimationChannel(getTransformFrames("OutIt"), TRANSFORM_DURATION);
+        AnimatedTexture transformTexture = new AnimatedTexture(animTransformLoop);
+
+        localEntity.getViewComponent().addChild(transformTexture);
+        transformTexture.play();
+
+        FXGL.runOnce(() -> {
+            if (localEntity != null && localEntity.isActive()) {
+                localEntity.getViewComponent().removeChild(transformTexture);
+                localEntity.addComponent(new PaddleAnimationComponent());
+            }
+
+        }, TRANSFORM_DURATION);
+
+        localEntity.getBoundingBoxComponent().clearHitBoxes();
+        localEntity.getBoundingBoxComponent().addHitBox(
+                new HitBox(BoundingShape.box(PADDLE_WIDTH, PADDLE_HEIGHT))
+        );
+
+        localEntity.setX(localEntity.getX());
+    }
+}

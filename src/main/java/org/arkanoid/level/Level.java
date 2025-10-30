@@ -150,6 +150,8 @@ public class Level implements MonoBehaviour {
 
         for (var brick : bricks) {
             ball.listenToCollisionWith(brick);
+            laser1.listenToCollisionWith(brick);
+            laser2.listenToCollisionWith(brick);
         }
     }
 

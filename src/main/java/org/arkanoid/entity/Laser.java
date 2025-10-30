@@ -5,7 +5,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.component.animation.BrickAnimationComponent;
-import org.arkanoid.component.animation.LaserAnimationComponent;
+import org.arkanoid.component.animation.LaserShotAnimationComponent;
 import org.arkanoid.entity.brick.Brick;
 import org.arkanoid.entity.brick.HardBrick;
 import org.arkanoid.entity.brick.StrongBrick;
@@ -38,7 +38,7 @@ public class Laser extends MovableObject {
         var e = entityBuilder(spawnData)
                 .type(EntityType.LASER)
                 .bbox(new HitBox(BoundingShape.box(LASER_WIDTH, LASER_HEIGHT)))
-                .with(new LaserAnimationComponent(this.type))
+                .with(new LaserShotAnimationComponent(this.type))
                 .build();
 
         e.setScaleX(2.0);

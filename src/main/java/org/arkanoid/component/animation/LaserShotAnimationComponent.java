@@ -11,7 +11,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LaserAnimationComponent extends Component {
+public class LaserShotAnimationComponent extends Component {
     private final AnimatedTexture texture;
     private final AnimationChannel animLoop;
 
@@ -33,7 +33,7 @@ public class LaserAnimationComponent extends Component {
         return frames;
     }
 
-    public LaserAnimationComponent(String type) {
+    public LaserShotAnimationComponent(String type) {
         animLoop = new AnimationChannel(getLaserFrames(type), Duration.seconds(0.5));
         texture = new AnimatedTexture(animLoop);
 
