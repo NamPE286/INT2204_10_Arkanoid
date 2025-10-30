@@ -1,6 +1,8 @@
 package org.arkanoid.utilities;
 
 import com.almasb.fxgl.core.math.Vec2;
+import org.arkanoid.Main;
+import org.arkanoid.entity.Wall;
 import org.arkanoid.entity.core.GameObject;
 
 public class Vec2Utils {
@@ -37,28 +39,44 @@ public class Vec2Utils {
         double oY = o.getY();
         double oW = o.getEntity().getWidth();
         double oH = o.getEntity().getHeight();
+        double oCenterX = o.getX() + oW / 2.0;
+        double oCenterY = o.getY() + oH / 2.0;
 
         double otherX = other.getX();
         double otherY = other.getY();
         double otherW = other.getEntity().getWidth();
         double otherH = other.getEntity().getHeight();
+        double otherCenterX = other.getX() + otherW / 2.0;
+        double otherCenterY = other.getY() + otherH / 2.0;
 
-        double overlapLeft   = (oX + oW) - otherX;
-        double overlapRight  = (otherX + otherW) - oX;
-        double overlapTop    = (oY + oH) - otherY;
-        double overlapBottom = (otherY + otherH) - oY;
+        double distanceX = oCenterX - otherCenterX;
+        double distanceY = oCenterY - otherCenterY;
 
-        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
-                Math.min(overlapTop, overlapBottom));
+        double totalHalfW = (oW / 2.0) + (otherW / 2.0);
+        double totalHalfH = (oH / 2.0) + (otherH / 2.0);
 
-        if (minOverlap == overlapLeft) {
-            vx = -Math.abs(vx);
-        } else if (minOverlap  == overlapRight) {
-            vx = Math.abs(vx);
-        } else if (minOverlap  == overlapTop) {
-            vy = -Math.abs(vy);
-        } else if (minOverlap  == overlapBottom) {
-            vy = Math.abs(vy);
+        double overlapRatioX = Math.abs(distanceX) / totalHalfW;
+        double overlapRatioY = Math.abs(distanceY) / totalHalfH;
+
+        double constant = 0.1;
+        if (Math.abs(overlapRatioX - overlapRatioY) < constant) {
+            if ((vx > 0 && vy > 0 && distanceX < 0 && distanceY < 0)
+            || (vx < 0 && vy > 0 && distanceX > 0 && distanceY < 0)
+            || (vx > 0 && vy < 0 && distanceX < 0 && distanceY > 0)
+            || (vx < 0 && vy < 0 && distanceX > 0 && distanceY > 0)) {
+                vx = -vx;
+                vy = -vy;
+            } else if (overlapRatioX > overlapRatioY) {
+                vx = -vx;
+            } else if (overlapRatioX < overlapRatioY) {
+                vy = -vy;
+            }
+        } else {
+            if (overlapRatioX > overlapRatioY) {
+                vx = -vx;
+            } else {
+                vy = -vy;
+            }
         }
 
         return new Vec2(vx, vy);
