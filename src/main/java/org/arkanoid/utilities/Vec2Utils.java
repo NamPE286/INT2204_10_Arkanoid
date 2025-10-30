@@ -58,7 +58,29 @@ public class Vec2Utils {
         double overlapRatioX = Math.abs(distanceX) / totalHalfW;
         double overlapRatioY = Math.abs(distanceY) / totalHalfH;
 
-        double constant = 0.1;
+        if (other instanceof Wall) {
+            double overlapLeft   = (oX + oW) - otherX;
+            double overlapRight  = (otherX + otherW) - oX;
+            double overlapTop    = (oY + oH) - otherY;
+            double overlapBottom = (otherY + otherH) - oY;
+
+            double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
+                    Math.min(overlapTop, overlapBottom));
+
+            if (minOverlap == overlapLeft) {
+                vx = -Math.abs(vx);
+            } else if (minOverlap  == overlapRight) {
+                vx = Math.abs(vx);
+            } else if (minOverlap  == overlapTop) {
+                vy = -Math.abs(vy);
+            } else if (minOverlap  == overlapBottom) {
+                vy = Math.abs(vy);
+            }
+
+            return new Vec2(vx, vy);
+        }
+
+        double constant = 0.13;
         if (Math.abs(overlapRatioX - overlapRatioY) < constant) {
             if ((vx > 0 && vy > 0 && distanceX < 0 && distanceY < 0)
             || (vx < 0 && vy > 0 && distanceX > 0 && distanceY < 0)
