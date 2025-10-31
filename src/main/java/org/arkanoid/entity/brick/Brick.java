@@ -136,8 +136,10 @@ import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.entity.powerup.ExtendPowerUp;
 import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.Paddle;
+import org.arkanoid.entity.powerup.LaserPowerUp;
 import org.arkanoid.entity.powerup.PowerUp;
 import javafx.geometry.Point2D;
+import org.arkanoid.factory.PowerUpFactory;
 import org.arkanoid.game.Game;
 
 public abstract class Brick extends GameObject {
@@ -207,8 +209,7 @@ public abstract class Brick extends GameObject {
             SpawnData spawnData = new SpawnData(brickPosition);
 
             if (paddle != null) {
-                powerUp = new ExtendPowerUp(spawnData);
-                powerUp.listenToCollisionWith(paddle);
+                powerUp = PowerUpFactory.spawnRandomPowerUp(spawnData, paddle);
             }
 
         }

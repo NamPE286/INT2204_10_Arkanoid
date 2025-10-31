@@ -106,6 +106,10 @@ public class Game implements MonoBehaviour {
         });
     }
 
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
+
     /**
      * Khởi tạo UI mạng và reset bóng ở lần đầu.
      */
