@@ -6,6 +6,7 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.util.Duration;
 import com.almasb.fxgl.entity.component.Component;
 import org.arkanoid.component.animation.ExtendAnimationComponent;
+import org.arkanoid.component.animation.LaserPaddleAnimationComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.utilities.SchedulerUtils;
 
@@ -49,6 +50,15 @@ public class ExtendComponent extends Component {
         if (entity.hasComponent(PaddleAnimationComponent.class)) {
             entity.removeComponent(PaddleAnimationComponent.class);
         }
+
+        if (entity.hasComponent(LaserComponent.class)) {
+            entity.removeComponent(LaserComponent.class);
+        }
+
+        if (entity.hasComponent(PaddleAnimationComponent.class)) {
+            entity.removeComponent(PaddleAnimationComponent.class);
+        }
+
         entity.addComponent(new ExtendAnimationComponent());
 
         entity.getBoundingBoxComponent().clearHitBoxes();
@@ -79,7 +89,9 @@ public class ExtendComponent extends Component {
             new HitBox(BoundingShape.box(PADDLE_NORMAL_WIDTH, PADDLE_HEIGHT))
         );
 
-        entity.addComponent(new PaddleAnimationComponent());
+        if (!entity.hasComponent(LaserComponent.class)) {
+            entity.addComponent(new PaddleAnimationComponent());
+        }
 
         entity.setX(entity.getX() + 8);
     }

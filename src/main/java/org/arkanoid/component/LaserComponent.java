@@ -10,6 +10,7 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
+import org.arkanoid.component.animation.ExtendAnimationComponent;
 import org.arkanoid.component.animation.LaserPaddleAnimationComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.entity.Laser;
@@ -106,6 +107,14 @@ public class LaserComponent extends Component {
             entity.removeComponent(PaddleAnimationComponent.class);
         }
 
+        if (entity.hasComponent(ExtendComponent.class)) {
+            entity.removeComponent(ExtendComponent.class);
+        }
+
+        if (entity.hasComponent(PaddleAnimationComponent.class)) {
+            entity.removeComponent(PaddleAnimationComponent.class);
+        }
+
         AnimationChannel animTransformLoop = new AnimationChannel(getTransformFrames("InIt"), TRANSFORM_DURATION);
         AnimatedTexture transformTexture = new AnimatedTexture(animTransformLoop);
 
@@ -151,7 +160,9 @@ public class LaserComponent extends Component {
         FXGL.runOnce(() -> {
             if (localEntity != null && localEntity.isActive()) {
                 localEntity.getViewComponent().removeChild(transformTexture);
-                localEntity.addComponent(new PaddleAnimationComponent());
+                if (!localEntity.hasComponent(ExtendComponent.class)) {
+                    localEntity.addComponent(new PaddleAnimationComponent());
+                }
             }
 
         }, TRANSFORM_DURATION);
