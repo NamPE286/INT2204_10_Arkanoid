@@ -95,6 +95,18 @@ public class Level implements MonoBehaviour {
         return bricks;
     }
 
+    public Wall getLeftwall() {
+        return leftwall;
+    }
+
+    public Wall getTopwall() {
+        return topwall;
+    }
+
+    public Wall getRightwall() {
+        return rightwall;
+    }
+
     public void setOnCompletedCallback(Runnable callback) {
         this.onCompletedCallback = callback;
     }
@@ -112,15 +124,14 @@ public class Level implements MonoBehaviour {
         paddle.onUpdate(deltaTime);
         ball.onUpdate(deltaTime);
 
-        // **THAY THẾ laser1.onUpdate và laser2.onUpdate BẰNG KHỐI NÀY**
         // Dùng Iterator để có thể xóa phần tử (nếu laser bị hủy) trong khi lặp
         Iterator<Laser> laserIterator = activeLasers.iterator();
         while (laserIterator.hasNext()) {
             Laser laser = laserIterator.next();
             if (laser.getEntity() != null && laser.getEntity().isActive()) {
-                laser.onUpdate(deltaTime); // Gọi onUpdate để di chuyển và kiểm tra out-of-bounds
+                laser.onUpdate(deltaTime);
             } else {
-                laserIterator.remove(); // Xóa khỏi danh sách nếu nó đã bị hủy
+                laserIterator.remove();
             }
         }
 

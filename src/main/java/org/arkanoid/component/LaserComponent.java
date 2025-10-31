@@ -15,8 +15,10 @@ import javafx.util.Duration;
 import org.arkanoid.component.animation.LaserPaddleAnimationComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.entity.Laser;
+import org.arkanoid.entity.Wall;
 import org.arkanoid.entity.brick.Brick;
 import org.arkanoid.game.Game;
+import org.arkanoid.level.Level;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.SchedulerUtils;
 
@@ -70,10 +72,19 @@ public class LaserComponent extends Component {
                 Game.getInstance().getCurrentLevel().addLaser(laser2);
 
                 List<Brick> bricks = Game.getInstance().getCurrentLevel().getBricks();
+                Wall leftWall = Game.getInstance().getCurrentLevel().getLeftwall();
+                Wall rightWall = Game.getInstance().getCurrentLevel().getRightwall();
+                Wall topWall = Game.getInstance().getCurrentLevel().getTopwall();
                 for (Brick brick : bricks) {
                     if (brick.getEntity() != null && brick.getEntity().isActive()) {
-                        laser1.listenToCollisionWith(brick);
-                        laser2.listenToCollisionWith(brick);
+                        laser1.listenToCollisionWith(brick)
+                                .listenToCollisionWith(leftWall)
+                                .listenToCollisionWith(rightWall)
+                                .listenToCollisionWith(topWall);
+                        laser2.listenToCollisionWith(brick)
+                                .listenToCollisionWith(leftWall)
+                                .listenToCollisionWith(rightWall)
+                                .listenToCollisionWith(topWall);
                     }
                 }
             }
