@@ -1,17 +1,16 @@
 package org.arkanoid.ui;
 
 import com.almasb.fxgl.dsl.FXGL;
-import javafx.geometry.Insets;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.arkanoid.leaderboard.LeaderBoard;
 import org.arkanoid.leaderboard.LeaderBoardEntry;
 
@@ -22,159 +21,96 @@ public class GameOver {
     private static final Font FONT_BIG = Font.loadFont(GameOver.class.getResourceAsStream("/fonts/nes.otf"), 36);
     private static final Font FONT_SMALL = Font.loadFont(GameOver.class.getResourceAsStream("/fonts/nes.otf"), 18);
 
-    /**
-     * Hiển thị overlay Game Over.
-     * Sử dụng StageStyle.TRANSPARENT để cho phép overlay trong suốt trên game.
-     */
+    private static StackPane overlay;       // Overlay full màn hình.
+    private static LeaderBoard leaderboard; // Top scores.
+    private static int finalScore;          // Điểm người chơi.
+
+    // Hiển thị màn hình Game Over.
     public static void show() {
-        // Tạo Stage trong suốt để overlay lên cửa sổ game (không làm mất background).
-        Stage stage = new Stage(StageStyle.TRANSPARENT);
-        stage.setWidth(672);
-        stage.setHeight(768);
-        // Modal — chặn tương tác với các cửa sổ khác trong khi màn hình Game Over mở.
-        stage.initModality(Modality.APPLICATION_MODAL);
+        finalScore = FXGL.geti("score");
+        leaderboard = new LeaderBoard();
 
-        // Tiêu đề lớn "GAME OVER".
-        Label title = new Label("GAME OVER");
-        title.setFont(FONT_BIG);
-        title.setTextFill(Color.RED); // chữ đỏ nổi bật
+        overlay = new StackPane();
+        overlay.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.7);");
+        FXGL.getGameScene().addUINode(overlay);
 
-        // Hiển thị điểm người chơi.
-        int finalScore = FXGL.geti("score");
-        Label scoreLabel = new Label("YOUR SCORE: " + finalScore);
-        scoreLabel.setFont(FONT_SMALL);
-        scoreLabel.setTextFill(Color.WHITE);
-
-        // Hướng dẫn nhập tên 3 ký tự.
-        Label namePrompt = new Label("ENTER YOUR NAME FROM 3 CHARACTERS:");
-        namePrompt.setFont(FONT_SMALL);
-        namePrompt.setTextFill(Color.YELLOW);
-
-        // TextField để người chơi nhập 3 ký tự.
-        TextField nameField = new TextField();
-        nameField.setAlignment(Pos.CENTER);
-        nameField.setPrefWidth(100);
-        nameField.setFont(FONT_SMALL);
-        // style: chữ trắng, nền field hơi mờ, viền xám.
-        nameField.setStyle("-fx-text-fill: white; -fx-background-color: rgba(0,0,0,0.3); -fx-border-color: gray;");
-        nameField.setPromptText("ABC");
-
-        // Hướng dẫn nhỏ.
-        Label hint = new Label("PRESS ENTER TO SAVE");
-        hint.setFont(FONT_SMALL);
-        hint.setTextFill(Color.LIGHTGRAY);
-
-        // VBox chứa các thành phần theo hàng dọc, căn giữa.
-        VBox content = new VBox(15, title, scoreLabel, namePrompt, nameField, hint);
+        // Nội dung Game Over + score.
+        VBox content = new VBox(20,
+                createLabel("GAME OVER", FONT_BIG, Color.RED),
+                createLabel("YOUR SCORE: " + finalScore, FONT_SMALL, Color.WHITE)
+        );
         content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(20));
+        overlay.getChildren().setAll(content);
 
-        // Nền của hộp nội dung: màu đen bán trong suốt + bo góc.
-        content.setBackground(new Background(
-                new BackgroundFill(Color.rgb(0, 0, 0, 0.5), new CornerRadii(15), Insets.EMPTY)
-        ));
-        content.setPrefSize(600, 600);
-
-        // Root là StackPane để có thể đặt overlay mờ tổng thể phía sau content.
-        StackPane root = new StackPane(content);
-        root.setStyle("-fx-background-color: rgba(0, 0, 0, 0.25);");
-        root.setPrefSize(800, 600);
-
-        // Scene với nền TRANSPARENT để Stage trong suốt thực sự trong suốt.
-        Scene scene = new Scene(root, Color.TRANSPARENT);
-        stage.setScene(scene);
-
-        // Tạo/đọc leaderboard từ file (LeaderBoard xử lý I/O).
-        LeaderBoard leaderboard = new LeaderBoard();
-
-        // Sự kiện khi người chơi nhấn Enter trong TextField.
-        nameField.setOnAction(e -> {
-            // Lấy tên, trim khoảng trắng, chuyển in hoa.
-            String name = nameField.getText().trim().toUpperCase();
-
-            // Kiểm tra đúng 3 ký tự; nếu không hợp lệ, hiện lỗi tại hint.
-            if (name.length() == 3) {
-                // Lưu vào leaderboard (method addEntry chịu trách nhiệm ghi file).
-                leaderboard.addEntry(name, finalScore);
-                stage.close();
-                showLeaderboard(leaderboard);
-            } else {
-                // Nếu không đúng, cảnh báo người chơi.
-                hint.setTextFill(Color.RED);
-                hint.setText("NAME MUST BE 3 CHARACTERS!");
-            }
-        });
-
-        // Hiển thị Stage (overlay).
-        stage.show();
+        // Chờ 3 giây rồi chuyển sang màn hình nhập tên.
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), e -> showNameInputScreen()));
+        timeline.setCycleCount(1);
+        timeline.play();
     }
 
-    /**
-     * Hiển thị Leaderboard (Top 5).
-     */
-    private static void showLeaderboard(LeaderBoard leaderboard) {
-        // Stage trong suốt để overlay trên game.
-        Stage stage = new Stage(StageStyle.TRANSPARENT);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("LEADERBOARD");
+    // Màn hình nhập tên.
+    private static void showNameInputScreen() {
+        Label prompt = createLabel("ENTER YOUR NAME FROM 3 CHARACTERS:", FONT_SMALL, Color.YELLOW);
+        TextField nameField = new TextField();
+        nameField.setPrefWidth(100);
+        nameField.setFont(FONT_SMALL);
+        nameField.setStyle("-fx-text-fill:white; -fx-background-color: rgba(0,0,0,0.3); -fx-border-color: gray;");
+        nameField.setPromptText("ABC");
+        Label hint = createLabel("PRESS ENTER TO SAVE", FONT_SMALL, Color.LIGHTGRAY);
 
-        // Tiêu đề.
-        Label title = new Label("TOP 5 SCORES");
-        title.setFont(FONT_BIG);
-        title.setTextFill(Color.CYAN);
+        VBox content = new VBox(10, prompt, nameField, hint);
+        content.setAlignment(Pos.CENTER);
+        overlay.getChildren().setAll(content);
 
-        // Hộp chứa danh sách điểm.
+        FXGL.runOnce(nameField::requestFocus, Duration.millis(10));
+
+        // Xử lý khi nhấn Enter.
+        nameField.setOnAction(e -> {
+            String name = nameField.getText().trim().toUpperCase();
+            if (name.length() == 3) {
+                leaderboard.addEntry(name, finalScore);
+                showLeaderboard(); // Chuyển sang màn hình leaderboard.
+            } else {
+                hint.setText("NAME MUST BE 3 CHARACTERS!");
+                hint.setTextFill(Color.RED);
+            }
+        });
+    }
+
+    // Màn hình Top 5 leaderboard.
+    private static void showLeaderboard() {
         VBox entriesBox = new VBox(5);
         entriesBox.setAlignment(Pos.CENTER);
 
-        // Lấy danh sách điểm (được load từ file bởi LeaderBoard).
         List<LeaderBoardEntry> entries = leaderboard.getEntries();
-        int rank = 1;
-
-        // Hiển thị chỉ Top 5 (nếu có ít hơn 5 dòng, sẽ hiển thị đủ số dòng).
-        for (LeaderBoardEntry entry : entries) {
-            if (rank > 5) break;
-            Label label = new Label(String.format("%d. %s  -  %d", rank++, entry.getName(), entry.getScore()));
-            label.setFont(FONT_SMALL);
-            label.setTextFill(Color.WHITE);
-            entriesBox.getChildren().add(label);
+        for (int i = 0; i < Math.min(5, entries.size()); i++) {
+            LeaderBoardEntry entry = entries.get(i);
+            entriesBox.getChildren().add(createLabel((i + 1) + ". " + entry.getName() + " - " + entry.getScore(), FONT_SMALL, Color.WHITE));
         }
 
-        // Hướng dẫn quay về menu.
-        Label hint = new Label("PRESS ENTER TO RETURM TO MAINMENU");
-        hint.setFont(FONT_SMALL);
-        hint.setTextFill(Color.GRAY);
+        Label title = createLabel("TOP 5 SCORES", FONT_BIG, Color.CYAN);
+        Label hint = createLabel("PRESS ENTER TO RETURN TO MAIN MENU", FONT_SMALL, Color.GRAY);
 
-        // VBox chứa toàn bộ nội dung bảng xếp hạng.
-        VBox content = new VBox(20, title, entriesBox, hint);
+        VBox content = new VBox(15, title, entriesBox, hint);
         content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(25));
-        // Nền bán trong suốt và bo góc để vẫn thấy game phía sau.
-        content.setBackground(new Background(
-                new BackgroundFill(Color.rgb(0, 0, 0, 0.55), new CornerRadii(20), Insets.EMPTY)
-        ));
-        content.setPrefSize(500, 450);
+        overlay.getChildren().setAll(content);
 
-        // Root overlay với lớp phủ nhẹ.
-        StackPane root = new StackPane(content);
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
-        root.setPrefSize(700, 700);
-
-        Scene scene = new Scene(root, Color.TRANSPARENT);
-        stage.setScene(scene);
-
-        // Bắt phím ENTER để quay về menu chính (đóng overlay).
-        scene.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case ENTER -> {
-                    stage.close();
-                    FXGL.getGameController().gotoMainMenu();
-                }
+        // Nhấn Enter quay về Main Menu.
+        overlay.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                FXGL.getGameScene().removeUINode(overlay);
+                FXGL.getGameController().gotoMainMenu();
             }
         });
+        overlay.requestFocus();
+    }
 
-        // Hiển thị Stage (overlay).
-        stage.show();
+    // Tạo label tiện lợi.
+    private static Label createLabel(String text, Font font, Color color) {
+        Label label = new Label(text);
+        label.setFont(font);
+        label.setTextFill(color);
+        return label;
     }
 }
