@@ -1,6 +1,8 @@
 package org.arkanoid.level;
 
 import com.opencsv.CSVReader;
+import org.arkanoid.Main;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,7 +14,7 @@ import java.util.List;
 public class LevelLoader {
 
     public static LevelConfig loadFromCSV(String path) {
-        try (InputStream is = LevelLoader.class.getResourceAsStream(path)) {
+        try (InputStream is = Main.class.getResourceAsStream(path)) {
             if (is == null) {
                 throw new FileNotFoundException("Not found " + path);
             }
@@ -20,7 +22,7 @@ public class LevelLoader {
             try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
                 CSVReader csvReader = new CSVReader(reader)) {
                 String[] firstLine = csvReader.readNext();
-                int backgroundId = firstLine[0].trim().charAt(1) - '0';
+                int backgroundId = firstLine[0].trim().charAt(0) - '0';
                 List<int[]> rows = new ArrayList<>();
                 String[] nextLine;
 
@@ -36,7 +38,10 @@ public class LevelLoader {
                 return new LevelConfig(backgroundId, brickMap);
             }
         } catch (Exception e) {
+            System.err.println("⚠️ Lỗi khi load level file: " + path);
+            e.printStackTrace();
             return null;
         }
+
     }
 }
