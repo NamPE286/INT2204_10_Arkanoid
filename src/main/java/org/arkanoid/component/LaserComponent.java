@@ -66,6 +66,9 @@ public class LaserComponent extends Component {
             Laser laser2 = new Laser((int)x2, (int)y, "RIGHT");
 
             if (Game.getInstance().getCurrentLevel() != null) {
+                Game.getInstance().getCurrentLevel().addLaser(laser1);
+                Game.getInstance().getCurrentLevel().addLaser(laser2);
+
                 List<Brick> bricks = Game.getInstance().getCurrentLevel().getBricks();
                 for (Brick brick : bricks) {
                     if (brick.getEntity() != null && brick.getEntity().isActive()) {

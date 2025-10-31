@@ -34,6 +34,14 @@ public class Laser extends MovableObject {
     }
 
     @Override
+    public void onUpdate(double deltaTime) {
+        super.onUpdate(deltaTime);
+        if (isOutOfBound()) {
+            removeLaser();
+        }
+    }
+
+    @Override
     public Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
                 .type(EntityType.LASER)
@@ -51,7 +59,13 @@ public class Laser extends MovableObject {
     public void onCollisionWith(GameObject e) {
         if (e instanceof Brick) {
             this.onCollisionWith((Brick) e);
+        } else if (e instanceof Wall) {
+            this.onCollisionWith((Wall) e);
         }
+    }
+
+    public void onCollisionWith(Wall wall) {
+        removeLaser();
     }
 
     public void onCollisionWith(Brick brick) {
