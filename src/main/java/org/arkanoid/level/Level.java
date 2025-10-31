@@ -169,7 +169,7 @@ public class Level implements MonoBehaviour {
         ball.setLinearVelocity(0, 0);
 
         SchedulerUtils.setTimeout(() -> {
-            ball.setLinearVelocity(300, -300);
+            ball.setLinearVelocity(250, -250);
         }, DELAY);
 
         SoundManager.play("round_start.mp3");
