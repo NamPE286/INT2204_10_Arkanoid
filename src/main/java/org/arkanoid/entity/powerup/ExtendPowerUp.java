@@ -1,5 +1,6 @@
 package org.arkanoid.entity.powerup;
 
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.util.Duration;
 import org.arkanoid.component.ExtendComponent;
@@ -25,9 +26,9 @@ public class ExtendPowerUp extends PowerUp {
     }
 
     @Override
-    public void applyEffect(Paddle paddle) {
+    public void applyEffect(Entity paddleEntity) {
         System.out.println("Paddle get more Bigger");
-        var paddleEntity = paddle.getEntity();
+
 
         if (paddleEntity.hasComponent(ExtendComponent.class)) {
             paddleEntity.getComponent(ExtendComponent.class).resetTimer(); 
@@ -49,7 +50,7 @@ public class ExtendPowerUp extends PowerUp {
             return;
         }
 
-        applyEffect(curPaddle);
+        applyEffect(curPaddle.getEntity());
         if (!(entity != null && entity.isActive())) {
             return;
         }
