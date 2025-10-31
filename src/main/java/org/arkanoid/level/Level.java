@@ -1,11 +1,14 @@
 package org.arkanoid.level;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
+import org.arkanoid.component.LaserComponent;
 import org.arkanoid.entity.Ball;
+import org.arkanoid.entity.Laser;
 import org.arkanoid.entity.brick.Brick;
 import org.arkanoid.entity.brick.HardBrick;
 import org.arkanoid.entity.brick.NormalBrick;
@@ -27,6 +30,7 @@ public class Level implements MonoBehaviour {
     private final Paddle paddle;
     private final Ball ball;
     private final List<Brick> bricks = new ArrayList<>();
+    private final List<Laser> activeLasers = new ArrayList<>();
     private boolean ballOnPaddle = true;
     private final double BALL_OFFSET_X = 3;
     private static final int BRICK_OFFSET_X = 100;
@@ -41,8 +45,17 @@ public class Level implements MonoBehaviour {
             i.destroy();
         }
 
+        for (var laser : activeLasers) {
+            laser.destroy();
+        }
+        activeLasers.clear();
+
         paddle.destroy();
         ball.destroy();
+    }
+
+    public void addLaser(Laser laser) {
+        activeLasers.add(laser);
     }
 
     private void loadBrickConfig(int[][] brickConfig) {
@@ -78,6 +91,22 @@ public class Level implements MonoBehaviour {
         }
     }
 
+    public List<Brick> getBricks() {
+        return bricks;
+    }
+
+    public Wall getLeftwall() {
+        return leftwall;
+    }
+
+    public Wall getTopwall() {
+        return topwall;
+    }
+
+    public Wall getRightwall() {
+        return rightwall;
+    }
+
     public void setOnCompletedCallback(Runnable callback) {
         this.onCompletedCallback = callback;
     }
@@ -94,6 +123,17 @@ public class Level implements MonoBehaviour {
     public void onUpdate(double deltaTime) {
         paddle.onUpdate(deltaTime);
         ball.onUpdate(deltaTime);
+
+        // Dùng Iterator để có thể xóa phần tử (nếu laser bị hủy) trong khi lặp
+        Iterator<Laser> laserIterator = activeLasers.iterator();
+        while (laserIterator.hasNext()) {
+            Laser laser = laserIterator.next();
+            if (laser.getEntity() != null && laser.getEntity().isActive()) {
+                laser.onUpdate(deltaTime);
+            } else {
+                laserIterator.remove();
+            }
+        }
 
         boolean isCompleted = true;
 
@@ -149,6 +189,10 @@ public class Level implements MonoBehaviour {
         
         if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
             paddle.getEntity().removeComponent(ExtendComponent.class);
+        }
+
+        if (paddle.getEntity().hasComponent(LaserComponent.class)) {
+            paddle.getEntity().removeComponent(LaserComponent.class);
         }
 
         paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
