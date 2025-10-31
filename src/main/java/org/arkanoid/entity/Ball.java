@@ -17,7 +17,7 @@ import org.arkanoid.utilities.Vec2Utils;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
-    
+
     private boolean attached = false;
 
     @Override
@@ -42,8 +42,10 @@ public class Ball extends MovableObject {
      */
     @Override
     public void onCollisionWith(GameObject e) {
-        
-        if (attached && e instanceof Paddle) return;
+
+        if (attached && e instanceof Paddle) {
+            return;
+        }
 
         if (e instanceof Paddle) {
             this.onCollisionWith((Paddle) e);
@@ -76,14 +78,14 @@ public class Ball extends MovableObject {
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
         distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
         double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-            0.5); 
+            0.5);
 
         if (distanceRatio < 0) {
             nonLinearDistanceRatio *= -1;
         }
 
         double ANGLE = 90 - (55
-            * nonLinearDistanceRatio); 
+            * nonLinearDistanceRatio);
 
         double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
         double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
@@ -108,11 +110,18 @@ public class Ball extends MovableObject {
     public void onCollisionWith(Brick brick) {
         Vec2 newVelocity = Vec2Utils.flip(this.getLinearVelocity(), this, brick);
         setLinearVelocity(newVelocity.x, newVelocity.y);
-        SoundManager.play("ball_hit.wav");
+
+        System.out.println(brick.getHealth());
+
+        if (brick.getHealth() > 1) {
+            SoundManager.play("ball_hit.wav");
+        } else {
+            SoundManager.play("ball_hit_2.wav");
+        }
 
         if (brick instanceof HardBrick || brick instanceof StrongBrick) {
             brick.getEntity().getComponentOptional(BrickAnimationComponent.class)
-                    .ifPresent(BrickAnimationComponent::playHitAnimation);
+                .ifPresent(BrickAnimationComponent::playHitAnimation);
         }
 
         System.out.println("Collide with brick");
@@ -154,7 +163,7 @@ public class Ball extends MovableObject {
         spawn();
     }
 
-    
+
     public void setAttached(boolean value) {
         this.attached = value;
     }
