@@ -1,8 +1,6 @@
 package org.arkanoid.entity.powerup;
 
 import com.almasb.fxgl.entity.SpawnData;
-import javafx.util.Duration;
-import org.arkanoid.component.ExtendComponent;
 import org.arkanoid.component.LaserComponent;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.core.GameObject;
@@ -25,10 +23,10 @@ public class LaserPowerUp extends PowerUp {
         var paddleEntity = paddle.getEntity();
 
         if (paddleEntity.hasComponent(LaserComponent.class)) {
-            paddleEntity.getComponent(LaserComponent.class).resetTimer();
+            paddleEntity.getComponent(LaserComponent.class).addAmmo(4);
         } else {
 
-            paddleEntity.addComponent(new LaserComponent(Duration.seconds(5)));
+            paddleEntity.addComponent(new LaserComponent());
 
         }
     }

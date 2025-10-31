@@ -27,8 +27,6 @@ public class Level implements MonoBehaviour {
     private final int id;
     private final Paddle paddle;
     private final Ball ball;
-    private final Laser laser1;
-    private final Laser laser2;
     private final List<Brick> bricks = new ArrayList<>();
     private boolean ballOnPaddle = true;
     private final double BALL_OFFSET_X = 3;
@@ -81,6 +79,10 @@ public class Level implements MonoBehaviour {
         }
     }
 
+    public List<Brick> getBricks() {
+        return bricks;
+    }
+
     public void setOnCompletedCallback(Runnable callback) {
         this.onCompletedCallback = callback;
     }
@@ -97,8 +99,6 @@ public class Level implements MonoBehaviour {
     public void onUpdate(double deltaTime) {
         paddle.onUpdate(deltaTime);
         ball.onUpdate(deltaTime);
-        laser1.onUpdate(deltaTime);
-        laser2.onUpdate(deltaTime);
 
         boolean isCompleted = true;
 
@@ -129,9 +129,6 @@ public class Level implements MonoBehaviour {
         var brickConfig = Objects.requireNonNull(
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
-        laser1 = (Laser) new Laser(Main.WIDTH / 2 - 14, Main.HEIGHT - 72, "LEFT");
-        laser2 = (Laser) new Laser(Main.WIDTH / 2 + 14, Main.HEIGHT - 72, "RIGHT");
-
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
             .playInitAnimation()
             .delayInput(DELAY)
@@ -150,8 +147,6 @@ public class Level implements MonoBehaviour {
 
         for (var brick : bricks) {
             ball.listenToCollisionWith(brick);
-            laser1.listenToCollisionWith(brick);
-            laser2.listenToCollisionWith(brick);
         }
     }
 
