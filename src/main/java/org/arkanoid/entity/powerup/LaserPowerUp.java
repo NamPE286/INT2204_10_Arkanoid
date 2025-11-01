@@ -1,5 +1,6 @@
 package org.arkanoid.entity.powerup;
 
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.component.LaserComponent;
 import org.arkanoid.entity.Paddle;
@@ -18,9 +19,8 @@ public class LaserPowerUp extends PowerUp {
     }
 
     @Override
-    public void applyEffect(Paddle paddle) {
+    public void applyEffect(Entity paddleEntity) {
         System.out.println("LaserPowerUp");
-        var paddleEntity = paddle.getEntity();
 
         if (paddleEntity.hasComponent(LaserComponent.class)) {
             paddleEntity.getComponent(LaserComponent.class).addAmmo(4);
@@ -40,7 +40,7 @@ public class LaserPowerUp extends PowerUp {
             return;
         }
 
-        applyEffect(curPaddle);
+        applyEffect(curPaddle.getEntity());
         if (!(entity != null && entity.isActive())) {
             return;
         }

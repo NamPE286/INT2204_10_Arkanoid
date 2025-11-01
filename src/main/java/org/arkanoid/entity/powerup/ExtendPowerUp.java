@@ -12,12 +12,8 @@ import org.arkanoid.manager.SoundManager;
 
 public class ExtendPowerUp extends PowerUp {
 
-    /**
-     * Do notthing.
-     */
     public ExtendPowerUp(SpawnData data) {
         super(data);
-
     }
 
     @Override
@@ -44,7 +40,7 @@ public class ExtendPowerUp extends PowerUp {
     @Override
     public void onCollisionWith(GameObject e) {
         SoundManager.play("paddle_extend.wav");
-        System.out.println("Power up collided with paddle");
+        System.out.println("Extend power up collided with paddle");
 
         if (!(e instanceof Paddle curPaddle)) {
             return;
