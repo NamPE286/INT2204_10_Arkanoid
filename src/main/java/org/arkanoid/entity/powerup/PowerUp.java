@@ -21,7 +21,7 @@ public abstract class PowerUp extends MovableObject {
         super((int) data.getX(), (int) data.getY());
         spawn();
         initInput();
-        setLinearVelocity(0, 100);
+        setLinearVelocity(0, speedDown);
     }
 
     public abstract PowerupType getType();

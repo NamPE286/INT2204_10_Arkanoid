@@ -8,6 +8,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import org.arkanoid.component.LaserComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.component.animation.PaddleInitAnimationComponent;
 import org.arkanoid.entity.core.GameObject;
@@ -93,6 +94,18 @@ public class Paddle extends MovableObject {
                     target.setLinearVelocity(0, 0);
                 }
             }, KeyCode.RIGHT);
+        } catch (IllegalArgumentException _) {
+        }
+
+        try {
+            FXGL.getInput().addAction(new UserAction("FIRE_LASER") {
+                @Override
+                protected void onActionBegin() {
+                    if (target != null && target.getEntity() != null && target.getEntity().hasComponent(LaserComponent.class)) {
+                        target.getEntity().getComponent(LaserComponent.class).fire();
+                    }
+                }
+            }, KeyCode.SPACE);
         } catch (IllegalArgumentException _) {
         }
     }
