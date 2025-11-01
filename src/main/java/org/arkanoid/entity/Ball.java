@@ -25,7 +25,7 @@ public class Ball extends MovableObject {
         var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5);
 
         var e = entityBuilder(spawnData)
-            .type(EntityType.PADDLE)
+            .type(EntityType.BALL)
             .viewWithBBox(texture)
             .build();
 
