@@ -7,6 +7,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.time.TimerAction;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
@@ -29,6 +30,9 @@ public class LaserComponent extends Component {
     private final int PADDLE_WIDTH = 32;
     private final int PADDLE_HEIGHT = 8;
     private static final Duration TRANSFORM_DURATION = Duration.seconds(0.5);
+
+    private TimerAction onAddedTimer;
+    private TimerAction onRemovedTimer;
 
     public LaserComponent() {
 
@@ -121,10 +125,9 @@ public class LaserComponent extends Component {
         entity.getViewComponent().addChild(transformTexture);
         transformTexture.play();
 
-        FXGL.runOnce(() -> {
-            entity.getViewComponent().removeChild(transformTexture);
-
+        onAddedTimer = FXGL.runOnce(() -> {
             if (entity != null && entity.isActive()) {
+                entity.getViewComponent().removeChild(transformTexture);
                 entity.addComponent(new LaserPaddleAnimationComponent());
             }
 
@@ -140,6 +143,13 @@ public class LaserComponent extends Component {
 
     @Override
     public void onRemoved() {
+        if (onAddedTimer != null && !onAddedTimer.isExpired()) {
+            onAddedTimer.expire();
+        }
+
+        if (onRemovedTimer != null && !onRemovedTimer.isExpired()) {
+            onRemovedTimer.expire();
+        }
 
         if (entity == null || !entity.isActive()) {
             return;
@@ -157,7 +167,7 @@ public class LaserComponent extends Component {
         localEntity.getViewComponent().addChild(transformTexture);
         transformTexture.play();
 
-        FXGL.runOnce(() -> {
+        onRemovedTimer = FXGL.runOnce(() -> {
             if (localEntity != null && localEntity.isActive()) {
                 localEntity.getViewComponent().removeChild(transformTexture);
                 if (!localEntity.hasComponent(ExtendComponent.class)) {
