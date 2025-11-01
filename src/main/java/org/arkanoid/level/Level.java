@@ -22,8 +22,9 @@ import org.arkanoid.component.ExtendComponent;
 
 public class Level implements MonoBehaviour {
 
-    private final int DELAY = 2500;
-    private final int WALL_THICKNESS = Main.WIDTH / 28;
+    private static final int DELAY_DURATION = 2000;
+    private static final int HIDE_DURATION = 700;
+    private static final int WALL_THICKNESS = Main.WIDTH / 28;
     private Runnable onCompletedCallback;
     private Runnable onDeathCallback;
     private final int id;
@@ -165,7 +166,7 @@ public class Level implements MonoBehaviour {
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
-            .delayInput(DELAY)
+            .delayInput(HIDE_DURATION + DELAY_DURATION)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
@@ -175,7 +176,10 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(topwall)
             .listenToCollisionWith(rightwall);
 
-        SchedulerUtils.setTimeout(paddle::playInitAnimation, 1000);
+        paddle.hideFor(HIDE_DURATION);
+        ball.hideFor(HIDE_DURATION);
+
+        SchedulerUtils.setTimeout(paddle::playInitAnimation, HIDE_DURATION);
 
         reset(false);
         loadBrickConfig(brickConfig.getBrickMap());
@@ -198,7 +202,7 @@ public class Level implements MonoBehaviour {
         paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
         ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
 
-        paddle.delayInput(DELAY);
+        paddle.delayInput(DELAY_DURATION);
 
         if (playInit) {
             paddle.playInitAnimation();
@@ -208,7 +212,7 @@ public class Level implements MonoBehaviour {
 
         SchedulerUtils.setTimeout(() -> {
             ball.setLinearVelocity(250, -250);
-        }, DELAY);
+        }, playInit ? DELAY_DURATION : HIDE_DURATION + DELAY_DURATION);
 
         SoundManager.play("round_start.mp3");
     }
