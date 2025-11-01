@@ -53,6 +53,10 @@ public abstract class MovableObject extends GameObject {
      */
     @Override
     public void onUpdate(double deltaTime) {
+//        if (getEntity() == null || !getEntity().isActive()) {
+//            return;
+//        }
+
         double minSide = Math.min(getEntity().getWidth(), getEntity().getHeight());
         final double minStepDistance = (minSide > 1.0) ? minSide / 2.0 : 2.0;
 
@@ -72,6 +76,23 @@ public abstract class MovableObject extends GameObject {
 
             boolean hasCollided = false;
             for (var other : collisionListeners) {
+                if (other == null || other.getEntity() == null || !other.getEntity().isActive()) {
+                    continue;
+                }
+
+
+                var otherBBox = other.getEntity().getBoundingBoxComponent();
+                if (otherBBox == null) {
+                    continue; // Bỏ qua nếu gạch không có BBox
+                }
+
+
+                var thisBBox = getEntity().getBoundingBoxComponent();
+                if (thisBBox == null) {
+                    hasCollided = true;
+                    break;
+                }
+
                 if (getEntity().getBoundingBoxComponent()
                         .isCollidingWith(other.getEntity().getBoundingBoxComponent())) {
                     onCollisionWith(other);
