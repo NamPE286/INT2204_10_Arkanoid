@@ -29,9 +29,7 @@ public class ExtendPowerUp extends PowerUp {
         if (paddleEntity.hasComponent(ExtendComponent.class)) {
             paddleEntity.getComponent(ExtendComponent.class).resetTimer(); 
         } else {
-            
             paddleEntity.addComponent(new ExtendComponent(Duration.seconds(5)));
-
         }
 
 

@@ -25,9 +25,7 @@ public class LaserPowerUp extends PowerUp {
         if (paddleEntity.hasComponent(LaserComponent.class)) {
             paddleEntity.getComponent(LaserComponent.class).addAmmo(4);
         } else {
-
             paddleEntity.addComponent(new LaserComponent());
-
         }
     }
 
