@@ -55,6 +55,7 @@ public class GameOver {
         TextField nameField = new TextField();
         nameField.setPrefWidth(100);
         nameField.setFont(FONT_SMALL);
+        nameField.setAlignment(Pos.CENTER); // Căn giữa lúc nhập tên.
         nameField.setStyle("-fx-text-fill:white; -fx-background-color: rgba(0,0,0,0.3); -fx-border-color: gray;");
         nameField.setPromptText("ABC");
         Label hint = createLabel("PRESS ENTER TO SAVE", FONT_SMALL, Color.LIGHTGRAY);
