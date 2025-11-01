@@ -4,20 +4,24 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import javafx.geometry.Point2D;
 import org.arkanoid.entity.brick.HardBrick;
 import org.arkanoid.entity.brick.StrongBrick;
 import org.arkanoid.component.animation.BrickAnimationComponent;
 import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.entity.brick.Brick;
+import org.arkanoid.game.Game;
 import org.arkanoid.utilities.TextureUtils;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.Vec2Utils;
 
+import java.util.List;
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
-    
+
     private boolean attached = false;
 
     @Override
@@ -25,9 +29,9 @@ public class Ball extends MovableObject {
         var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5);
 
         var e = entityBuilder(spawnData)
-            .type(EntityType.BALL)
-            .viewWithBBox(texture)
-            .build();
+                .type(EntityType.BALL)
+                .viewWithBBox(texture)
+                .build();
 
         e.setScaleX(2.0);
         e.setScaleY(2.0);
@@ -42,7 +46,7 @@ public class Ball extends MovableObject {
      */
     @Override
     public void onCollisionWith(GameObject e) {
-        
+
         if (attached && e instanceof Paddle) return;
 
         if (e instanceof Paddle) {
@@ -76,14 +80,14 @@ public class Ball extends MovableObject {
         double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
         distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
         double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-            0.5); 
+                0.5);
 
         if (distanceRatio < 0) {
             nonLinearDistanceRatio *= -1;
         }
 
         double ANGLE = 90 - (55
-            * nonLinearDistanceRatio); 
+                * nonLinearDistanceRatio);
 
         double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
         double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
@@ -154,12 +158,49 @@ public class Ball extends MovableObject {
         spawn();
     }
 
-    
+
     public void setAttached(boolean value) {
         this.attached = value;
     }
 
     public boolean isAttached() {
         return attached;
+    }
+
+    public void createTwins() {
+        Point2D spawnPosition = this.getEntity().getCenter();
+        Vec2 curVec = this.getLinearVelocity();
+
+        float vx = curVec.x;
+        float vy = curVec.y;
+
+        // Tạo ra hai quả bóng tạo với bóng cũ một góc 75 độ
+        double angleRad = Math.toRadians(15);
+        float cosAngle = (float) Math.cos(angleRad);
+        float sinAngle = (float) Math.sin(angleRad);
+
+        // Công thức xoay của toán :
+        // new x = x.cos(alpha) - y.sin(alpha)
+        // new y = x.sin(alpha) + y.cos(alpha)
+
+
+        // xoay bên phải (15 độ so với trục hoành)
+        float vx1 = vx * cosAngle - vy * sinAngle;
+        float vy1 = vx * sinAngle + vy * cosAngle;
+
+        // xoay bên trái (-15 độ so với trục hoành)
+        // cos(15) = cos(-15), sin(-15) = sin(-15)
+
+        float vx2 = vx * cosAngle + vy * sinAngle;
+        float vy2 = -vx * sinAngle + vy * cosAngle;
+
+        Ball ballTwin1 = new Ball((int) spawnPosition.getX(), (int) spawnPosition.getY());
+        Ball ballTwin2 = new Ball((int) spawnPosition.getX(), (int) spawnPosition.getY());
+
+        ballTwin2.setLinearVelocity(vx1, vy1);
+        ballTwin1.setLinearVelocity(vx2, vy2);
+
+        Game.getInstance().getCurrentLevel().addBall(ballTwin1);
+        Game.getInstance().getCurrentLevel().addBall(ballTwin2);
     }
 }
