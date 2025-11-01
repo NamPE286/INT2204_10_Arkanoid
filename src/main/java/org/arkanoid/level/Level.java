@@ -29,6 +29,7 @@ public class Level implements MonoBehaviour {
     private static final int DELAY_DURATION = 1500;
     private static final int HIDE_DURATION = 1500;
     private static final int WALL_THICKNESS = Main.WIDTH / 28;
+    private boolean onCompletedCallbackCalled = false;
     private Runnable onCompletedCallback;
     private Runnable onDeathCallback;
     private final int id;
@@ -125,6 +126,14 @@ public class Level implements MonoBehaviour {
         backGround.displayLevel(id);
     }
 
+    public void onCompleted() {
+        paddle.getEntity().setVisible(false);
+        ball.getEntity().setVisible(false);
+        ball.setLinearVelocity(0, 0);
+
+        FXGL.runOnce(() -> onCompletedCallback.run(), Duration.millis(500));
+    }
+
     public void onUpdate(double deltaTime) {
         paddle.onUpdate(deltaTime);
         ball.onUpdate(deltaTime);
@@ -154,8 +163,9 @@ public class Level implements MonoBehaviour {
             }
         }
 
-        if (isCompleted && onCompletedCallback != null) {
-            onCompletedCallback.run();
+        if (isCompleted && onCompletedCallback != null && !onCompletedCallbackCalled) {
+            onCompleted();
+            onCompletedCallbackCalled = true;
         }
 
         if (ball.isOutOfBound() && onDeathCallback != null) {
