@@ -18,7 +18,7 @@ public class Game implements MonoBehaviour {
     private boolean gameOver = false;        
     private static Game instance;
     private Level currentLevel;
-    private final int levelIndex = 1;
+    private int levelIndex = 1;
     private int lives = 3;
     private LivesUI livesUI;
     private ScoreBoard scoreBoard;
@@ -96,11 +96,7 @@ public class Game implements MonoBehaviour {
      */
     private void setLevel(int id) {
         currentLevel = new Level(id);
-
-        
         currentLevel.setOnDeathCallback(this::loseLife);
-
-        
         currentLevel.setOnCompletedCallback(() -> {
             System.out.println("Level completed!");
         });

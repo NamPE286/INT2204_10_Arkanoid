@@ -144,7 +144,7 @@ public class Level implements MonoBehaviour {
 
             brick.onUpdate(deltaTime);
 
-            if (brick.getHealth() > 0) {
+            if (brick.getHealth() > 0 && brick.isCanDestroy()) {
                 isCompleted = false;
             }
         }
@@ -186,7 +186,7 @@ public class Level implements MonoBehaviour {
     }
 
     public void reset() {
-        
+
         if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
             paddle.getEntity().removeComponent(ExtendComponent.class);
         }

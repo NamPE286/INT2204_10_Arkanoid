@@ -174,7 +174,9 @@ public abstract class Brick extends GameObject {
         return this;
     }
 
-    
+    public boolean isCanDestroy() {
+        return canDestroy;
+    }
 
     @Override
     public void destroy() {
