@@ -10,7 +10,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import org.arkanoid.component.LaserComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
-import org.arkanoid.component.animation.PaddleInitAnimationComponent;
 import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.utilities.SchedulerUtils;
@@ -23,16 +22,8 @@ public class Paddle extends MovableObject {
     private static Paddle target;
 
     public Paddle playInitAnimation() {
-
-        if (entity.hasComponent(PaddleAnimationComponent.class)) {
-            entity.removeComponent(PaddleAnimationComponent.class);
-        }
-
-        if (entity.hasComponent(PaddleInitAnimationComponent.class)) {
-            entity.removeComponent(PaddleInitAnimationComponent.class);
-        }
-
-        entity.addComponent(new PaddleInitAnimationComponent());
+        var comp = entity.getComponent(PaddleAnimationComponent.class);
+        comp.setInit(true);
 
         return this;
     }
@@ -101,7 +92,8 @@ public class Paddle extends MovableObject {
             FXGL.getInput().addAction(new UserAction("FIRE_LASER") {
                 @Override
                 protected void onActionBegin() {
-                    if (target != null && target.getEntity() != null && target.getEntity().hasComponent(LaserComponent.class)) {
+                    if (target != null && target.getEntity() != null && target.getEntity()
+                        .hasComponent(LaserComponent.class)) {
                         target.getEntity().getComponent(LaserComponent.class).fire();
                     }
                 }
