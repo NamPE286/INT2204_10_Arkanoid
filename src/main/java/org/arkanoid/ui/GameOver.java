@@ -17,9 +17,12 @@ import org.arkanoid.leaderboard.LeaderBoardEntry;
 import java.util.List;
 
 public class GameOver {
+
     // Load font NES từ resource của project.
-    private static final Font FONT_BIG = Font.loadFont(GameOver.class.getResourceAsStream("/fonts/nes.otf"), 36);
-    private static final Font FONT_SMALL = Font.loadFont(GameOver.class.getResourceAsStream("/fonts/nes.otf"), 18);
+    private static final Font FONT_BIG = Font.loadFont(
+        GameOver.class.getResourceAsStream("/fonts/nes.otf"), 36);
+    private static final Font FONT_SMALL = Font.loadFont(
+        GameOver.class.getResourceAsStream("/fonts/nes.otf"), 18);
 
     private static StackPane overlay;       // Overlay full màn hình.
     private static LeaderBoard leaderboard; // Top scores.
@@ -37,14 +40,15 @@ public class GameOver {
 
         // Nội dung Game Over + score.
         VBox content = new VBox(20,
-                createLabel("GAME OVER", FONT_BIG, Color.RED),
-                createLabel("YOUR SCORE: " + finalScore, FONT_SMALL, Color.WHITE)
+            createLabel("GAME OVER", FONT_BIG, Color.RED),
+            createLabel("YOUR SCORE: " + finalScore, FONT_SMALL, Color.WHITE)
         );
         content.setAlignment(Pos.CENTER);
         overlay.getChildren().setAll(content);
 
         // Chờ 3 giây rồi chuyển sang màn hình nhập tên.
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), e -> showNameInputScreen()));
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(3), e -> showNameInputScreen()));
         timeline.setCycleCount(1);
         timeline.play();
     }
@@ -56,8 +60,16 @@ public class GameOver {
         nameField.setPrefWidth(100);
         nameField.setFont(FONT_SMALL);
         nameField.setAlignment(Pos.CENTER); // Căn giữa lúc nhập tên.
-        nameField.setStyle("-fx-text-fill:white; -fx-background-color: rgba(0,0,0,0.3); -fx-border-color: gray;");
+        nameField.setStyle(
+            "-fx-text-fill:white; -fx-background-color: rgba(0,0,0,0.3); -fx-border-color: gray;");
         nameField.setPromptText("ABC");
+
+        nameField.textProperty().addListener((obs, oldText, newText) -> {
+            if (!newText.equals(newText.toUpperCase())) {
+                nameField.setText(newText.toUpperCase());
+            }
+        });
+
         Label hint = createLabel("PRESS ENTER TO SAVE", FONT_SMALL, Color.LIGHTGRAY);
 
         VBox content = new VBox(10, prompt, nameField, hint);
@@ -87,7 +99,9 @@ public class GameOver {
         List<LeaderBoardEntry> entries = leaderboard.getEntries();
         for (int i = 0; i < Math.min(5, entries.size()); i++) {
             LeaderBoardEntry entry = entries.get(i);
-            entriesBox.getChildren().add(createLabel((i + 1) + ". " + entry.getName() + " - " + entry.getScore(), FONT_SMALL, Color.WHITE));
+            entriesBox.getChildren().add(
+                createLabel((i + 1) + ". " + entry.getName() + " - " + entry.getScore(), FONT_SMALL,
+                    Color.WHITE));
         }
 
         Label title = createLabel("TOP 5 SCORES", FONT_BIG, Color.CYAN);
