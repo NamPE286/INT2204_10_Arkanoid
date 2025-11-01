@@ -13,7 +13,20 @@ import javafx.scene.image.Image;
 public class PaddleAnimationComponent extends Component {
 
     private final AnimatedTexture texture;
+    private final AnimationChannel animInit;
     private final AnimationChannel animLoop;
+    private boolean isInit = false;
+
+    private List<Image> getInitFrames() {
+        Image image = FXGL.image("vaus.png");
+        List<Image> frames = new ArrayList<>();
+
+        for (int i = 0; i <= 4; i++) {
+            frames.add(new WritableImage(image.getPixelReader(), 0, 8 * i, 32, 8));
+        }
+
+        return frames;
+    }
 
     private List<Image> getIdleFrames() {
         Image image = FXGL.image("vaus.png");
@@ -27,20 +40,34 @@ public class PaddleAnimationComponent extends Component {
     }
 
     public PaddleAnimationComponent() {
+        animInit = new AnimationChannel(getInitFrames(), Duration.seconds(0.5));
         animLoop = new AnimationChannel(getIdleFrames(), Duration.seconds(1));
-        texture = new AnimatedTexture(animLoop);
 
+        texture = new AnimatedTexture(animInit);
     }
 
     @Override
     public void onAdded() {
-        
+
         entity.getViewComponent().addChild(texture);
-        texture.loopAnimationChannel(animLoop); 
+        texture.loopAnimationChannel(animLoop);
+    }
+
+    @Override
+    public void onUpdate(double tpf) {
+        if (isInit) {
+            texture.setOnCycleFinished(() -> texture.loopAnimationChannel(animLoop));
+            texture.playAnimationChannel(animInit);
+            isInit = false;
+        }
+    }
+
+    public void setInit(boolean value) {
+        isInit = value;
     }
 
     /**
-     *  Xu li sau khi paddle to ra
+     * Xu li sau khi paddle to ra
      */
     @Override
     public void onRemoved() {

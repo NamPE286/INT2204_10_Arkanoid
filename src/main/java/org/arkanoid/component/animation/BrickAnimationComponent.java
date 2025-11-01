@@ -27,7 +27,7 @@ public class BrickAnimationComponent extends Component {
     }
 
     public BrickAnimationComponent(int tileX, int tileY) {
-        animLoop = new AnimationChannel(getIdleFrames(tileX, tileY), Duration.seconds(1));
+        animLoop = new AnimationChannel(getIdleFrames(tileX, tileY), Duration.seconds(0.5));
         texture = new AnimatedTexture(animLoop);
 
     }

@@ -2,6 +2,7 @@ package org.arkanoid.game;
 
 import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.behaviour.MonoBehaviour;
+import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.level.Level;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.HighScoreManager;
@@ -15,10 +16,11 @@ import org.arkanoid.ui.ScoreBoard;
  */
 public class Game implements MonoBehaviour {
 
-    private boolean gameOver = false;        
+    private static final int MAX_LEVEL = 2;
+    private boolean gameOver = false;
     private static Game instance;
     private Level currentLevel;
-    private final int levelIndex = 1;
+    private int levelIndex = 1;
     private int lives = 3;
     private LivesUI livesUI;
     private ScoreBoard scoreBoard;
@@ -39,7 +41,7 @@ public class Game implements MonoBehaviour {
     public static Game reInit() {
         if (instance != null) {
             instance.destroy();
-            
+
             BackgroundManager.reset();
 
             instance = null;
@@ -49,7 +51,7 @@ public class Game implements MonoBehaviour {
     }
 
     public Game() {
-        
+        LabelFactory.setGlobalFont("/fonts/nes.otf", 24);
         int savedHighScore = HighScoreManager.loadHighScore();
         FXGL.set("highScore", savedHighScore);
 
@@ -64,7 +66,7 @@ public class Game implements MonoBehaviour {
         FXGL.set("lives", lives);
 
         if (lives > 0) {
-            currentLevel.reset();
+            currentLevel.reset(true);
 
         } else {
             SoundManager.play("death.wav");
@@ -77,14 +79,12 @@ public class Game implements MonoBehaviour {
      * Cộng điểm vào score.
      */
     public void addScore(int points) {
-        
+
         int currentScore = FXGL.geti("score");
         int newScore = currentScore + points;
 
-        
         FXGL.set("score", newScore);
 
-        
         if (newScore >= FXGL.geti("highScore")) {
             FXGL.set("highScore", newScore);
             HighScoreManager.saveHighScore(newScore);
@@ -95,14 +95,18 @@ public class Game implements MonoBehaviour {
      * Khởi tạo level và gán callback.
      */
     private void setLevel(int id) {
+        if (currentLevel != null) {
+            currentLevel.destroy();
+        }
+
         currentLevel = new Level(id);
-
-        
         currentLevel.setOnDeathCallback(this::loseLife);
-
-        
         currentLevel.setOnCompletedCallback(() -> {
-            System.out.println("Level completed!");
+            if (id == MAX_LEVEL) {
+                return;
+            }
+
+            setLevel(id + 1);
         });
     }
 

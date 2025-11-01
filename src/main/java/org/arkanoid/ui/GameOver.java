@@ -1,28 +1,131 @@
 package org.arkanoid.ui;
 
 import com.almasb.fxgl.dsl.FXGL;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+import org.arkanoid.leaderboard.LeaderBoard;
+import org.arkanoid.leaderboard.LeaderBoardEntry;
+
+import java.util.List;
 
 public class GameOver {
 
+    // Load font NES từ resource của project.
+    private static final Font FONT_BIG = Font.loadFont(
+        GameOver.class.getResourceAsStream("/fonts/nes.otf"), 36);
+    private static final Font FONT_SMALL = Font.loadFont(
+        GameOver.class.getResourceAsStream("/fonts/nes.otf"), 18);
+
+    private static StackPane overlay;       // Overlay full màn hình.
+    private static LeaderBoard leaderboard; // Top scores.
+    private static int finalScore;          // Điểm người chơi.
+
+    // Hiển thị màn hình Game Over.
     public static void show() {
-        
-        Font font = Font.loadFont(GameOver.class.getResourceAsStream("/fonts/nes.otf"), 32);
+        finalScore = FXGL.geti("score");
+        leaderboard = new LeaderBoard();
 
-        
-        Label label = new Label("GAME OVER");
+        overlay = new StackPane();
+        overlay.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.7);");
+        FXGL.getGameScene().addUINode(overlay);
+
+        // Nội dung Game Over + score.
+        VBox content = new VBox(20,
+            createLabel("GAME OVER", FONT_BIG, Color.RED),
+            createLabel("YOUR SCORE: " + finalScore, FONT_SMALL, Color.WHITE)
+        );
+        content.setAlignment(Pos.CENTER);
+        overlay.getChildren().setAll(content);
+
+        // Chờ 3 giây rồi chuyển sang màn hình nhập tên.
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(3), e -> showNameInputScreen()));
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+
+    // Màn hình nhập tên.
+    private static void showNameInputScreen() {
+        Label prompt = createLabel("ENTER YOUR NAME FROM 3 CHARACTERS:", FONT_SMALL, Color.YELLOW);
+        TextField nameField = new TextField();
+        nameField.setPrefWidth(100);
+        nameField.setFont(FONT_SMALL);
+        nameField.setAlignment(Pos.CENTER); // Căn giữa lúc nhập tên.
+        nameField.setStyle(
+            "-fx-text-fill:white; -fx-background-color: rgba(0,0,0,0.3); -fx-border-color: gray;");
+        nameField.setPromptText("ABC");
+
+        nameField.textProperty().addListener((obs, oldText, newText) -> {
+            if (!newText.equals(newText.toUpperCase())) {
+                nameField.setText(newText.toUpperCase());
+            }
+        });
+
+        Label hint = createLabel("PRESS ENTER TO SAVE", FONT_SMALL, Color.LIGHTGRAY);
+
+        VBox content = new VBox(10, prompt, nameField, hint);
+        content.setAlignment(Pos.CENTER);
+        overlay.getChildren().setAll(content);
+
+        FXGL.runOnce(nameField::requestFocus, Duration.millis(10));
+
+        // Xử lý khi nhấn Enter.
+        nameField.setOnAction(e -> {
+            String name = nameField.getText().trim().toUpperCase();
+            if (name.length() == 3) {
+                leaderboard.addEntry(name, finalScore);
+                showLeaderboard(); // Chuyển sang màn hình leaderboard.
+            } else {
+                hint.setText("NAME MUST BE 3 CHARACTERS!");
+                hint.setTextFill(Color.RED);
+            }
+        });
+    }
+
+    // Màn hình Top 5 leaderboard.
+    private static void showLeaderboard() {
+        VBox entriesBox = new VBox(5);
+        entriesBox.setAlignment(Pos.CENTER);
+
+        List<LeaderBoardEntry> entries = leaderboard.getEntries();
+        for (int i = 0; i < Math.min(5, entries.size()); i++) {
+            LeaderBoardEntry entry = entries.get(i);
+            entriesBox.getChildren().add(
+                createLabel((i + 1) + ". " + entry.getName() + " - " + entry.getScore(), FONT_SMALL,
+                    Color.WHITE));
+        }
+
+        Label title = createLabel("TOP 5 SCORES", FONT_BIG, Color.CYAN);
+        Label hint = createLabel("PRESS ENTER TO RETURN TO MAIN MENU", FONT_SMALL, Color.GRAY);
+
+        VBox content = new VBox(15, title, entriesBox, hint);
+        content.setAlignment(Pos.CENTER);
+        overlay.getChildren().setAll(content);
+
+        // Nhấn Enter quay về Main Menu.
+        overlay.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                FXGL.getGameScene().removeUINode(overlay);
+                FXGL.getGameController().gotoMainMenu();
+            }
+        });
+        overlay.requestFocus();
+    }
+
+    // Tạo label tiện lợi.
+    private static Label createLabel(String text, Font font, Color color) {
+        Label label = new Label(text);
         label.setFont(font);
-        label.setTextFill(Color.WHITE);
-        label.setTranslateX(FXGL.getAppWidth() / 2.0 - 120); 
-        label.setTranslateY(FXGL.getAppHeight() - 100.0);     
-
-        FXGL.addUINode(label); 
-
-        
-        FXGL.runOnce(() -> FXGL.getGameController().gotoMainMenu(),
-            javafx.util.Duration.seconds(3));
+        label.setTextFill(color);
+        return label;
     }
 }
-

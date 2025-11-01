@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import java.util.ArrayList;
 import java.util.List;
 import org.arkanoid.behaviour.MonoBehaviour;
+import org.arkanoid.utilities.SchedulerUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 
@@ -53,7 +54,7 @@ public abstract class GameObject implements MonoBehaviour {
      * nothing.
      */
     protected void initInput() {
-        
+
     }
 
     /**
@@ -94,7 +95,7 @@ public abstract class GameObject implements MonoBehaviour {
      * @param e the Entity that this object has collided with
      */
     public void onCollisionWith(GameObject e) {
-        
+
     }
 
     /**
@@ -158,6 +159,11 @@ public abstract class GameObject implements MonoBehaviour {
         setY(y);
     }
 
+    public void hideFor(int ms) {
+        entity.setVisible(false);
+        SchedulerUtils.setTimeout(() -> entity.setVisible(true), ms);
+    }
+
     /**
      * Constructs a new game object at the specified coordinates.
      * <p>
@@ -167,9 +173,7 @@ public abstract class GameObject implements MonoBehaviour {
      * @param x the x-coordinate for the entity's initial position
      * @param y the y-coordinate for the entity's initial position
      */
-    public GameObject(int x, int y) {
+    protected GameObject(int x, int y) {
         entity = createEntity(new SpawnData(x, y));
-        
-
     }
 }
