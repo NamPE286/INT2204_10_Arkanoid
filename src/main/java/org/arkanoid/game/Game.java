@@ -15,6 +15,7 @@ import org.arkanoid.ui.ScoreBoard;
  */
 public class Game implements MonoBehaviour {
 
+    private static final int MAX_LEVEL = 2;
     private boolean gameOver = false;
     private static Game instance;
     private Level currentLevel;
@@ -99,7 +100,13 @@ public class Game implements MonoBehaviour {
 
         currentLevel = new Level(id);
         currentLevel.setOnDeathCallback(this::loseLife);
-        currentLevel.setOnCompletedCallback(() -> setLevel(id + 1));
+        currentLevel.setOnCompletedCallback(() -> {
+            if (id == MAX_LEVEL) {
+                return;
+            }
+
+            setLevel(id + 1);
+        });
     }
 
     public Level getCurrentLevel() {
