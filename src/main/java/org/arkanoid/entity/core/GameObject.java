@@ -173,9 +173,7 @@ public abstract class GameObject implements MonoBehaviour {
      * @param x the x-coordinate for the entity's initial position
      * @param y the y-coordinate for the entity's initial position
      */
-    public GameObject(int x, int y) {
+    protected GameObject(int x, int y) {
         entity = createEntity(new SpawnData(x, y));
-
-
     }
 }

@@ -40,7 +40,7 @@ public class PaddleAnimationComponent extends Component {
     }
 
     public PaddleAnimationComponent() {
-        animInit = new AnimationChannel(getInitFrames(), Duration.seconds(1));
+        animInit = new AnimationChannel(getInitFrames(), Duration.seconds(0.5));
         animLoop = new AnimationChannel(getIdleFrames(), Duration.seconds(1));
 
         texture = new AnimatedTexture(animInit);
