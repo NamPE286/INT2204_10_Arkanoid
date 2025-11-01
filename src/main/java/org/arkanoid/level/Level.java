@@ -165,7 +165,6 @@ public class Level implements MonoBehaviour {
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
-            .playInitAnimation()
             .delayInput(DELAY)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
@@ -176,7 +175,9 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(topwall)
             .listenToCollisionWith(rightwall);
 
-        reset();
+        SchedulerUtils.setTimeout(paddle::playInitAnimation, 1000);
+
+        reset(false);
         loadBrickConfig(brickConfig.getBrickMap());
         setBackground(brickConfig.getBackgroundId());
 
@@ -185,8 +186,7 @@ public class Level implements MonoBehaviour {
         }
     }
 
-    public void reset() {
-
+    public void reset(boolean playInit) {
         if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
             paddle.getEntity().removeComponent(ExtendComponent.class);
         }
@@ -199,7 +199,11 @@ public class Level implements MonoBehaviour {
         ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
 
         paddle.delayInput(DELAY);
-        paddle.playInitAnimation();
+
+        if (playInit) {
+            paddle.playInitAnimation();
+        }
+
         ball.setLinearVelocity(0, 0);
 
         SchedulerUtils.setTimeout(() -> {

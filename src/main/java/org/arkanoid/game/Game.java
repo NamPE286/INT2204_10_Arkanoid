@@ -65,7 +65,7 @@ public class Game implements MonoBehaviour {
         FXGL.set("lives", lives);
 
         if (lives > 0) {
-            currentLevel.reset();
+            currentLevel.reset(true);
 
         } else {
             SoundManager.play("death.wav");
