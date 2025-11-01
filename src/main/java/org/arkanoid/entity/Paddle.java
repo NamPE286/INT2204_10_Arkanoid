@@ -8,6 +8,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 import org.arkanoid.component.LaserComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.entity.core.GameObject;
@@ -32,9 +33,9 @@ public class Paddle extends MovableObject {
         setLinearVelocity(0, 0);
         FXGL.getInput().setProcessInput(false);
 
-        SchedulerUtils.setTimeout(() -> {
+        FXGL.runOnce(() -> {
             FXGL.getInput().setProcessInput(true);
-        }, ms);
+        }, Duration.millis(ms));
 
         return this;
     }

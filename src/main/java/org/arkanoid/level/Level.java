@@ -193,7 +193,6 @@ public class Level implements MonoBehaviour {
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
-            .delayInput(HIDE_DURATION + DELAY_DURATION)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
@@ -230,8 +229,7 @@ public class Level implements MonoBehaviour {
 
         paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
         ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
-
-        paddle.delayInput(DELAY_DURATION);
+        paddle.delayInput(HIDE_DURATION + DELAY_DURATION);
 
         if (playInit) {
             paddle.playInitAnimation();
