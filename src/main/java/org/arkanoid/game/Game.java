@@ -2,6 +2,7 @@ package org.arkanoid.game;
 
 import com.almasb.fxgl.dsl.FXGL;
 import org.arkanoid.behaviour.MonoBehaviour;
+import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.level.Level;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.HighScoreManager;
@@ -50,7 +51,7 @@ public class Game implements MonoBehaviour {
     }
 
     public Game() {
-
+        LabelFactory.setGlobalFont("/fonts/nes.otf", 24);
         int savedHighScore = HighScoreManager.loadHighScore();
         FXGL.set("highScore", savedHighScore);
 
@@ -65,7 +66,7 @@ public class Game implements MonoBehaviour {
         FXGL.set("lives", lives);
 
         if (lives > 0) {
-            currentLevel.reset();
+            currentLevel.reset(true);
 
         } else {
             SoundManager.play("death.wav");

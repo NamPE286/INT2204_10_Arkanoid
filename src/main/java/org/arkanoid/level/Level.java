@@ -1,9 +1,12 @@
 package org.arkanoid.level;
 
+import com.almasb.fxgl.dsl.FXGL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.arkanoid.Main;
 import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.component.LaserComponent;
@@ -15,6 +18,7 @@ import org.arkanoid.entity.brick.NormalBrick;
 import org.arkanoid.entity.Paddle;
 import org.arkanoid.entity.Wall;
 import org.arkanoid.entity.brick.StrongBrick;
+import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.SchedulerUtils;
@@ -22,8 +26,9 @@ import org.arkanoid.component.ExtendComponent;
 
 public class Level implements MonoBehaviour {
 
-    private final int DELAY = 2500;
-    private final int WALL_THICKNESS = Main.WIDTH / 28;
+    private static final int DELAY_DURATION = 1500;
+    private static final int HIDE_DURATION = 1500;
+    private static final int WALL_THICKNESS = Main.WIDTH / 28;
     private Runnable onCompletedCallback;
     private Runnable onDeathCallback;
     private final int id;
@@ -158,6 +163,29 @@ public class Level implements MonoBehaviour {
         }
     }
 
+    private void showRoundInfo() {
+        var roundLabel = LabelFactory.createLabel(String.format("ROUND %d", id));
+        roundLabel.setTextFill(Color.WHITE);
+        roundLabel.setTranslateX((Main.WIDTH - 160) / 2);
+        roundLabel.setTranslateY(500);
+
+        var readyLabel = LabelFactory.createLabel("READY");
+        readyLabel.setTextFill(Color.WHITE);
+        readyLabel.setTranslateX((Main.WIDTH - 120) / 2);
+        readyLabel.setTranslateY(550);
+
+        FXGL.getGameScene().addUINode(roundLabel);
+
+        FXGL.runOnce(() -> {
+            FXGL.getGameScene().addUINode(readyLabel);
+        }, Duration.seconds(0.5));
+
+        FXGL.runOnce(() -> {
+            FXGL.getGameScene().removeUINode(roundLabel);
+            FXGL.getGameScene().removeUINode(readyLabel);
+        }, Duration.millis(HIDE_DURATION));
+    }
+
     public Level(int id) {
         this.id = id;
 
@@ -165,8 +193,7 @@ public class Level implements MonoBehaviour {
             LevelLoader.loadFromCSV(String.format("/levels/%d.csv", id)));
 
         paddle = (Paddle) new Paddle(Main.WIDTH / 2 - 16, Main.HEIGHT - 50)
-            .playInitAnimation()
-            .delayInput(DELAY)
+            .delayInput(HIDE_DURATION + DELAY_DURATION)
             .listenToCollisionWith(leftwall)
             .listenToCollisionWith(rightwall);
 
@@ -176,7 +203,14 @@ public class Level implements MonoBehaviour {
             .listenToCollisionWith(topwall)
             .listenToCollisionWith(rightwall);
 
-        reset();
+        showRoundInfo();
+
+        paddle.hideFor(HIDE_DURATION);
+        ball.hideFor(HIDE_DURATION);
+
+        SchedulerUtils.setTimeout(paddle::playInitAnimation, HIDE_DURATION);
+
+        reset(false);
         loadBrickConfig(brickConfig.getBrickMap());
         setBackground(brickConfig.getBackgroundId());
 
@@ -185,8 +219,7 @@ public class Level implements MonoBehaviour {
         }
     }
 
-    public void reset() {
-
+    public void reset(boolean playInit) {
         if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
             paddle.getEntity().removeComponent(ExtendComponent.class);
         }
@@ -198,13 +231,17 @@ public class Level implements MonoBehaviour {
         paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
         ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
 
-        paddle.delayInput(DELAY);
-        paddle.playInitAnimation();
+        paddle.delayInput(DELAY_DURATION);
+
+        if (playInit) {
+            paddle.playInitAnimation();
+        }
+
         ball.setLinearVelocity(0, 0);
 
         SchedulerUtils.setTimeout(() -> {
             ball.setLinearVelocity(250, -250);
-        }, DELAY);
+        }, playInit ? DELAY_DURATION : HIDE_DURATION + DELAY_DURATION);
 
         SoundManager.play("round_start.mp3");
     }
