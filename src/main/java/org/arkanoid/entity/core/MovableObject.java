@@ -76,17 +76,19 @@ public abstract class MovableObject extends GameObject {
 
             boolean hasCollided = false;
             for (var other : collisionListeners) {
+                // kiểm tra xem vật thể sắp va chạm có tồn tại hay không
                 if (other == null || other.getEntity() == null || !other.getEntity().isActive()) {
                     continue;
                 }
 
 
+                // kiểm tra BBox của các vật thể khác.
                 var otherBBox = other.getEntity().getBoundingBoxComponent();
                 if (otherBBox == null) {
-                    continue; // Bỏ qua nếu gạch không có BBox
+                    continue;
                 }
 
-
+                // kiểm tra Bbox của vật thể này.
                 var thisBBox = getEntity().getBoundingBoxComponent();
                 if (thisBBox == null) {
                     hasCollided = true;
