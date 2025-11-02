@@ -22,6 +22,8 @@ import org.arkanoid.leaderboard.LeaderBoardEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.arkanoid.ui.GameOver.formatTime;
+
 public class MainMenu extends FXGLMenu {
 
     private final Font nesFont;
@@ -181,7 +183,8 @@ public class MainMenu extends FXGLMenu {
         } else {
             for (int i = 0; i < limit; i++) {
                 LeaderBoardEntry entry = topEntries.get(i);
-                Label lbLabel = new Label((i + 1) + ". " + entry.getName() + " - " + entry.getScore());
+                Label lbLabel = new Label(String.format("%d. %s - %d (%s)",
+                        i + 1, entry.getName(), entry.getScore(), formatTime(entry.getTime())));
                 lbLabel.setFont(nesFont);
                 lbLabel.setTextFill(Color.WHITE);
                 lbBox.getChildren().add(lbLabel);

@@ -24,6 +24,7 @@ public class Game implements MonoBehaviour {
     private int lives = 3;
     private LivesUI livesUI;
     private ScoreBoard scoreBoard;
+    private double elapsedTime = 0.0;
 
     public void destroy() {
         currentLevel.destroy();
@@ -51,6 +52,7 @@ public class Game implements MonoBehaviour {
     }
 
     public Game() {
+        elapsedTime = 0.0;
         LabelFactory.setGlobalFont("/fonts/nes.otf", 24);
         int savedHighScore = HighScoreManager.loadHighScore();
         FXGL.set("highScore", savedHighScore);
@@ -132,6 +134,9 @@ public class Game implements MonoBehaviour {
         if (gameOver) {
             return;
         }
+
+        elapsedTime += deltaTime;
+        FXGL.set("time", (int)elapsedTime);
 
         if (currentLevel != null) {
             currentLevel.onUpdate(deltaTime);
