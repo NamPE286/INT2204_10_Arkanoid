@@ -11,7 +11,14 @@ public class Wall extends GameObject {
     private final double wallHeight;
     private final double wallThick;
 
-    
+    /**
+     * Creates a new {@code Wall} entity at the specified position.
+     *
+     * @param x the x-coordinate where the wall will be placed
+     * @param y the y-coordinate where the wall will be placed
+     * @param wallHeight the height of the wall in pixels
+     * @param wallThick the thickness (width) of the wall in pixels
+     */
     public Wall(int x, int y, double wallHeight, double wallThick) {
         this.wallHeight = wallHeight;
         this.wallThick = wallThick;
@@ -26,8 +33,6 @@ public class Wall extends GameObject {
     }
 
 
-    
-    
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         return FXGL.entityBuilder(spawnData)
@@ -36,7 +41,4 @@ public class Wall extends GameObject {
                 .collidable()
                 .build();
     }
-
-
-
 }

@@ -27,14 +27,26 @@ public class LaserComponent extends Component {
     private TimerAction onAddedTimer;
     private TimerAction onRemovedTimer;
 
+    /** Creates a new {@code LaserComponent} with default ammo. */
     public LaserComponent() {
 
     }
 
+    /**
+     * Adds extra laser ammo to the paddle.
+     *
+     * @param amount number of shots to add
+     */
     public void addAmmo(int amount) {
         this.ammo += amount;
     }
 
+    /**
+     * Fires two laser beams upward from the paddle, one from each side.
+     *
+     * <p>If there is no ammo remaining, the component removes itself
+     * from the entity, reverting the paddle to its normal state.
+     */
     public void fire() {
         if (ammo > 0) {
             double paddleCenterX = entity.getX() + entity.getWidth() / 2;
@@ -84,6 +96,17 @@ public class LaserComponent extends Component {
         }
     }
 
+    /**
+     * Called when this component is added to an entity.
+     *
+     * <p>This method:
+     * <ul>
+     *     <li>Removes conflicting components (e.g. {@link ExtendComponent}).</li>
+     *     <li>Adds a {@link LaserTransformAnimationComponent} to play the transition.</li>
+     *     <li>After the animation, replaces it with a {@link LaserPaddleAnimationComponent}.</li>
+     *     <li>Resets the hitbox to the paddle’s base dimensions.</li>
+     * </ul>
+     */
     @Override
     public void onAdded() {
         if (entity.hasComponent(PaddleAnimationComponent.class)) {
@@ -116,6 +139,18 @@ public class LaserComponent extends Component {
         entity.setX(entity.getX());
     }
 
+    /**
+     * Called when this component is removed from an entity.
+     *
+     * <p>This method:
+     * <ul>
+     *     <li>Cancels active timers.</li>
+     *     <li>Removes the {@link LaserPaddleAnimationComponent}.</li>
+     *     <li>Restores the normal paddle animation (unless extended).</li>
+     *     <li>Plays the “out” transition animation via {@link LaserTransformAnimationComponent}.</li>
+     *     <li>Restores the hitbox and paddle position.</li>
+     * </ul>
+     */
     @Override
     public void onRemoved() {
         if (onAddedTimer != null && !onAddedTimer.isExpired()) {

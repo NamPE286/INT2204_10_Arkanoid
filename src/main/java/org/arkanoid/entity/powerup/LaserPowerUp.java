@@ -18,6 +18,15 @@ public class LaserPowerUp extends PowerUp {
         return PowerupType.LASER;
     }
 
+    /**
+     * Applies the laser effect to the given paddle entity.
+     *
+     * <p>If the paddle already has a {@link LaserComponent},
+     * this method increases its ammo count.
+     * Otherwise, it adds a new {@link LaserComponent} to enable laser firing.
+     *
+     * @param paddleEntity the paddle entity to which the effect is applied
+     */
     @Override
     public void applyEffect(Entity paddleEntity) {
         System.out.println("LaserPowerUp");
@@ -29,6 +38,15 @@ public class LaserPowerUp extends PowerUp {
         }
     }
 
+
+    /**
+     * Handles collision between this power-up and another game object.
+     *
+     * <p>If the object is a {@link Paddle}, this method plays a sound,
+     * applies the laser effect, and then removes the power-up from the world.
+     *
+     * @param e the {@link GameObject} that collided with this power-up
+     */
     @Override
     public void onCollisionWith(GameObject e) {
         SoundManager.play("paddle_fire.wav");
