@@ -25,6 +25,33 @@ import org.arkanoid.manager.SoundManager;
 import org.arkanoid.utilities.SchedulerUtils;
 import org.arkanoid.component.ExtendComponent;
 
+/**
+ * Represents a single playable level in the Arkanoid game.
+ *
+ * <p>The {@code Level} class manages all entities and interactions that occur
+ * during a specific level, including the {@link Paddle}, {@link Ball},
+ * {@link Brick}s, {@link Laser}s, and {@link Wall}s. It also handles
+ * level initialization, progression, completion detection, and player death events.</p>
+ *
+ * <p>This class implements the {@link MonoBehaviour} interface to support
+ * per-frame updates of in-game objects.</p>
+ *
+ * <h2>Main Responsibilities:</h2>
+ * <ul>
+ *     <li>Load brick configurations from a CSV file.</li>
+ *     <li>Spawn and manage paddle, ball, and active lasers.</li>
+ *     <li>Handle collision registration between objects.</li>
+ *     <li>Detect when the level is completed or failed.</li>
+ *     <li>Display UI messages like “ROUND” and “READY”.</li>
+ * </ul>
+ *
+ * @see Paddle
+ * @see Ball
+ * @see Brick
+ * @see Laser
+ * @see BackgroundManager
+ * @see SoundManager
+ */
 public class Level implements MonoBehaviour {
 
     private static final int DELAY_DURATION = 1500;
@@ -49,6 +76,10 @@ public class Level implements MonoBehaviour {
     final Wall topwall = new Wall(0, 48, WALL_THICKNESS, Main.WIDTH);
     final Wall rightwall = new Wall(Main.WIDTH - WALL_THICKNESS, 0, Main.HEIGHT, WALL_THICKNESS);
 
+    /**
+     * Destroys all game objects in the current level.
+     * <p>This includes bricks, lasers, paddle, and all active balls.</p>
+     */
     public void destroy() {
         for (var i : bricks) {
             i.destroy();
@@ -68,10 +99,20 @@ public class Level implements MonoBehaviour {
 
     }
 
+    /**
+     * Adds a new {@link Laser} to the list of active lasers in this level.
+     *
+     * @param laser the laser entity to add
+     */
     public void addLaser(Laser laser) {
         activeLasers.add(laser);
     }
 
+    /**
+     * Adds a duplicate ball (for “Disrupt” power-up) to the level.
+     *
+     * @param twinBall the cloned {@link Ball} instance to add
+     */
     public void addBall(Ball twinBall) {
         twinBall.listenToCollisionWith(paddle)
                 .listenToCollisionWith(leftwall)
@@ -86,6 +127,11 @@ public class Level implements MonoBehaviour {
         ballTwinslist.add(twinBall);
     }
 
+    /**
+     * Loads and initializes brick objects from a 2D configuration array.
+     *
+     * @param brickConfig a 2D array representing brick types and their parameters
+     */
     private void loadBrickConfig(int[][] brickConfig) {
         for (int i = 0; i < brickConfig.length; i++) {
             for (int j = 0; j < brickConfig[i].length - 2; j += 3) {
@@ -156,6 +202,9 @@ public class Level implements MonoBehaviour {
         backGround.displayLevel(id);
     }
 
+    /**
+     * Handles the logic when all bricks are destroyed and the level is completed.
+     */
     public void onCompleted() {
         paddle.getEntity().setVisible(false);
         mainBall.getEntity().setVisible(false);
@@ -164,6 +213,11 @@ public class Level implements MonoBehaviour {
         FXGL.runOnce(() -> onCompletedCallback.run(), Duration.millis(500));
     }
 
+    /**
+     * Performs per-frame updates for all active game objects.
+     *
+     * @param deltaTime the time (in seconds) since the last frame
+     */
     public void onUpdate(double deltaTime) {
         paddle.onUpdate(deltaTime);
         mainBall.onUpdate(deltaTime);
@@ -216,6 +270,9 @@ public class Level implements MonoBehaviour {
 
     }
 
+    /**
+     * Displays the “ROUND” and “READY” text messages at the start of the level.
+     */
     private void showRoundInfo() {
         var roundLabel = LabelFactory.createLabel(String.format("ROUND %d", id));
         roundLabel.setTextFill(Color.WHITE);
@@ -239,6 +296,15 @@ public class Level implements MonoBehaviour {
         }, Duration.millis(HIDE_DURATION));
     }
 
+    /**
+     * Creates a new level with the given identifier.
+     *
+     * <p>This constructor loads the level’s configuration from a CSV file,
+     * spawns the paddle and main ball, displays the “ROUND” and “READY” UI,
+     * and prepares the level environment (walls, background, bricks, etc.).</p>
+     *
+     * @param id the identifier of the level (used to locate the corresponding CSV file)
+     */
     public Level(int id) {
         this.id = id;
 
@@ -271,6 +337,14 @@ public class Level implements MonoBehaviour {
         }
     }
 
+    /**
+     * Resets the level to its initial playable state.
+     *
+     * <p>Removes temporary components (like {@link ExtendComponent} or {@link LaserComponent}),
+     * repositions the paddle and ball, and restarts the movement after a short delay.</p>
+     *
+     * @param playInit whether to play the paddle initialization animation
+     */
     public void reset(boolean playInit) {
         if (paddle.getEntity().hasComponent(ExtendComponent.class)) {
             paddle.getEntity().removeComponent(ExtendComponent.class);

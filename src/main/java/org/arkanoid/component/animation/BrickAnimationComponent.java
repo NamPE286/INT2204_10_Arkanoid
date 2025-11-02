@@ -15,6 +15,13 @@ public class BrickAnimationComponent extends Component {
     private final AnimatedTexture texture;
     private final AnimationChannel animLoop;
 
+    /**
+     * Creates a list of animation frames for the brick's idle animation.
+     *
+     * @param tileX the horizontal tile index
+     * @param tileY the vertical tile index in the sprite sheet
+     * @return a list of {@link Image} frames extracted from the sprite sheet
+     */
     private List<Image> getIdleFrames(int tileX, int tileY) {
         Image image = FXGL.image("specialBricks.png");
         List<Image> frames = new ArrayList<>();
@@ -26,12 +33,22 @@ public class BrickAnimationComponent extends Component {
         return frames;
     }
 
+    /**
+     * Constructs a {@code BrickAnimationComponent} using the given tile coordinates.
+     *
+     * @param tileX the horizontal tile index (currently unused)
+     * @param tileY the vertical tile index used to select the animation row
+     */
     public BrickAnimationComponent(int tileX, int tileY) {
         animLoop = new AnimationChannel(getIdleFrames(tileX, tileY), Duration.seconds(0.5));
         texture = new AnimatedTexture(animLoop);
 
     }
 
+    /**
+     * Called automatically when this component is added to an entity.
+     * Adds the animated texture to the entity's view and starts the looping animation.
+     */
     @Override
     public void onAdded() {
 
@@ -39,6 +56,10 @@ public class BrickAnimationComponent extends Component {
         texture.playAnimationChannel(animLoop);
     }
 
+    /**
+     * Plays the brick's hit animation. In this implementation,
+     * it simply replays the looping idle animation.
+     */
     public void playHitAnimation() {
         texture.playAnimationChannel(animLoop);
     }

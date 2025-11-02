@@ -32,7 +32,7 @@ public class GameEndScreen {
     private static int finalTime;
     private static boolean isVictory;
 
-    // Hiển thị thời gian theo format.
+    /** Hiển thị thời gian theo format. */
     public static String formatTime(int totalSeconds) {
         long hours = totalSeconds / 3600;
         long minutes = (totalSeconds % 3600) / 60;
@@ -40,7 +40,7 @@ public class GameEndScreen {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    //Hiển thị màn hình kết thúc.
+    /** Hiển thị màn hình kết thúc. */
     public static void show(boolean win) {
         isVictory = win;
         finalScore = FXGL.geti("score");
@@ -71,7 +71,7 @@ public class GameEndScreen {
         timeline.play();
     }
 
-    // Màn hình nhập tên.
+    /** Màn hình nhập tên. */
     private static void showNameInputScreen() {
         Label prompt = createLabel("ENTER YOUR NAME FROM 3 CHARACTERS:", FONT_SMALL, Color.YELLOW);
         TextField nameField = new TextField();

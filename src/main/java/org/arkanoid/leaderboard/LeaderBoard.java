@@ -17,7 +17,7 @@ public class LeaderBoard {
         load();
     }
 
-    // Thêm điểm mới và lưu ra file.
+    /** Thêm điểm mới và lưu ra file. */
     public void addEntry(String name, int score, int time) {
         entries.add(new LeaderBoardEntry(name, score, time));
         Collections.sort(entries);
@@ -27,12 +27,12 @@ public class LeaderBoard {
         save();
     }
 
-    // Trả về danh sách điểm cao.
+    /** Trả về danh sách điểm cao. */
     public List<LeaderBoardEntry> getEntries() {
         return Collections.unmodifiableList(entries);
     }
 
-    // Đọc từ file txt.
+    /** Đọc từ file txt. */
     private void load() {
         entries.clear();
         File file = new File(FILE_PATH);
@@ -59,7 +59,7 @@ public class LeaderBoard {
         }
     }
 
-    // Ghi ra file txt.
+    /** Ghi ra file txt. */
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (LeaderBoardEntry entry : entries) {

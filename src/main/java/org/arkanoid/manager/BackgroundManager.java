@@ -22,6 +22,14 @@ public class BackgroundManager {
     private Entity currentBackground;
     private static BackgroundManager instance;
 
+    /**
+     * Loads the main background sprite sheet and crops it into individual
+     * textures for each level.
+     * <p>
+     * This method is called internally by the constructor and should not be
+     * invoked manually.
+     * </p>
+     */
     private void loadAndCrop() {
         Texture tiles = getAssetLoader().loadTexture("fields.png");
         int posX = 0;
@@ -32,36 +40,43 @@ public class BackgroundManager {
         }
     }
 
-    
+    /**
+     * Constructs a new {@code BackgroundManager} instance.
+     * <p>
+     * Initializes the texture array and loads all background textures from the
+     * sprite sheet.
+     * </p>
+     */
     public BackgroundManager() {
         this.textures = new Texture[NUM_BACKGROUND];
         loadAndCrop();
     }
 
+    /**
+     * Displays the background corresponding to the given level number.
+     * <p>
+     * If a background is already active, it will be removed before displaying
+     * the new one. The method ensures the background fills the entire game
+     * window and is placed behind all game entities.
+     * </p>
+     *
+     * @param level the current level number (used to determine which background
+     *               to display)
+     */
     public void displayLevel(int level) {
 
         if (currentBackground != null) {
             currentBackground.removeFromWorld();
         }
 
-        
         FXGL.getGameScene().getRoot().setStyle("-fx-background-color: black;");
 
-        
         int indexBG = (level - 1) % NUM_BACKGROUND;
 
-        
         Texture newBG = textures[indexBG];
-
         
         newBG.setFitWidth(getAppWidth());
         newBG.setFitHeight(getAppHeight());
-
-        
-
-
-
-
 
         currentBackground = FXGL.entityBuilder()
             .at(0, 48)

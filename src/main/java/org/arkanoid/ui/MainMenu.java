@@ -38,6 +38,12 @@ public class MainMenu extends FXGLMenu {
     private final LeaderBoard leaderBoard = new LeaderBoard();
     private VBox leaderBoardBox;
 
+    /**
+     * Constructs the main menu scene, initializing layout, input controls,
+     * and the leaderboard overlay.
+     *
+     * @param type the {@link MenuType} (should always be {@code MenuType.MAIN_MENU})
+     */
     public MainMenu(MenuType type) {
         super(MenuType.MAIN_MENU);
 
@@ -121,6 +127,13 @@ public class MainMenu extends FXGLMenu {
         highlightCurrent();
     }
 
+    /**
+     * Adds keyboard controls for menu navigation and selection.
+     * <p>
+     * Handles Up/Down for navigation, Enter for selection,
+     * and Esc to close the leaderboard overlay.
+     * </p>
+     */
     private void addKeyControls() {
         getContentRoot().setOnKeyPressed(e -> {
             if (leaderBoardBox.isVisible()) { // ESC thoát LeaderBoard.
@@ -171,6 +184,9 @@ public class MainMenu extends FXGLMenu {
         startBlinking();
     }
 
+    /**
+     * Starts the blinking animation for the currently selected menu item.
+     */
     private void startBlinking() {
         if (blinkTimeline != null) blinkTimeline.stop();
         blinkTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> toggleBlink()));
@@ -178,12 +194,23 @@ public class MainMenu extends FXGLMenu {
         blinkTimeline.play();
     }
 
+    /**
+     * Toggles the blinking color between green and white for the current menu label.
+     */
     private void toggleBlink() {
         Label label = menuItems.get(currentIndex);
         boolean isGreen = label.getTextFill().equals(Color.GREEN);
         label.setTextFill(isGreen ? Color.WHITE : Color.GREEN); // Đổi màu nhấp nháy.
     }
 
+    /**
+     * Creates and returns the leaderboard overlay UI.
+     * <p>
+     * Displays the top 5 high scores, including player name, score, and play time.
+     * </p>
+     *
+     * @return a {@link VBox} containing the leaderboard UI elements
+     */
     private VBox createLeaderBoardBox() {
         VBox lbBox = new VBox(10);
         lbBox.setAlignment(Pos.CENTER);

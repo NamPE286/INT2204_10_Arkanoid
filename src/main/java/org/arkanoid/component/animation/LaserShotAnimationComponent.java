@@ -15,6 +15,17 @@ public class LaserShotAnimationComponent extends Component {
     private final AnimatedTexture texture;
     private final AnimationChannel animLoop;
 
+    /**
+     * Loads and extracts the animation frames for the laser beam.
+     *
+     * @param type specifies which laser to animate:
+     *             <ul>
+     *                 <li>{@code "LEFT"} – left-side laser animation</li>
+     *                 <li>{@code "RIGHT"} – right-side laser animation</li>
+     *                 <li>{@code null} – default (left-side) laser animation</li>
+     *             </ul>
+     * @return a list of {@link Image} frames extracted from the {@code laser.png} sprite sheet
+     */
     private List<Image> getLaserFrames(String type) {
         Image image = FXGL.image("laser.png");
         List<Image> frames = new ArrayList<>();
@@ -33,12 +44,21 @@ public class LaserShotAnimationComponent extends Component {
         return frames;
     }
 
+    /**
+     * Constructs a {@code LaserShotAnimationComponent} for the specified laser type.
+     *
+     * @param type the type of laser animation ("LEFT", "RIGHT", or {@code null} for default)
+     */
     public LaserShotAnimationComponent(String type) {
         animLoop = new AnimationChannel(getLaserFrames(type), Duration.seconds(0.5));
         texture = new AnimatedTexture(animLoop);
 
     }
 
+    /**
+     * Called automatically when this component is added to an entity.
+     * Adds the animated texture to the entity and starts playing the animation.
+     */
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);

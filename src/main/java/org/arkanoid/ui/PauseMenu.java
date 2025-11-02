@@ -11,6 +11,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class PauseMenu extends FXGLMenu {
+    /**
+     * Constructs a new {@code PauseMenu} for the specified {@link MenuType}.
+     *
+     * <p>It initializes the semi-transparent background, centers the labels,
+     * and sets up the menu layout within the FXGL UI system.</p>
+     *
+     * @param type the type of menu; should be {@link MenuType#GAME_MENU} for pause screens.
+     */
     public PauseMenu(MenuType type) {
         super(type);
 
