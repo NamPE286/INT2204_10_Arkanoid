@@ -160,7 +160,7 @@ public class MainMenu extends FXGLMenu {
         
         switch (selectedOption) {
             case "CONTINUE" -> fireContinueGame();
-            case "START GAME" -> fireNewGame();
+            case "NEW GAME" -> fireNewGame();
             case "LEADERBOARD" -> {
                 leaderBoardBox.setVisible(true);
                 if (blinkTimeline != null) blinkTimeline.pause();
