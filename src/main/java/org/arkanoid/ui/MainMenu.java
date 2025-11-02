@@ -22,7 +22,7 @@ import org.arkanoid.leaderboard.LeaderBoardEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.arkanoid.ui.GameOver.formatTime;
+import static org.arkanoid.ui.GameEndScreen.formatTime;
 
 public class MainMenu extends FXGLMenu {
 
