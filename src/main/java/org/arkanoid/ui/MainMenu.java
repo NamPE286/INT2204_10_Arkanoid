@@ -16,8 +16,10 @@ import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import org.arkanoid.Main;
 import org.arkanoid.leaderboard.LeaderBoard;
 import org.arkanoid.leaderboard.LeaderBoardEntry;
+import org.arkanoid.manager.GameStateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +67,17 @@ public class MainMenu extends FXGLMenu {
         arrowImage.setSmooth(false);
 
         // Menu.
-        String[] options = {"START GAME", "LEADERBOARD", "EXIT GAME"};
+        boolean hasSavedGame = GameStateManager.hasSavedGame();
+        List<String> optionsList = new ArrayList<>();
+        
+        if (hasSavedGame) {
+            optionsList.add("CONTINUE");
+        }
+        optionsList.add("NEW GAME");
+        optionsList.add("LEADERBOARD");
+        optionsList.add("EXIT GAME");
+        
+        String[] options = optionsList.toArray(new String[0]);
         VBox menuVBox = new VBox(20);
         menuVBox.setAlignment(Pos.CENTER);
 
@@ -138,22 +150,31 @@ public class MainMenu extends FXGLMenu {
             highlightCurrent();
 
             if (e.getCode() == KeyCode.ENTER) {
-                switch (currentIndex) {
-                    case 0 -> fireNewGame();                 // Start game.
-                    case 1 -> {                               // Hiện LeaderBoard.
-                        leaderBoardBox.setVisible(true);
-                        if (blinkTimeline != null) blinkTimeline.pause(); // Tạm dừng nhấp nháy.
-                        leaderBoardBox.requestFocus();
-                    }
-                    case 2 -> FXGL.getGameController().exit(); // Exit.
-                }
+                handleMenuSelection();
             }
         });
     }
 
-    /**
-     * Highlights the currently selected menu item and starts the blinking animation.
-     */
+    private void handleMenuSelection() {
+        String selectedOption = menuItems.get(currentIndex).getText();
+        
+        switch (selectedOption) {
+            case "CONTINUE" -> fireContinueGame();
+            case "START GAME" -> fireNewGame();
+            case "LEADERBOARD" -> {
+                leaderBoardBox.setVisible(true);
+                if (blinkTimeline != null) blinkTimeline.pause();
+                leaderBoardBox.requestFocus();
+            }
+            case "EXIT GAME" -> FXGL.getGameController().exit();
+        }
+    }
+
+    private void fireContinueGame() {
+        Main.shouldContinue = true;
+        fireNewGame();
+    }
+
     private void highlightCurrent() {
         for (int i = 0; i < menuItems.size(); i++) {
             arrowSlots.get(i).setImage(i == currentIndex ? arrowImage.getImage() : null);

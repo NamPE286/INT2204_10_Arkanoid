@@ -5,6 +5,7 @@ import org.arkanoid.behaviour.MonoBehaviour;
 import org.arkanoid.factory.LabelFactory;
 import org.arkanoid.level.Level;
 import org.arkanoid.manager.BackgroundManager;
+import org.arkanoid.manager.GameStateManager;
 import org.arkanoid.manager.HighScoreManager;
 import org.arkanoid.manager.SoundManager;
 import org.arkanoid.ui.*;
@@ -38,6 +39,10 @@ public class Game implements MonoBehaviour {
     }
 
     public static Game reInit() {
+        return reInit(false);
+    }
+
+    public static Game reInit(boolean continueGame) {
         if (instance != null) {
             instance.destroy();
 
@@ -46,14 +51,41 @@ public class Game implements MonoBehaviour {
             instance = null;
         }
 
-        return getInstance();
+        instance = new Game(continueGame);
+        return instance;
     }
 
     public Game() {
-        elapsedTime = 0.0;
+        this(false);
+    }
+
+    /**
+     * Constructor with option to continue from saved state
+     * @param continueGame if true, load from saved state; if false, start new game
+     */
+    public Game(boolean continueGame) {
         LabelFactory.setGlobalFont("/fonts/nes.otf", 24);
         int savedHighScore = HighScoreManager.loadHighScore();
         FXGL.set("highScore", savedHighScore);
+
+        if (continueGame) {
+            GameStateManager.GameState savedState = GameStateManager.loadGameState();
+            if (savedState != null) {
+                levelIndex = savedState.getLevelIndex();
+                lives = savedState.getLives();
+                elapsedTime = savedState.getElapsedTime();
+                FXGL.set("score", savedState.getScore());
+            } else {
+                // No saved state, start fresh
+                elapsedTime = 0.0;
+                levelIndex = 1;
+                lives = 3;
+            }
+        } else {
+            elapsedTime = 0.0;
+            levelIndex = 1;
+            lives = 3;
+        }
 
         setLevel(levelIndex);
     }
@@ -66,11 +98,15 @@ public class Game implements MonoBehaviour {
         FXGL.set("lives", lives);
 
         if (lives > 0) {
+            // Save game state when player loses a life
+            saveGameState();
             currentLevel.reset(true);
 
         } else {
             SoundManager.play("death.wav");
             gameOver = true;
+            // Clear saved game state on game over
+            GameStateManager.clearGameState();
             //GameOver.show();
             GameEndScreen.show(false);
         }
@@ -100,10 +136,16 @@ public class Game implements MonoBehaviour {
             currentLevel.destroy();
         }
 
+        levelIndex = id;
         currentLevel = new Level(id);
         currentLevel.setOnDeathCallback(this::loseLife);
         currentLevel.setOnCompletedCallback(() -> {
+            // Save game state when level is completed
+            saveGameState();
+            
             if (id >= MAX_LEVEL) {
+                // Clear saved game state when all levels completed
+                GameStateManager.clearGameState();
                 //VictoryScreen.show();
                 GameEndScreen.show(true);
             } else {
@@ -114,6 +156,14 @@ public class Game implements MonoBehaviour {
 
     public Level getCurrentLevel() {
         return currentLevel;
+    }
+
+    /**
+     * Save current game state to file
+     */
+    private void saveGameState() {
+        int currentScore = FXGL.geti("score");
+        GameStateManager.saveGameState(levelIndex, lives, currentScore, (int)elapsedTime);
     }
 
     /**
