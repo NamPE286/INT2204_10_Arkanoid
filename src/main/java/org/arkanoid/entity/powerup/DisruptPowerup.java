@@ -59,7 +59,9 @@ public class DisruptPowerup extends PowerUp {
         }
 
         for (var b : Balllist) {
-            applyEffect(b);
+            if (!b.isHeldByPaddle()) {
+                applyEffect(b);
+            }
         }
 
         this.getEntity().removeFromWorld();
