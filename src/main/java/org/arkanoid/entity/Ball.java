@@ -72,33 +72,78 @@ public class Ball extends MovableObject {
      * @param paddle the {@link Paddle} that the ball collided with
      */
     public void onCollisionWith(Paddle paddle) {
+        double vx = this.getVelocityX();
+        double vy = this.getVelocityY();
+
+        double ballX = entity.getX();
+        double ballY = entity.getY();
+        double ballW = entity.getWidth();
+        double ballH = entity.getHeight();
+        double ballCenterX = ballX + ballW / 2.0;
+        double ballCenterY = ballY + ballH / 2.0;
+
+        double paddleX = paddle.getX();
+        double paddleY = paddle.getY();
+        double paddleW = paddle.getEntity().getWidth();
+        double paddleH = paddle.getEntity().getHeight();
+        double paddleCenterX = paddleX + paddleW / 2.0;
+        double paddleCenterY = paddleY + paddleH / 2.0;
+
+        double overlapLeft = (ballX + ballW) - paddleX;
+        double overlapRight = (paddleX + paddleW) - ballX;
+        double overlapTop = (ballY + ballH) - paddleY;
+        double overlapBottom = (paddleY + paddleH) - ballY;
+        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight),
+                Math.min(overlapTop, overlapBottom));
+
         double ballSpeed = this.getLinearVelocity().length();
 
-        double ballCenter = entity.getX() + entity.getWidth() / 2;
-        double paddleCenter = paddle.getX() + paddle.getEntity().getWidth() / 2;
-        double haftPaddleWidth = paddle.getEntity().getWidth() / 2;
+        double constant = 0.2;
 
-        double distanceBallToPaddleCenter = ballCenter - paddleCenter;
-        double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
-        distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
-        double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
-            0.5);
+        double distanceX = ballCenterX - paddleCenterX;
+        double distanceY = ballCenterY - paddleCenterY;
 
-        if (distanceRatio < 0) {
-            nonLinearDistanceRatio *= -1;
+        double totalHalfW = (ballW / 2.0) + (paddleW / 2.0);
+        double totalHalfH = (ballH / 2.0) + (paddleH / 2.0);
+
+        double overlapRatioX = Math.abs(distanceX) / totalHalfW;
+        double overlapRatioY = Math.abs(distanceY) / totalHalfH;
+
+        if (minOverlap == overlapTop || (Math.abs(overlapRatioX - overlapRatioY) < constant
+                                        && ballY + ballH <= paddleCenterY)) {
+            double haftPaddleWidth = paddleW / 2;
+
+            double distanceBallToPaddleCenter = ballCenterX - paddleCenterX;
+            double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
+            distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
+            double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio),
+                    0.5);
+
+            if (distanceRatio < 0) {
+                nonLinearDistanceRatio *= -1;
+            }
+
+            double ANGLE = 90 - (55
+                    * nonLinearDistanceRatio);
+
+            vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
+            vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
+            vy = -vy;
+
+            System.out.println(String.format("(%.3f, %.3f)", vx, vy));
+            System.out.println("Collide with Paddle");
+
+            SoundManager.play("ball_hit_1.wav");
+        } else if (minOverlap == overlapRight) {
+            vx = Math.abs(vx) + 5;
+            setPosition((int)ballX + 15, (int) ballY);
+        } else if (minOverlap == overlapLeft) {
+
+            setPosition((int) ballX - 15, (int) ballY);
+            vx = -(Math.abs(vx) + 5);
         }
 
-        double ANGLE = 90 - (55
-            * nonLinearDistanceRatio);
-
-        double vx = ballSpeed * Math.cos(Math.toRadians(ANGLE));
-        double vy = ballSpeed * Math.sin(Math.toRadians(ANGLE));
-        setLinearVelocity((float) vx, (float) -vy);
-
-        System.out.println(String.format("(%.3f, %.3f)", vx, vy));
-        System.out.println("Collide with Paddle");
-
-        SoundManager.play("ball_hit_1.wav");
+        setLinearVelocity((float) vx, (float) vy);
     }
 
     /**

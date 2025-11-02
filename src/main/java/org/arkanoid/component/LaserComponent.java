@@ -5,13 +5,10 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
+import com.almasb.fxgl.time.TimerAction;
 import javafx.util.Duration;
-import org.arkanoid.component.animation.ExtendAnimationComponent;
 import org.arkanoid.component.animation.LaserPaddleAnimationComponent;
+import org.arkanoid.component.animation.LaserTransformAnimationComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.entity.Laser;
 import org.arkanoid.entity.Wall;
@@ -19,33 +16,19 @@ import org.arkanoid.entity.brick.Brick;
 import org.arkanoid.game.Game;
 import org.arkanoid.manager.SoundManager;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 
 public class LaserComponent extends Component {
     private int ammo = 10;
-    private ScheduledFuture<?> timer;
     private final int PADDLE_WIDTH = 32;
     private final int PADDLE_HEIGHT = 8;
     private static final Duration TRANSFORM_DURATION = Duration.seconds(0.5);
 
+    private TimerAction onAddedTimer;
+    private TimerAction onRemovedTimer;
+
     public LaserComponent() {
 
-    }
-
-    private List<Image> getTransformFrames(String type) {
-        Image image = FXGL.image("vaus.png");
-        List<Image> frames = new ArrayList<>();
-
-        for (int i = 0; i < 9; i++) {
-            if (type == null || type.equals("InIt")) {
-                frames.add(new WritableImage(image.getPixelReader(), 112, i * 8, 32, 8));
-            } else if (type.equals("OutIt")) {
-                frames.add(new WritableImage(image.getPixelReader(), 112, 64 - i * 8, 32, 8));
-            }
-        }
-        return frames;
     }
 
     public void addAmmo(int amount) {
@@ -115,16 +98,11 @@ public class LaserComponent extends Component {
             entity.removeComponent(PaddleAnimationComponent.class);
         }
 
-        AnimationChannel animTransformLoop = new AnimationChannel(getTransformFrames("InIt"), TRANSFORM_DURATION);
-        AnimatedTexture transformTexture = new AnimatedTexture(animTransformLoop);
+        entity.addComponent(new LaserTransformAnimationComponent("InIt"));
 
-        entity.getViewComponent().addChild(transformTexture);
-        transformTexture.play();
-
-        FXGL.runOnce(() -> {
-            entity.getViewComponent().removeChild(transformTexture);
-
+        onAddedTimer = FXGL.runOnce(() -> {
             if (entity != null && entity.isActive()) {
+                entity.removeComponent(LaserTransformAnimationComponent.class);
                 entity.addComponent(new LaserPaddleAnimationComponent());
             }
 
@@ -140,6 +118,13 @@ public class LaserComponent extends Component {
 
     @Override
     public void onRemoved() {
+        if (onAddedTimer != null && !onAddedTimer.isExpired()) {
+            onAddedTimer.expire();
+        }
+
+        if (onRemovedTimer != null && !onRemovedTimer.isExpired()) {
+            onRemovedTimer.expire();
+        }
 
         if (entity == null || !entity.isActive()) {
             return;
@@ -151,18 +136,15 @@ public class LaserComponent extends Component {
             localEntity.removeComponent(LaserPaddleAnimationComponent.class);
         }
 
-        AnimationChannel animTransformLoop = new AnimationChannel(getTransformFrames("OutIt"), TRANSFORM_DURATION);
-        AnimatedTexture transformTexture = new AnimatedTexture(animTransformLoop);
+        if (!localEntity.hasComponent(ExtendComponent.class)) {
+            localEntity.addComponent(new PaddleAnimationComponent());
+        }
 
-        localEntity.getViewComponent().addChild(transformTexture);
-        transformTexture.play();
+        entity.addComponent(new LaserTransformAnimationComponent("OutIt"));
 
-        FXGL.runOnce(() -> {
+        onRemovedTimer = FXGL.runOnce(() -> {
             if (localEntity != null && localEntity.isActive()) {
-                localEntity.getViewComponent().removeChild(transformTexture);
-                if (!localEntity.hasComponent(ExtendComponent.class)) {
-                    localEntity.addComponent(new PaddleAnimationComponent());
-                }
+                localEntity.removeComponent(LaserTransformAnimationComponent.class);
             }
 
         }, TRANSFORM_DURATION);

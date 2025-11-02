@@ -2,6 +2,7 @@ package org.arkanoid.entity.core;
 
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
+import org.arkanoid.entity.Paddle;
 
 /**
  * Abstract base class for all movable game objects.
@@ -99,8 +100,10 @@ public abstract class MovableObject extends GameObject {
                         .isCollidingWith(other.getEntity().getBoundingBoxComponent())) {
                     onCollisionWith(other);
 
-                    setX(getX() - stepVector.x);
-                    setY(getY() - stepVector.y);
+                    if (!(other instanceof Paddle)) {
+                        setX(getX() - stepVector.x);
+                        setY(getY() - stepVector.y);
+                    }
 
                     hasCollided = true;
                     break;
