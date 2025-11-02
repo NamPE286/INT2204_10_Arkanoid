@@ -283,6 +283,23 @@ public class Ball extends MovableObject {
         return attached;
     }
 
+    /**
+     * Creates two twin balls that split off from the current ball at ±15° angles.
+     *
+     * <p>This method generates two new {@link Ball} instances at the same position as
+     * the current ball, each moving in slightly different directions to simulate a
+     * "multi-ball" power-up effect. It also ensures that both new balls maintain a
+     * minimum vertical speed to avoid purely horizontal trajectories.</p>
+     *
+     * <p>The steps include:</p>
+     * <ul>
+     *   <li>Retrieve the current ball’s position and velocity.</li>
+     *   <li>Rotate the velocity vector by ±15° to get the new directions.</li>
+     *   <li>Clamp the vertical component of each ball’s velocity to a minimum ratio
+     *       of the total speed to prevent flat horizontal motion.</li>
+     *   <li>Spawn and add both new balls to the current game level.</li>
+     * </ul>
+     */
     public void createTwins() {
         Point2D spawnPosition = this.getEntity().getCenter();
         Vec2 curVec = this.getLinearVelocity();
@@ -343,6 +360,16 @@ public class Ball extends MovableObject {
         Game.getInstance().getCurrentLevel().addBall(ballTwin2);
     }
 
+    /**
+     * Updates the ball's position each frame.
+     *
+     * <p>If the ball is currently held by a paddle (e.g., after spawning or when a
+     * "sticky" power-up is active), it will move together with the paddle instead of
+     * following normal physics. Otherwise, it behaves according to the default
+     * physical motion handled by {@link super#onUpdate(double)}.</p>
+     *
+     * @param deltaTime the time elapsed since the last frame, used for smooth movement updates.
+     */
     @Override
     public void onUpdate(double deltaTime) {
         if (isHeldByPaddle && holdingPaddle != null && holdingPaddle.getEntity().isActive()) {

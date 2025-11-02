@@ -12,6 +12,7 @@ public class Main extends GameApplication {
 
     public static final int HEIGHT = 768;
     public static final int WIDTH = 672;
+    public static boolean shouldContinue = false; // Flag to indicate if continuing from saved game
     Game game;
 
     @Override
@@ -38,7 +39,8 @@ public class Main extends GameApplication {
 
     @Override
     protected void initGame() {
-        game = Game.reInit();
+        game = Game.reInit(shouldContinue);
+        shouldContinue = false; // Reset flag after use
     }
 
     @Override

@@ -16,8 +16,10 @@ import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import org.arkanoid.Main;
 import org.arkanoid.leaderboard.LeaderBoard;
 import org.arkanoid.leaderboard.LeaderBoardEntry;
+import org.arkanoid.manager.GameStateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,12 @@ public class MainMenu extends FXGLMenu {
     private final LeaderBoard leaderBoard = new LeaderBoard();
     private VBox leaderBoardBox;
 
+    /**
+     * Constructs the main menu scene, initializing layout, input controls,
+     * and the leaderboard overlay.
+     *
+     * @param type the {@link MenuType} (should always be {@code MenuType.MAIN_MENU})
+     */
     public MainMenu(MenuType type) {
         super(MenuType.MAIN_MENU);
 
@@ -59,7 +67,17 @@ public class MainMenu extends FXGLMenu {
         arrowImage.setSmooth(false);
 
         // Menu.
-        String[] options = {"START GAME", "LEADERBOARD", "EXIT GAME"};
+        boolean hasSavedGame = GameStateManager.hasSavedGame();
+        List<String> optionsList = new ArrayList<>();
+        
+        if (hasSavedGame) {
+            optionsList.add("CONTINUE");
+        }
+        optionsList.add("NEW GAME");
+        optionsList.add("LEADERBOARD");
+        optionsList.add("EXIT GAME");
+        
+        String[] options = optionsList.toArray(new String[0]);
         VBox menuVBox = new VBox(20);
         menuVBox.setAlignment(Pos.CENTER);
 
@@ -109,6 +127,13 @@ public class MainMenu extends FXGLMenu {
         highlightCurrent();
     }
 
+    /**
+     * Adds keyboard controls for menu navigation and selection.
+     * <p>
+     * Handles Up/Down for navigation, Enter for selection,
+     * and Esc to close the leaderboard overlay.
+     * </p>
+     */
     private void addKeyControls() {
         getContentRoot().setOnKeyPressed(e -> {
             if (leaderBoardBox.isVisible()) { // ESC thoát LeaderBoard.
@@ -125,17 +150,29 @@ public class MainMenu extends FXGLMenu {
             highlightCurrent();
 
             if (e.getCode() == KeyCode.ENTER) {
-                switch (currentIndex) {
-                    case 0 -> fireNewGame();                 // Start game.
-                    case 1 -> {                               // Hiện LeaderBoard.
-                        leaderBoardBox.setVisible(true);
-                        if (blinkTimeline != null) blinkTimeline.pause(); // Tạm dừng nhấp nháy.
-                        leaderBoardBox.requestFocus();
-                    }
-                    case 2 -> FXGL.getGameController().exit(); // Exit.
-                }
+                handleMenuSelection();
             }
         });
+    }
+
+    private void handleMenuSelection() {
+        String selectedOption = menuItems.get(currentIndex).getText();
+        
+        switch (selectedOption) {
+            case "CONTINUE" -> fireContinueGame();
+            case "NEW GAME" -> fireNewGame();
+            case "LEADERBOARD" -> {
+                leaderBoardBox.setVisible(true);
+                if (blinkTimeline != null) blinkTimeline.pause();
+                leaderBoardBox.requestFocus();
+            }
+            case "EXIT GAME" -> FXGL.getGameController().exit();
+        }
+    }
+
+    private void fireContinueGame() {
+        Main.shouldContinue = true;
+        fireNewGame();
     }
 
     private void highlightCurrent() {
@@ -147,6 +184,9 @@ public class MainMenu extends FXGLMenu {
         startBlinking();
     }
 
+    /**
+     * Starts the blinking animation for the currently selected menu item.
+     */
     private void startBlinking() {
         if (blinkTimeline != null) blinkTimeline.stop();
         blinkTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> toggleBlink()));
@@ -154,12 +194,23 @@ public class MainMenu extends FXGLMenu {
         blinkTimeline.play();
     }
 
+    /**
+     * Toggles the blinking color between green and white for the current menu label.
+     */
     private void toggleBlink() {
         Label label = menuItems.get(currentIndex);
         boolean isGreen = label.getTextFill().equals(Color.GREEN);
         label.setTextFill(isGreen ? Color.WHITE : Color.GREEN); // Đổi màu nhấp nháy.
     }
 
+    /**
+     * Creates and returns the leaderboard overlay UI.
+     * <p>
+     * Displays the top 5 high scores, including player name, score, and play time.
+     * </p>
+     *
+     * @return a {@link VBox} containing the leaderboard UI elements
+     */
     private VBox createLeaderBoardBox() {
         VBox lbBox = new VBox(10);
         lbBox.setAlignment(Pos.CENTER);

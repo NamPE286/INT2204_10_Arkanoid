@@ -21,6 +21,15 @@ public class ExtendPowerUp extends PowerUp {
         return PowerupType.EXTEND;
     }
 
+    /**
+     * Applies the "extend paddle" effect to the given paddle entity.
+     *
+     * <p>If the paddle already has an {@link ExtendComponent},
+     * its internal timer is reset (extending the effect duration).
+     * Otherwise, a new {@link ExtendComponent} is added for 5 seconds.
+     *
+     * @param paddleEntity the paddle entity to apply the effect to
+     */
     @Override
     public void applyEffect(Entity paddleEntity) {
         System.out.println("Paddle get more Bigger");
@@ -35,6 +44,14 @@ public class ExtendPowerUp extends PowerUp {
 
     }
 
+    /**
+     * Called when this power-up collides with another game object.
+     *
+     * <p>If the object is a {@link Paddle}, this method plays a sound,
+     * applies the extension effect, and removes the power-up from the world.
+     *
+     * @param e the {@link GameObject} that collided with this power-up
+     */
     @Override
     public void onCollisionWith(GameObject e) {
         SoundManager.play("paddle_extend.wav");

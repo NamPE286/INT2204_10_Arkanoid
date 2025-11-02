@@ -14,7 +14,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class StrongBrick extends Brick {
     public static final double SETSCALE = 3.0;
-
     /**
      * Creates a new {@code StrongBrick} instance at a specific position and tile coordinates.
      * <p>

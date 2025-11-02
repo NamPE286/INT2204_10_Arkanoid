@@ -27,6 +27,12 @@ public class LeaderBoardEntry implements Comparable<LeaderBoardEntry> {
         return time;
     }
 
+    /**
+     * So sánh điểm.
+     *
+     * @param other các người chơi khác đã có trong bảng xếp hạng
+     * @return danh sách xếp hạng
+     */
     @Override
     public int compareTo(LeaderBoardEntry other) {
         int scoreCompare = Integer.compare(other.score, this.score);

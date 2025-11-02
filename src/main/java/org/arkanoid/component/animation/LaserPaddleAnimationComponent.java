@@ -14,6 +14,11 @@ public class LaserPaddleAnimationComponent extends Component {
     private final AnimatedTexture texture;
     private final AnimationChannel animLoop;
 
+    /**
+     * Loads and extracts the animation frames for the laser paddle.
+     *
+     * @return a list of {@link Image} frames from the {@code vaus.png} sprite sheet
+     */
     private List<Image> getLaserPaddleFrames() {
         Image image = FXGL.image("vaus.png");
         List<Image> frames = new ArrayList<>();
@@ -25,17 +30,29 @@ public class LaserPaddleAnimationComponent extends Component {
         return frames;
     }
 
+    /**
+     * Constructs a {@code LaserPaddleAnimationComponent} and initializes
+     * its looping animation using frames from the sprite sheet.
+     */
     public LaserPaddleAnimationComponent() {
         animLoop = new AnimationChannel(getLaserPaddleFrames(), Duration.seconds(1));
         texture = new AnimatedTexture(animLoop);
     }
 
+    /**
+     * Called automatically when this component is added to an entity.
+     * Adds the animated texture to the entity's view and starts looping the animation.
+     */
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(animLoop);
     }
 
+    /**
+     * Called automatically when this component is removed from an entity.
+     * Stops the animation and removes the texture from the entity's view.
+     */
     @Override
     public void onRemoved() {
         texture.stop();

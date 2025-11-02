@@ -20,6 +20,13 @@ public class Laser extends MovableObject {
     private String type;
     private final float speed = -200;
 
+    /**
+     * Constructs a new {@code Laser} instance at the specified position.
+     *
+     * @param x    the initial X coordinate.
+     * @param y    the initial Y coordinate.
+     * @param type the type identifier of the laser (used for animation or logic).
+     */
     public Laser(int x, int y, String type) {
         super(x, y);
         this.type = type;
@@ -33,6 +40,11 @@ public class Laser extends MovableObject {
         initInput();
     }
 
+    /**
+     * Updates the laser's position and removes it if it goes out of screen bounds.
+     *
+     * @param deltaTime the time elapsed since the last frame, used for frame-based updates.
+     */
     @Override
     public void onUpdate(double deltaTime) {
         super.onUpdate(deltaTime);
@@ -55,6 +67,11 @@ public class Laser extends MovableObject {
         return e;
     }
 
+    /**
+     * Handles collision logic between the laser and another game object.
+     *
+     * @param e the {@link GameObject} that the laser has collided with.
+     */
     @Override
     public void onCollisionWith(GameObject e) {
         if (e instanceof Brick) {
@@ -64,10 +81,25 @@ public class Laser extends MovableObject {
         }
     }
 
+    /**
+     * Called when the laser collides with a wall.
+     *
+     * <p>The laser is immediately removed since walls are indestructible.</p>
+     *
+     * @param wall the wall that the laser has hit.
+     */
     public void onCollisionWith(Wall wall) {
         removeLaser();
     }
 
+    /**
+     * Called when the laser collides with a brick.
+     *
+     * <p>Plays a hit animation for {@link HardBrick} or {@link StrongBrick} types
+     * before breaking the brick. The laser is then removed from the world.</p>
+     *
+     * @param brick the {@link Brick} that the laser has hit.
+     */
     public void onCollisionWith(Brick brick) {
         if (brick instanceof HardBrick || brick instanceof StrongBrick) {
             brick.getEntity().getComponentOptional(BrickAnimationComponent.class)
@@ -79,6 +111,12 @@ public class Laser extends MovableObject {
         removeLaser();
     }
 
+    /**
+     * Removes the laser entity from the game world.
+     *
+     * <p>Before removal, the hitboxes are cleared to prevent lingering collision
+     * detection frames. This ensures safe and consistent cleanup of the laser object.</p>
+     */
     public void removeLaser() {
         if (entity != null && entity.isActive()) {
 
