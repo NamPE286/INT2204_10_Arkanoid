@@ -110,7 +110,7 @@ public class Ball extends MovableObject {
         double overlapRatioY = Math.abs(distanceY) / totalHalfH;
 
         if (minOverlap == overlapTop || (Math.abs(overlapRatioX - overlapRatioY) < constant
-                                        && ballCenterY <= paddleCenterY)) {
+                && ballCenterY <= paddleCenterY)) {
             double haftPaddleWidth = paddleW / 2;
 
             double distanceBallToPaddleCenter = ballCenterX - paddleCenterX;
@@ -136,7 +136,7 @@ public class Ball extends MovableObject {
             SoundManager.play("ball_hit_1.wav");
         } else if (minOverlap == overlapRight) {
             vx = Math.abs(vx) + 5;
-            setPosition((int)ballX + 10, (int) ballY);
+            setPosition((int) ballX + 10, (int) ballY);
         } else if (minOverlap == overlapLeft) {
 
             setPosition((int) ballX - 10, (int) ballY);
@@ -170,7 +170,7 @@ public class Ball extends MovableObject {
 
         if (brick instanceof HardBrick || brick instanceof StrongBrick) {
             brick.getEntity().getComponentOptional(BrickAnimationComponent.class)
-                .ifPresent(BrickAnimationComponent::playHitAnimation);
+                    .ifPresent(BrickAnimationComponent::playHitAnimation);
         }
 
         System.out.println("Collide with brick");
@@ -225,10 +225,15 @@ public class Ball extends MovableObject {
         Point2D spawnPosition = this.getEntity().getCenter();
         Vec2 curVec = this.getLinearVelocity();
 
+        // Tỉ lệ tốc độ tối thiểu.
+        final float MIN_VERTICAL = 0.15f;
+        float ballSpeed = this.getLinearVelocity().length();
+        float minVy =  ballSpeed * MIN_VERTICAL;
+
         float vx = curVec.x;
         float vy = curVec.y;
 
-        // Tạo ra hai quả bóng tạo với bóng cũ một góc 75 độ
+        // Tạo ra hai quả bóng tạo với bóng cũ một góc 15 độ
         double angleRad = Math.toRadians(15);
         float cosAngle = (float) Math.cos(angleRad);
         float sinAngle = (float) Math.sin(angleRad);
@@ -244,9 +249,27 @@ public class Ball extends MovableObject {
 
         // xoay bên trái (-15 độ so với trục hoành)
         // cos(15) = cos(-15), sin(-15) = sin(-15)
-
         float vx2 = vx * cosAngle + vy * sinAngle;
         float vy2 = -vx * sinAngle + vy * cosAngle;
+
+        // Kiểm tra và đảm bảo bóng không thể bay ngang.
+        if (Math.abs(vy1) < minVy) {
+            // Ép vy1 về giá trị tối thiểu (giữ nguyên dấu)
+            vy1 = (vy1 >= 0) ? minVy : -minVy;
+
+            // Tính lại vx1 để bảo toàn tổng tốc độ (speed^2 = vx1^2 + vy1^2)
+            float newVxSq =  (ballSpeed * ballSpeed) - (vy1 * vy1);
+            vx1 = (float) Math.sqrt(Math.max(0, newVxSq)) * Math.signum(vx1); // Math.max đề phòng lỗi làm tròn
+        }
+
+        if (Math.abs(vy2) < minVy) {
+            // Ép vy2 về giá trị tối thiểu (giữ nguyên dấu)
+            vy2 = (vy2 >= 0) ? minVy : -minVy;
+
+            // Tính lại vx2 để bảo toàn tổng tốc độ
+            float newVxSq = (ballSpeed * ballSpeed) - (vy2 * vy2);
+            vx2 = (float) Math.sqrt(Math.max(0, newVxSq)) * Math.signum(vx2);
+        }
 
         Ball ballTwin1 = new Ball((int) spawnPosition.getX(), (int) spawnPosition.getY());
         Ball ballTwin2 = new Ball((int) spawnPosition.getX(), (int) spawnPosition.getY());
