@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.entity.EntityType;
+import org.arkanoid.game.Game;
 import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -45,6 +46,10 @@ public class NormalBrick extends Brick {
         initInput();
     }
 
+    @Override
+    protected int getScoreValue() {
+        return Game.SCORE_NORMAL_BRICK;
+    }
     /**
      * Creates the FXGL {@link Entity} representing this normal brick.
      * <p>

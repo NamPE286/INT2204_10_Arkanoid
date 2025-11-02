@@ -7,6 +7,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import org.arkanoid.component.animation.BrickAnimationComponent;
 import org.arkanoid.entity.EntityType;
+import org.arkanoid.game.Game;
 import org.arkanoid.utilities.TextureUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
@@ -39,6 +40,11 @@ public class StrongBrick extends Brick {
         this.entity = createEntity(spawnData);
         spawn();
         initInput();
+    }
+
+    @Override
+    protected int getScoreValue() {
+        return Game.SCORE_STRONG_BRICK;
     }
 
     /**

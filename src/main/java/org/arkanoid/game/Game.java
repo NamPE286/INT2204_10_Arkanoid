@@ -23,6 +23,8 @@ public class Game implements MonoBehaviour {
     private LivesUI livesUI;
     private ScoreBoard scoreBoard;
     private double elapsedTime = 0.0;
+    public static final int SCORE_NORMAL_BRICK = 10;
+    public static final int SCORE_STRONG_BRICK = 20;
 
     public void destroy() {
         currentLevel.destroy();
@@ -71,7 +73,6 @@ public class Game implements MonoBehaviour {
         } else {
             SoundManager.play("death.wav");
             gameOver = true;
-            //GameOver.show();
             GameEndScreen.show(false);
         }
     }
@@ -104,7 +105,6 @@ public class Game implements MonoBehaviour {
         currentLevel.setOnDeathCallback(this::loseLife);
         currentLevel.setOnCompletedCallback(() -> {
             if (id >= MAX_LEVEL) {
-                //VictoryScreen.show();
                 GameEndScreen.show(true);
             } else {
                 setLevel(id + 1);
