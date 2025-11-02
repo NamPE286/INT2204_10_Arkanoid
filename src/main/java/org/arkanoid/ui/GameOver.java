@@ -27,10 +27,20 @@ public class GameOver {
     private static StackPane overlay;       // Overlay full màn hình.
     private static LeaderBoard leaderboard; // Top scores.
     private static int finalScore;          // Điểm người chơi.
+    private static int finalTime;
+
+    // Hiển thị thời gian theo format.
+    public static String formatTime(int totalSeconds) {
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
     // Hiển thị màn hình Game Over.
     public static void show() {
         finalScore = FXGL.geti("score");
+        finalTime = FXGL.geti("time");
         leaderboard = new LeaderBoard();
 
         overlay = new StackPane();
@@ -41,7 +51,8 @@ public class GameOver {
         // Nội dung Game Over + score.
         VBox content = new VBox(20,
             createLabel("GAME OVER", FONT_BIG, Color.RED),
-            createLabel("YOUR SCORE: " + finalScore, FONT_SMALL, Color.WHITE)
+            createLabel("YOUR SCORE: " + finalScore, FONT_SMALL, Color.WHITE),
+            createLabel("YOUR TIME: " + formatTime(finalTime) + "s", FONT_SMALL, Color.WHITE)
         );
         content.setAlignment(Pos.CENTER);
         overlay.getChildren().setAll(content);
@@ -82,7 +93,7 @@ public class GameOver {
         nameField.setOnAction(e -> {
             String name = nameField.getText().trim().toUpperCase();
             if (name.length() == 3) {
-                leaderboard.addEntry(name, finalScore);
+                leaderboard.addEntry(name, finalScore, finalTime);
                 showLeaderboard(); // Chuyển sang màn hình leaderboard.
             } else {
                 hint.setText("NAME MUST BE 3 CHARACTERS!");
@@ -100,8 +111,9 @@ public class GameOver {
         for (int i = 0; i < Math.min(5, entries.size()); i++) {
             LeaderBoardEntry entry = entries.get(i);
             entriesBox.getChildren().add(
-                createLabel((i + 1) + ". " + entry.getName() + " - " + entry.getScore(), FONT_SMALL,
-                    Color.WHITE));
+                    createLabel(String.format("%d. %s - %d (%s)",
+                                    i + 1, entry.getName(), entry.getScore(), formatTime(entry.getTime())),
+                            FONT_SMALL, Color.WHITE));
         }
 
         Label title = createLabel("TOP 5 SCORES", FONT_BIG, Color.CYAN);

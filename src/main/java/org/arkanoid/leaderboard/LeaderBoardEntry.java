@@ -7,10 +7,12 @@ package org.arkanoid.leaderboard;
 public class LeaderBoardEntry implements Comparable<LeaderBoardEntry> {
     private final String name;
     private final int score;
+    private final int time;
 
-    public LeaderBoardEntry(String name, int score) {
+    public LeaderBoardEntry(String name, int score, int time) {
         this.name = name;
         this.score = score;
+        this.time = time;
     }
 
     public String getName() {
@@ -21,14 +23,23 @@ public class LeaderBoardEntry implements Comparable<LeaderBoardEntry> {
         return score;
     }
 
+    public int getTime() {
+        return time;
+    }
+
     @Override
     public int compareTo(LeaderBoardEntry other) {
-        // Sắp xếp giảm dần theo điểm.
-        return Integer.compare(other.score, this.score);
+        int scoreCompare = Integer.compare(other.score, this.score);
+
+        if (scoreCompare != 0) {
+            return scoreCompare;
+        } else {
+            return Integer.compare(this.time, other.time);
+        }
     }
 
     @Override
     public String toString() {
-        return name + " " + score;
+        return name + " " + score + " " + time;
     }
 }

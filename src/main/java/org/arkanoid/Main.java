@@ -33,6 +33,7 @@ public class Main extends GameApplication {
         vars.put("score", 0);
         vars.put("highScore", 0);
         vars.put("lives", 3);
+        vars.put("time", 0);
     }
 
     @Override

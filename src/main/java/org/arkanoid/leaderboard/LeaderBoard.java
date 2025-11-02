@@ -18,8 +18,8 @@ public class LeaderBoard {
     }
 
     // Thêm điểm mới và lưu ra file.
-    public void addEntry(String name, int score) {
-        entries.add(new LeaderBoardEntry(name, score));
+    public void addEntry(String name, int score, int time) {
+        entries.add(new LeaderBoardEntry(name, score, time));
         Collections.sort(entries);
         if (entries.size() > MAX_ENTRIES) {
             entries.subList(MAX_ENTRIES, entries.size()).clear();
@@ -42,10 +42,15 @@ public class LeaderBoard {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.trim().split(" ");
-                if (parts.length == 2) {
+                if (parts.length == 3) {
                     String name = parts[0];
                     int score = Integer.parseInt(parts[1]);
-                    entries.add(new LeaderBoardEntry(name, score));
+                    int time = Integer.parseInt(parts[2]);
+                    entries.add(new LeaderBoardEntry(name, score, time));
+                } else if (parts.length == 2) {
+                    String name = parts[0];
+                    int score = Integer.parseInt(parts[1]);
+                    entries.add(new LeaderBoardEntry(name, score, 0));
                 }
             }
             Collections.sort(entries);
