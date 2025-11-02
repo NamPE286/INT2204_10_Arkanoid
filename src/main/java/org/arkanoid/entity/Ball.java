@@ -22,12 +22,16 @@ import java.util.List;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
-
     private boolean attached = false;
     private boolean isHeldByPaddle = false;
     private Paddle holdingPaddle = null;
     private double holdOffsetX = 0;
     private float lastSpeed = 300;
+
+    public boolean isHeldByPaddle() {
+        return isHeldByPaddle;
+    }
+
     @Override
     protected Entity createEntity(SpawnData spawnData) {
         var texture = TextureUtils.crop(FXGL.texture("vaus.png"), 0, 40, 4, 5);
