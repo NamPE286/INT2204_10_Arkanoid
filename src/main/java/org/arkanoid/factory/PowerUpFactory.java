@@ -3,6 +3,7 @@ package org.arkanoid.factory;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.SpawnData;
 import org.arkanoid.entity.Paddle;
+import org.arkanoid.entity.powerup.DisruptPowerup;
 import org.arkanoid.entity.powerup.ExtendPowerUp;
 import org.arkanoid.entity.powerup.LaserPowerUp;
 import org.arkanoid.entity.powerup.PowerUp;
@@ -13,7 +14,8 @@ import java.util.List;
 public class PowerUpFactory {
     private static final List<PowerupType> SPAWNABLE_POWERUPS = List.of(
             PowerupType.EXTEND,
-            PowerupType.LASER
+            PowerupType.LASER,
+            PowerupType.DISRUPT
     );
 
     public static PowerUp spawnRandomPowerUp(SpawnData spawnData, Paddle paddle) {
@@ -31,6 +33,9 @@ public class PowerUpFactory {
                 break;
             case EXTEND:
                 powerUp = new ExtendPowerUp(spawnData);
+                break;
+            case DISRUPT:
+                powerUp = new DisruptPowerup(spawnData);
                 break;
             default:
                 System.out.println("Not found: " + randomType);

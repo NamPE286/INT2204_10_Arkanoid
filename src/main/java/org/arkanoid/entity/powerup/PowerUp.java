@@ -53,6 +53,6 @@ public abstract class PowerUp extends MovableObject {
         return e;
     }
 
-    public abstract void applyEffect(Paddle paddle);
+    public abstract void applyEffect(Entity entity);
 
 }

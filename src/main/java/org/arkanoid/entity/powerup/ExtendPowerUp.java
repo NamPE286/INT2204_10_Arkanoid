@@ -1,5 +1,6 @@
 package org.arkanoid.entity.powerup;
 
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.util.Duration;
 import org.arkanoid.component.ExtendComponent;
@@ -11,12 +12,8 @@ import org.arkanoid.manager.SoundManager;
 
 public class ExtendPowerUp extends PowerUp {
 
-    /**
-     * Do notthing.
-     */
     public ExtendPowerUp(SpawnData data) {
         super(data);
-
     }
 
     @Override
@@ -25,16 +22,14 @@ public class ExtendPowerUp extends PowerUp {
     }
 
     @Override
-    public void applyEffect(Paddle paddle) {
+    public void applyEffect(Entity paddleEntity) {
         System.out.println("Paddle get more Bigger");
-        var paddleEntity = paddle.getEntity();
+
 
         if (paddleEntity.hasComponent(ExtendComponent.class)) {
             paddleEntity.getComponent(ExtendComponent.class).resetTimer(); 
         } else {
-            
             paddleEntity.addComponent(new ExtendComponent(Duration.seconds(5)));
-
         }
 
 
@@ -43,13 +38,13 @@ public class ExtendPowerUp extends PowerUp {
     @Override
     public void onCollisionWith(GameObject e) {
         SoundManager.play("paddle_extend.wav");
-        System.out.println("Power up collided with paddle");
+        System.out.println("Extend power up collided with paddle");
 
         if (!(e instanceof Paddle curPaddle)) {
             return;
         }
 
-        applyEffect(curPaddle);
+        applyEffect(curPaddle.getEntity());
         if (!(entity != null && entity.isActive())) {
             return;
         }
