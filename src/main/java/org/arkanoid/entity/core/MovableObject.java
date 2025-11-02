@@ -53,9 +53,9 @@ public abstract class MovableObject extends GameObject {
      */
     @Override
     public void onUpdate(double deltaTime) {
-//        if (getEntity() == null || !getEntity().isActive()) {
-//            return;
-//        }
+        if (getEntity() == null || !getEntity().isActive()) {
+            return;
+        }
 
         double minSide = Math.min(getEntity().getWidth(), getEntity().getHeight());
         final double minStepDistance = (minSide > 1.0) ? minSide / 2.0 : 2.0;
