@@ -6,7 +6,6 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.util.Duration;
 import com.almasb.fxgl.entity.component.Component;
 import org.arkanoid.component.animation.ExtendAnimationComponent;
-import org.arkanoid.component.animation.LaserPaddleAnimationComponent;
 import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.utilities.SchedulerUtils;
 

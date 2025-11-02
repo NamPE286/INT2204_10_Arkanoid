@@ -10,30 +10,34 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
-public class LaserPaddleAnimationComponent extends Component {
+
+public class LaserTransformAnimationComponent extends Component {
     private final AnimatedTexture texture;
     private final AnimationChannel animLoop;
 
-    private List<Image> getLaserPaddleFrames() {
-        Image image = FXGL.image("vaus.png");
+    private List<Image> getTransformFrames(String type) {
+        javafx.scene.image.Image image = FXGL.image("vaus.png");
         List<Image> frames = new ArrayList<>();
 
-        for (int i = 0; i <= 5; i++) {
-            frames.add(new WritableImage(image.getPixelReader(), 144, i * 8, 32, 8));
+        for (int i = 0; i < 9; i++) {
+            if (type == null || type.equals("InIt")) {
+                frames.add(new WritableImage(image.getPixelReader(), 112, i * 8, 32, 8));
+            } else if (type.equals("OutIt")) {
+                frames.add(new WritableImage(image.getPixelReader(), 112, 64 - i * 8, 32, 8));
+            }
         }
-
         return frames;
     }
 
-    public LaserPaddleAnimationComponent() {
-        animLoop = new AnimationChannel(getLaserPaddleFrames(), Duration.seconds(1));
+    public LaserTransformAnimationComponent(String type) {
+        animLoop = new AnimationChannel(getTransformFrames(type), Duration.seconds(1));
         texture = new AnimatedTexture(animLoop);
     }
 
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
-        texture.loopAnimationChannel(animLoop);
+        texture.playAnimationChannel(animLoop);
     }
 
     @Override
