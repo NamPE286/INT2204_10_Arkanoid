@@ -5,6 +5,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
+import javafx.util.Duration;
 import org.arkanoid.entity.brick.HardBrick;
 import org.arkanoid.entity.brick.StrongBrick;
 import org.arkanoid.component.animation.BrickAnimationComponent;
@@ -21,8 +22,15 @@ import java.util.List;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Ball extends MovableObject {
-
     private boolean attached = false;
+    private boolean isHeldByPaddle = false;
+    private Paddle holdingPaddle = null;
+    private double holdOffsetX = 0;
+    private float lastSpeed = 300;
+
+    public boolean isHeldByPaddle() {
+        return isHeldByPaddle;
+    }
 
     @Override
     protected Entity createEntity(SpawnData spawnData) {
@@ -72,6 +80,59 @@ public class Ball extends MovableObject {
      * @param paddle the {@link Paddle} that the ball collided with
      */
     public void onCollisionWith(Paddle paddle) {
+        if (paddle.isCanCatch() && this.getVelocityY() > 0) {
+            System.out.println("BALL: Bị Paddle bắt!");
+
+            paddle.useCatch(); // Báo cho paddle biết đã dùng khả năng bắt
+
+            // Save the current speed.
+            this.lastSpeed = this.getLinearVelocity().length();
+            if (this.lastSpeed == 0) this.lastSpeed = 300; // when speed = 0
+
+            // set velocity = 0.
+            this.setLinearVelocity(0, 0);
+
+            this.isHeldByPaddle = true;
+            this.holdingPaddle = paddle;
+
+
+            this.holdOffsetX = this.getX() - paddle.getX();
+
+
+            FXGL.getGameTimer().runOnceAfter(() -> {
+                System.out.println("BALL: AUTO SHOT BALL AFTER 2 SECOND");
+                this.isHeldByPaddle = false;
+                this.holdingPaddle = null;
+
+
+                double ballCenterX = getX() + getEntity().getWidth() / 2.0;
+                double paddleCenterX = paddle.getX() + paddle.getEntity().getWidth() / 2.0;
+                double haftPaddleWidth = paddle.getEntity().getWidth() / 2;
+
+                double distanceBallToPaddleCenter = ballCenterX - paddleCenterX;
+                double distanceRatio = distanceBallToPaddleCenter / haftPaddleWidth;
+                distanceRatio = Math.clamp(distanceRatio, -1.0, 1.0);
+                double nonLinearDistanceRatio = Math.pow(Math.abs(distanceRatio), 0.5);
+                if (distanceRatio < 0) nonLinearDistanceRatio *= -1;
+
+                double ANGLE = 90 - (55 * nonLinearDistanceRatio);
+
+                double vx = this.lastSpeed * Math.cos(Math.toRadians(ANGLE));
+                double vy = this.lastSpeed * Math.sin(Math.toRadians(ANGLE));
+
+                setLinearVelocity((float) vx, (float) -vy); // fly up.
+
+            }, Duration.seconds(2)); // Execute in 2 seconds.
+
+            return;
+        }
+
+        // Do nothing when ball is held.
+        if (isHeldByPaddle) {
+            return;
+        }
+
+        // Normal logic when have no catching effect.
         double vx = this.getVelocityX();
         double vy = this.getVelocityY();
 
@@ -110,7 +171,7 @@ public class Ball extends MovableObject {
         double overlapRatioY = Math.abs(distanceY) / totalHalfH;
 
         if (minOverlap == overlapTop || (Math.abs(overlapRatioX - overlapRatioY) < constant
-                                        && ballCenterY <= paddleCenterY)) {
+                && ballCenterY <= paddleCenterY)) {
             double haftPaddleWidth = paddleW / 2;
 
             double distanceBallToPaddleCenter = ballCenterX - paddleCenterX;
@@ -136,7 +197,7 @@ public class Ball extends MovableObject {
             SoundManager.play("ball_hit_1.wav");
         } else if (minOverlap == overlapRight) {
             vx = Math.abs(vx) + 5;
-            setPosition((int)ballX + 10, (int) ballY);
+            setPosition((int) ballX + 10, (int) ballY);
         } else if (minOverlap == overlapLeft) {
 
             setPosition((int) ballX - 10, (int) ballY);
@@ -144,6 +205,7 @@ public class Ball extends MovableObject {
         }
 
         setLinearVelocity((float) vx, (float) vy);
+
     }
 
     /**
@@ -170,7 +232,7 @@ public class Ball extends MovableObject {
 
         if (brick instanceof HardBrick || brick instanceof StrongBrick) {
             brick.getEntity().getComponentOptional(BrickAnimationComponent.class)
-                .ifPresent(BrickAnimationComponent::playHitAnimation);
+                    .ifPresent(BrickAnimationComponent::playHitAnimation);
         }
 
         System.out.println("Collide with brick");
@@ -225,10 +287,15 @@ public class Ball extends MovableObject {
         Point2D spawnPosition = this.getEntity().getCenter();
         Vec2 curVec = this.getLinearVelocity();
 
+        // Tỉ lệ tốc độ tối thiểu.
+        final float MIN_VERTICAL = 0.15f;
+        float ballSpeed = this.getLinearVelocity().length();
+        float minVy =  ballSpeed * MIN_VERTICAL;
+
         float vx = curVec.x;
         float vy = curVec.y;
 
-        // Tạo ra hai quả bóng tạo với bóng cũ một góc 75 độ
+        // Tạo ra hai quả bóng tạo với bóng cũ một góc 15 độ
         double angleRad = Math.toRadians(15);
         float cosAngle = (float) Math.cos(angleRad);
         float sinAngle = (float) Math.sin(angleRad);
@@ -244,9 +311,27 @@ public class Ball extends MovableObject {
 
         // xoay bên trái (-15 độ so với trục hoành)
         // cos(15) = cos(-15), sin(-15) = sin(-15)
-
         float vx2 = vx * cosAngle + vy * sinAngle;
         float vy2 = -vx * sinAngle + vy * cosAngle;
+
+        // Kiểm tra và đảm bảo bóng không thể bay ngang.
+        if (Math.abs(vy1) < minVy) {
+            // Ép vy1 về giá trị tối thiểu (giữ nguyên dấu)
+            vy1 = (vy1 >= 0) ? minVy : -minVy;
+
+            // Tính lại vx1 để bảo toàn tổng tốc độ (speed^2 = vx1^2 + vy1^2)
+            float newVxSq =  (ballSpeed * ballSpeed) - (vy1 * vy1);
+            vx1 = (float) Math.sqrt(Math.max(0, newVxSq)) * Math.signum(vx1); // Math.max đề phòng lỗi làm tròn
+        }
+
+        if (Math.abs(vy2) < minVy) {
+            // Ép vy2 về giá trị tối thiểu (giữ nguyên dấu)
+            vy2 = (vy2 >= 0) ? minVy : -minVy;
+
+            // Tính lại vx2 để bảo toàn tổng tốc độ
+            float newVxSq = (ballSpeed * ballSpeed) - (vy2 * vy2);
+            vx2 = (float) Math.sqrt(Math.max(0, newVxSq)) * Math.signum(vx2);
+        }
 
         Ball ballTwin1 = new Ball((int) spawnPosition.getX(), (int) spawnPosition.getY());
         Ball ballTwin2 = new Ball((int) spawnPosition.getX(), (int) spawnPosition.getY());
@@ -256,5 +341,19 @@ public class Ball extends MovableObject {
 
         Game.getInstance().getCurrentLevel().addBall(ballTwin1);
         Game.getInstance().getCurrentLevel().addBall(ballTwin2);
+    }
+
+    @Override
+    public void onUpdate(double deltaTime) {
+        if (isHeldByPaddle && holdingPaddle != null && holdingPaddle.getEntity().isActive()) {
+
+            double newX = holdingPaddle.getX() + holdOffsetX;
+            this.setX((float) newX);
+
+            this.setY((float) (holdingPaddle.getY() - this.getEntity().getHeight()));
+        } else {
+            // di chuyển vật lý bình thường
+            super.onUpdate(deltaTime);
+        }
     }
 }

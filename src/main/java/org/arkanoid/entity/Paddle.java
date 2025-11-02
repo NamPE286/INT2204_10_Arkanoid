@@ -14,11 +14,14 @@ import org.arkanoid.component.animation.PaddleAnimationComponent;
 import org.arkanoid.entity.core.GameObject;
 import org.arkanoid.entity.core.MovableObject;
 import org.arkanoid.utilities.SchedulerUtils;
+import com.almasb.fxgl.time.TimerAction;
+import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 
 public class Paddle extends MovableObject {
-
+    private boolean canCatch = false;
+    private TimerAction catchTimer = null;
     private final int SPEED = 400;
     private static Paddle target;
 
@@ -43,13 +46,13 @@ public class Paddle extends MovableObject {
     @Override
     public Entity createEntity(SpawnData spawnData) {
         var e = entityBuilder(spawnData)
-            .type(EntityType.PADDLE)
-            .bbox(new HitBox(
-                "PADDLE",
-                new Point2D(0, 0),
-                BoundingShape.box(32, 8)))
-            .with(new PaddleAnimationComponent())
-            .build();
+                .type(EntityType.PADDLE)
+                .bbox(new HitBox(
+                        "PADDLE",
+                        new Point2D(0, 0),
+                        BoundingShape.box(32, 8)))
+                .with(new PaddleAnimationComponent())
+                .build();
 
         e.setScaleX(2.0);
         e.setScaleY(2.0);
@@ -94,7 +97,7 @@ public class Paddle extends MovableObject {
                 @Override
                 protected void onActionBegin() {
                     if (target != null && target.getEntity() != null && target.getEntity()
-                        .hasComponent(LaserComponent.class)) {
+                            .hasComponent(LaserComponent.class)) {
                         target.getEntity().getComponent(LaserComponent.class).fire();
                     }
                 }
@@ -147,4 +150,37 @@ public class Paddle extends MovableObject {
         }
     }
 
+    public void activeCatchPowerup() {
+        canCatch = true;
+        System.out.println("Paddle: Catch ability activated !");
+
+        if (catchTimer != null) {
+            catchTimer.expire();
+        }
+        // sau khi da chay 10s.
+        catchTimer = FXGL.getGameTimer().runOnceAfter(() -> {
+            canCatch = false;
+            System.out.println("Paddle: Catch ability expired");
+        }, Duration.seconds(10));
+    }
+
+    public boolean isCanCatch() {
+        return canCatch;
+    }
+
+    public void useCatch() {
+        canCatch = false;
+        if (catchTimer != null) {
+            catchTimer.expire();
+            catchTimer = null;
+        }
+    }
+
+    public static Paddle getTarget() {
+        return target;
+    }
 }
+
+
+
+
