@@ -41,3 +41,4 @@ logs/
 .DS_Store
 
 ./highscore.txt
+./gamestate.txt
