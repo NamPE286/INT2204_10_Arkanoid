@@ -16,7 +16,7 @@ import org.arkanoid.ui.ScoreBoard;
  */
 public class Game implements MonoBehaviour {
 
-    private static final int MAX_LEVEL = 2;
+    private static final int MAX_LEVEL = 3;
     private boolean gameOver = false;
     private static Game instance;
     private Level currentLevel;

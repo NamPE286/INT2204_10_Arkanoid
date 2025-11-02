@@ -20,7 +20,7 @@ public class LevelLoader {
             try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
                 CSVReader csvReader = new CSVReader(reader)) {
                 String[] firstLine = csvReader.readNext();
-                int backgroundId = firstLine[0].trim().charAt(1) - '0';
+                int backgroundId = firstLine[0].trim().charAt(0) - '0';
                 List<int[]> rows = new ArrayList<>();
                 String[] nextLine;
 

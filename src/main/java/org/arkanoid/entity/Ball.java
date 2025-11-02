@@ -98,7 +98,7 @@ public class Ball extends MovableObject {
 
         double ballSpeed = this.getLinearVelocity().length();
 
-        double constant = 0.2;
+        double constant = 0.8;
 
         double distanceX = ballCenterX - paddleCenterX;
         double distanceY = ballCenterY - paddleCenterY;
@@ -110,7 +110,7 @@ public class Ball extends MovableObject {
         double overlapRatioY = Math.abs(distanceY) / totalHalfH;
 
         if (minOverlap == overlapTop || (Math.abs(overlapRatioX - overlapRatioY) < constant
-                                        && ballY + ballH <= paddleCenterY)) {
+                                        && ballCenterY <= paddleCenterY)) {
             double haftPaddleWidth = paddleW / 2;
 
             double distanceBallToPaddleCenter = ballCenterX - paddleCenterX;
@@ -136,10 +136,10 @@ public class Ball extends MovableObject {
             SoundManager.play("ball_hit_1.wav");
         } else if (minOverlap == overlapRight) {
             vx = Math.abs(vx) + 5;
-            setPosition((int)ballX + 15, (int) ballY);
+            setPosition((int)ballX + 10, (int) ballY);
         } else if (minOverlap == overlapLeft) {
 
-            setPosition((int) ballX - 15, (int) ballY);
+            setPosition((int) ballX - 10, (int) ballY);
             vx = -(Math.abs(vx) + 5);
         }
 
