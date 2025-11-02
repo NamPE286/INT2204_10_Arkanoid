@@ -11,14 +11,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class NormalBrick extends Brick {
     public static final double SETSCALE = 3.0;
     /**
-     * Default constructor for framework or serialization use.
-     * Initializes an empty {@code NormalBrick} without position or texture data.
-     */
-
-
-
-
-    /**
      * Creates a new {@code NormalBrick} instance at a specific position and tile coordinates.
      * <p>
      * This brick can be destroyed and starts with {@code health = 1}.

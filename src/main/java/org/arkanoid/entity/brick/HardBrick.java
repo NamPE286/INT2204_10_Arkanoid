@@ -16,14 +16,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.entityBuilder;
 public class HardBrick extends Brick {
     public static final double SETSCALE = 3.0;
     /**
-     * Default constructor for serialization or framework usage.
-     * Initializes a HardBrick with no position or texture information.
-     */
-
-
-
-
-    /**
      * Creates a new {@code HardBrick} instance at a specific position and tile coordinates.
      * <p>
      * This brick cannot be destroyed and has {@code health = 0}.

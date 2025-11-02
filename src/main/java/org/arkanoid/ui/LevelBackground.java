@@ -98,7 +98,4 @@ public class LevelBackground {
         getGameWorld().addEntity(rightWall);
 
     }
-
-
-
 }

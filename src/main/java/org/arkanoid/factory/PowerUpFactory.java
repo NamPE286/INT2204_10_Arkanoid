@@ -16,6 +16,17 @@ public class PowerUpFactory {
             PowerupType.CATCH
     );
 
+    /**
+     * Spawns a random power-up entity at the given spawn location.
+     *
+     * <p>This method selects a random {@link PowerupType} from the list of
+     * available types, creates the corresponding power-up entity, and sets
+     * up collision detection with the given {@link Paddle}.</p>
+     *
+     * @param spawnData the data containing the spawn position and any additional parameters
+     * @param paddle the player's paddle that the power-up should interact with
+     * @return a newly created {@link PowerUp} instance, or {@code null} if no power-up could be spawned
+     */
     public static PowerUp spawnRandomPowerUp(SpawnData spawnData, Paddle paddle) {
         if (SPAWNABLE_POWERUPS.isEmpty()) {
             return null;

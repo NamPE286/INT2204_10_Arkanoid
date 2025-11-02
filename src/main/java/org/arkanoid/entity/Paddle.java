@@ -25,6 +25,11 @@ public class Paddle extends MovableObject {
     private final int SPEED = 400;
     private static Paddle target;
 
+    /**
+     * Plays the paddle's initialization animation when first spawned or transformed.
+     *
+     * @return this {@code Paddle} instance (for chaining).
+     */
     public Paddle playInitAnimation() {
         var comp = entity.getComponent(PaddleAnimationComponent.class);
         comp.setInit(true);
@@ -32,6 +37,13 @@ public class Paddle extends MovableObject {
         return this;
     }
 
+    /**
+     * Temporarily disables player input for a given duration (in milliseconds),
+     * often used after transformations or power-up transitions.
+     *
+     * @param ms the duration in milliseconds to delay input processing.
+     * @return this {@code Paddle} instance (for chaining).
+     */
     public Paddle delayInput(int ms) {
         setLinearVelocity(0, 0);
         FXGL.getInput().setProcessInput(false);
@@ -60,6 +72,17 @@ public class Paddle extends MovableObject {
         return e;
     }
 
+    /**
+     * Initializes user input bindings for paddle control.
+     *
+     * <ul>
+     *   <li><b>LEFT arrow:</b> Move paddle left</li>
+     *   <li><b>RIGHT arrow:</b> Move paddle right</li>
+     *   <li><b>SPACE:</b> Fire lasers if {@link LaserComponent} is attached</li>
+     * </ul>
+     *
+     * <p>Each input is wrapped in try-catch to avoid duplicate binding exceptions.</p>
+     */
     @Override
     protected void initInput() {
         try {
@@ -150,6 +173,11 @@ public class Paddle extends MovableObject {
         }
     }
 
+    /**
+     * Activates the paddle's "Catch" power-up ability, allowing it to catch balls.
+     *
+     * <p>The ability lasts for 10 seconds, after which it automatically expires.</p>
+     */
     public void activeCatchPowerup() {
         canCatch = true;
         System.out.println("Paddle: Catch ability activated !");
@@ -168,6 +196,10 @@ public class Paddle extends MovableObject {
         return canCatch;
     }
 
+    /**
+     * Deactivates the current catch ability immediately,
+     * often used when the ability is consumed or overridden.
+     */
     public void useCatch() {
         canCatch = false;
         if (catchTimer != null) {
