@@ -42,6 +42,11 @@ public class HardBrick extends Brick {
         initInput();
     }
 
+    @Override
+    protected int getScoreValue() {
+        return 0;
+    }
+
     /**
      * Creates the visual and physical representation (FXGL entity) of the hard brick.
      * <p>

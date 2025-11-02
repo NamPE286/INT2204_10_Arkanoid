@@ -24,6 +24,8 @@ public class Game implements MonoBehaviour {
     private LivesUI livesUI;
     private ScoreBoard scoreBoard;
     private double elapsedTime = 0.0;
+    public static final int SCORE_NORMAL_BRICK = 10;
+    public static final int SCORE_STRONG_BRICK = 20;
 
     public void destroy() {
         currentLevel.destroy();

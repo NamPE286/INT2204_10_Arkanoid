@@ -56,6 +56,8 @@ public abstract class Brick extends GameObject {
         }
     }
 
+    protected abstract int getScoreValue();
+
     /**
      * Destroys the brick and removes it from the game world.
      */
@@ -67,8 +69,7 @@ public abstract class Brick extends GameObject {
             return;
         }
 
-        
-        Game.getInstance().addScore(100);
+        Game.getInstance().addScore(getScoreValue());
 
         canDestroy = false;
 
