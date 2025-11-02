@@ -69,10 +69,10 @@ public class Vec2Utils {
 
             if (minOverlap == overlapLeft) {
                 vx = -Math.abs(vx);
-                o.setPosition((int)oX - 5, (int)oY);
+                o.setPosition((int)oX - 5, (int) oY);
             } else if (minOverlap  == overlapRight) {
                 vx = Math.abs(vx);
-                o.setPosition((int)oX + 5, (int)oY);
+                o.setPosition((int)oX + 5, (int) oY);
             } else if (minOverlap  == overlapTop) {
                 vy = -Math.abs(vy);
             } else if (minOverlap  == overlapBottom) {
