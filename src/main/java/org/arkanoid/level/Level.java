@@ -158,8 +158,8 @@ public class Level implements MonoBehaviour {
 
     public void onCompleted() {
         paddle.getEntity().setVisible(false);
-        ball.getEntity().setVisible(false);
-        ball.setLinearVelocity(0, 0);
+        mainBall.getEntity().setVisible(false);
+        mainBall.setLinearVelocity(0, 0);
 
         FXGL.runOnce(() -> onCompletedCallback.run(), Duration.millis(500));
     }
@@ -258,7 +258,7 @@ public class Level implements MonoBehaviour {
         showRoundInfo();
 
         paddle.hideFor(HIDE_DURATION);
-        ball.hideFor(HIDE_DURATION);
+        mainBall.hideFor(HIDE_DURATION);
 
         SchedulerUtils.setTimeout(paddle::playInitAnimation, HIDE_DURATION);
 
@@ -281,17 +281,17 @@ public class Level implements MonoBehaviour {
         }
 
         paddle.setPosition(Main.WIDTH / 2 - 16, Main.HEIGHT - 50);
-        ball.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
+        mainBall.setPosition(Main.WIDTH / 2 - 4, Main.HEIGHT - 61);
         paddle.delayInput(HIDE_DURATION + DELAY_DURATION);
 
         if (playInit) {
             paddle.playInitAnimation();
         }
 
-        ball.setLinearVelocity(0, 0);
+        mainBall.setLinearVelocity(0, 0);
 
         SchedulerUtils.setTimeout(() -> {
-            ball.setLinearVelocity(250, -250);
+            mainBall.setLinearVelocity(250, -250);
         }, playInit ? DELAY_DURATION : HIDE_DURATION + DELAY_DURATION);
 
         SoundManager.play("round_start.mp3");
