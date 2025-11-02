@@ -7,9 +7,7 @@ import org.arkanoid.level.Level;
 import org.arkanoid.manager.BackgroundManager;
 import org.arkanoid.manager.HighScoreManager;
 import org.arkanoid.manager.SoundManager;
-import org.arkanoid.ui.GameOver;
-import org.arkanoid.ui.LivesUI;
-import org.arkanoid.ui.ScoreBoard;
+import org.arkanoid.ui.*;
 
 /**
  * Singleton quản lý level, mạng, reset bóng/paddle và Game Over.
@@ -73,7 +71,8 @@ public class Game implements MonoBehaviour {
         } else {
             SoundManager.play("death.wav");
             gameOver = true;
-            GameOver.show();
+            //GameOver.show();
+            GameEndScreen.show(false);
         }
     }
 
@@ -104,11 +103,12 @@ public class Game implements MonoBehaviour {
         currentLevel = new Level(id);
         currentLevel.setOnDeathCallback(this::loseLife);
         currentLevel.setOnCompletedCallback(() -> {
-            if (id == MAX_LEVEL) {
-                return;
+            if (id >= MAX_LEVEL) {
+                //VictoryScreen.show();
+                GameEndScreen.show(true);
+            } else {
+                setLevel(id + 1);
             }
-
-            setLevel(id + 1);
         });
     }
 
