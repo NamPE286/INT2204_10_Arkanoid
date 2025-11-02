@@ -38,18 +38,12 @@ public class MainMenu extends FXGLMenu {
     private final LeaderBoard leaderBoard = new LeaderBoard();
     private VBox leaderBoardBox;
 
-    /**
-     * Constructs the main menu scene, initializing layout, input controls,
-     * and the leaderboard overlay.
-     *
-     * @param type the {@link MenuType} (should always be {@code MenuType.MAIN_MENU})
-     */
     public MainMenu(MenuType type) {
         super(MenuType.MAIN_MENU);
 
-        nesFont = Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 24); // Load font.
+        nesFont = Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 24);
 
-        // Logo.
+        // Logo
         Texture fullTexture = FXGL.texture("ship.png");
         Rectangle2D region = new Rectangle2D(0, 0, 200, 45);
         Texture cropped = fullTexture.subTexture(region);
@@ -59,28 +53,24 @@ public class MainMenu extends FXGLMenu {
         HBox logoBox = new HBox(logoView);
         logoBox.setAlignment(Pos.CENTER);
 
-        // Arrow.
+        // Arrow
         Texture arrowTexture = FXGL.texture("arrow.png");
         arrowTexture.setFitWidth(24);
         arrowTexture.setPreserveRatio(true);
         arrowImage = new ImageView(arrowTexture.getImage());
         arrowImage.setSmooth(false);
 
-        // Menu.
+        // Menu
         boolean hasSavedGame = GameStateManager.hasSavedGame();
         List<String> optionsList = new ArrayList<>();
-        
-        if (hasSavedGame) {
-            optionsList.add("CONTINUE");
-        }
+        if (hasSavedGame) optionsList.add("CONTINUE");
         optionsList.add("NEW GAME");
         optionsList.add("LEADERBOARD");
         optionsList.add("EXIT GAME");
-        
         String[] options = optionsList.toArray(new String[0]);
+
         VBox menuVBox = new VBox(20);
         menuVBox.setAlignment(Pos.CENTER);
-
         for (String option : options) {
             Label label = new Label(option);
             label.setFont(nesFont);
@@ -98,17 +88,15 @@ public class MainMenu extends FXGLMenu {
             menuVBox.getChildren().add(row);
         }
 
-        // Copyright.
         Label copyright = new Label("HANOI36PP");
         copyright.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/nes.otf"), 16));
         copyright.setTextFill(Color.GRAY);
 
-        // Gộp menu chính.
         VBox menuBox = new VBox(30, logoBox, menuVBox, copyright);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
 
-        // LeaderBoard overlay.
+        // LeaderBoard overlay
         leaderBoardBox = createLeaderBoardBox();
         leaderBoardBox.setVisible(false);
         leaderBoardBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
@@ -116,56 +104,40 @@ public class MainMenu extends FXGLMenu {
         leaderBoardBox.setLayoutY(0);
 
         getContentRoot().setStyle("-fx-background-color: black;");
-        getContentRoot().getChildren().add(menuBox);      // Menu dưới.
-        getContentRoot().getChildren().add(leaderBoardBox); // Overlay.
-
+        getContentRoot().getChildren().addAll(menuBox, leaderBoardBox);
         getContentRoot().setFocusTraversable(true);
         getContentRoot().requestFocus();
-        getContentRoot().setOnMouseClicked(e -> e.consume()); // Chặn click.
+        getContentRoot().setOnMouseClicked(e -> e.consume());
 
         addKeyControls();
         highlightCurrent();
     }
 
-    /**
-     * Adds keyboard controls for menu navigation and selection.
-     * <p>
-     * Handles Up/Down for navigation, Enter for selection,
-     * and Esc to close the leaderboard overlay.
-     * </p>
-     */
     private void addKeyControls() {
         getContentRoot().setOnKeyPressed(e -> {
-            if (leaderBoardBox.isVisible()) { // ESC thoát LeaderBoard.
+            if (leaderBoardBox.isVisible()) {
                 if (e.getCode() == KeyCode.ESCAPE) {
                     leaderBoardBox.setVisible(false);
-                    if (blinkTimeline != null) blinkTimeline.play(); // Tiếp tục nhấp nháy.
+                    if (blinkTimeline != null) blinkTimeline.play();
                     getContentRoot().requestFocus();
                 }
                 return;
             }
 
-            if (e.getCode() == KeyCode.UP) currentIndex = Math.max(0, currentIndex - 1); // Lên.
-            if (e.getCode() == KeyCode.DOWN) currentIndex = Math.min(menuItems.size() - 1, currentIndex + 1); // Xuống.
+            if (e.getCode() == KeyCode.UP) currentIndex = Math.max(0, currentIndex - 1);
+            if (e.getCode() == KeyCode.DOWN) currentIndex = Math.min(menuItems.size() - 1, currentIndex + 1);
             highlightCurrent();
 
-            if (e.getCode() == KeyCode.ENTER) {
-                handleMenuSelection();
-            }
+            if (e.getCode() == KeyCode.ENTER) handleMenuSelection();
         });
     }
 
     private void handleMenuSelection() {
         String selectedOption = menuItems.get(currentIndex).getText();
-        
         switch (selectedOption) {
             case "CONTINUE" -> fireContinueGame();
             case "NEW GAME" -> fireNewGame();
-            case "LEADERBOARD" -> {
-                leaderBoardBox.setVisible(true);
-                if (blinkTimeline != null) blinkTimeline.pause();
-                leaderBoardBox.requestFocus();
-            }
+            case "LEADERBOARD" -> showLeaderBoard();
             case "EXIT GAME" -> FXGL.getGameController().exit();
         }
     }
@@ -178,15 +150,12 @@ public class MainMenu extends FXGLMenu {
     private void highlightCurrent() {
         for (int i = 0; i < menuItems.size(); i++) {
             arrowSlots.get(i).setImage(i == currentIndex ? arrowImage.getImage() : null);
-            arrowSlots.get(i).setOpacity(1); // Arrow luôn hiện.
+            arrowSlots.get(i).setOpacity(1);
             menuItems.get(i).setTextFill(i == currentIndex ? Color.GREEN : Color.WHITE);
         }
         startBlinking();
     }
 
-    /**
-     * Starts the blinking animation for the currently selected menu item.
-     */
     private void startBlinking() {
         if (blinkTimeline != null) blinkTimeline.stop();
         blinkTimeline = new Timeline(new KeyFrame(Duration.seconds(0.5), e -> toggleBlink()));
@@ -194,59 +163,66 @@ public class MainMenu extends FXGLMenu {
         blinkTimeline.play();
     }
 
-    /**
-     * Toggles the blinking color between green and white for the current menu label.
-     */
     private void toggleBlink() {
         Label label = menuItems.get(currentIndex);
         boolean isGreen = label.getTextFill().equals(Color.GREEN);
-        label.setTextFill(isGreen ? Color.WHITE : Color.GREEN); // Đổi màu nhấp nháy.
+        label.setTextFill(isGreen ? Color.WHITE : Color.GREEN);
     }
 
-    /**
-     * Creates and returns the leaderboard overlay UI.
-     * <p>
-     * Displays the top 5 high scores, including player name, score, and play time.
-     * </p>
-     *
-     * @return a {@link VBox} containing the leaderboard UI elements
-     */
     private VBox createLeaderBoardBox() {
-        VBox lbBox = new VBox(10);
-        lbBox.setAlignment(Pos.CENTER);
-        lbBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
-        lbBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.95);"); // Nền mờ.
-        lbBox.setFocusTraversable(true);
+        VBox overlayBox = new VBox();
+        overlayBox.setPrefSize(FXGL.getAppWidth(), FXGL.getAppHeight());
+        overlayBox.setAlignment(Pos.CENTER);
+        overlayBox.setStyle("-fx-background-color: rgba(0,0,0,0.95);");
+        overlayBox.setFocusTraversable(true);
 
-        Label title = new Label("TOP 5 HIGHSCORES");
+        VBox entriesBox = new VBox(5);
+        entriesBox.setAlignment(Pos.CENTER);
+
+
+
+        Label title = new Label("TOP 5 HALL OF FAME");
         title.setFont(nesFont);
-        title.setTextFill(Color.YELLOW);
-        lbBox.getChildren().add(title);
+        title.setTextFill(Color.CYAN);
 
         List<LeaderBoardEntry> topEntries = leaderBoard.getEntries();
         int limit = Math.min(5, topEntries.size());
 
-        if (limit == 0) {
-            Label emptyLabel = new Label("NO SCORES YET");
-            emptyLabel.setFont(nesFont);
-            emptyLabel.setTextFill(Color.WHITE);
-            lbBox.getChildren().add(emptyLabel);
-        } else {
-            for (int i = 0; i < limit; i++) {
-                LeaderBoardEntry entry = topEntries.get(i);
-                Label lbLabel = new Label(String.format("%d. %s - %d (%s)",
-                        i + 1, entry.getName(), entry.getScore(), formatTime(entry.getTime())));
-                lbLabel.setFont(nesFont);
-                lbLabel.setTextFill(Color.WHITE);
-                lbBox.getChildren().add(lbLabel);
-            }
+        String headerString = String.format("%-3s %-5s %5s  %8s", "NO.", "NAME", "SCORE", "TIME");
+        Label headerLabel = new Label(headerString);
+        headerLabel.setFont(nesFont);
+        headerLabel.setTextFill(Color.LIGHTGRAY);
+        headerLabel.setMinWidth(entriesBox.getPrefWidth());
+        headerLabel.setAlignment(Pos.CENTER);
+        entriesBox.getChildren().add(headerLabel);
+
+        for (int i = 0; i < limit; i++) {
+            LeaderBoardEntry entry = topEntries.get(i);
+            String entryString = String.format("%d. %-5s %5d  %8s",
+                    i + 1, entry.getName(), entry.getScore(), formatTime(entry.getTime()));
+            Label entryLabel = new Label(entryString);
+            entryLabel.setFont(nesFont);
+            entryLabel.setTextFill(Color.WHITE);
+            entryLabel.setMinWidth(entriesBox.getPrefWidth());
+            entryLabel.setAlignment(Pos.CENTER);
+            entriesBox.getChildren().add(entryLabel);
         }
 
-        Label back = new Label("PRESS ESC TO GO BACK");
-        back.setFont(nesFont);
-        back.setTextFill(Color.GRAY);
-        lbBox.getChildren().add(back);
+        Label hint = new Label("PRESS ESC TO GO BACK");
+        hint.setFont(nesFont);
+        hint.setTextFill(Color.GRAY);
 
-        return lbBox;
+        VBox content = new VBox(15, title, entriesBox, hint);
+        content.setAlignment(Pos.CENTER);
+        overlayBox.getChildren().add(content);
+
+        return overlayBox;
+    }
+
+    private void showLeaderBoard() {
+        leaderBoardBox.getChildren().clear();
+        leaderBoardBox.getChildren().add(createLeaderBoardBox().getChildren().get(0));
+        leaderBoardBox.setVisible(true);
+        leaderBoardBox.requestFocus();
     }
 }

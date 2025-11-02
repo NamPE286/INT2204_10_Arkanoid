@@ -46,7 +46,7 @@ public class GameStateManager {
      */
     public static void saveGameState(int levelIndex, int lives, int score, int elapsedTime) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            bw.write(levelIndex + 1 + "\n");
+            bw.write(levelIndex + "\n");
             bw.write(lives + "\n");
             bw.write(score + "\n");
             bw.write(elapsedTime + "\n");
