@@ -139,12 +139,10 @@ public class Game implements MonoBehaviour {
         }
 
         levelIndex = id;
+        saveGameState();
         currentLevel = new Level(id);
         currentLevel.setOnDeathCallback(this::loseLife);
         currentLevel.setOnCompletedCallback(() -> {
-            // Save game state when level is completed
-            saveGameState();
-            
             if (id >= MAX_LEVEL) {
                 // Clear saved game state when all levels completed
                 GameStateManager.clearGameState();
